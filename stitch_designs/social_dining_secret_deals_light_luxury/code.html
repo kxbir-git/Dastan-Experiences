@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://lh3.googleusercontent.com/aida-public/AB6AXuAf9Oy9ObhtOEEVfR3-6BTBcbFSGlVksGgUx2paUkGgwY_LXybDzIqyF5hRa7z0BX8yKDODUFJwvlRsum6iF24d7M3aeKPfoHzxyCiWLNrXhmcVIZBXgNUivlo8B50lkbuEqbicuDm80nlDzqewIxSCtkr1N7nu5iqgWCcXDt8WWm_x-N4GzzxvVi7yP9aSoZ99G84Q68YdDbF9A4Q7G4IuLCb3h5mHP7EaHaVxYB4QYHOSGHEpjSYJepnCsLnRjmqlydE" rel="icon" type="image/png"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;family=Manrope:wght@300;400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "outline-variant": "#e5dfd3",
+          "inverse-on-surface": "#f2f0ed",
+          "on-error-container": "#93000a",
+          "on-surface": "#18181b",
+          "secondary-container": "#f1ecdf",
+          "surface-tint": "#775a00",
+          "on-primary-fixed": "#251a00",
+          "surface-variant": "#eae5dc",
+          "on-secondary-fixed": "#0a1a3a",
+          "secondary-fixed-dim": "#b7c6ee",
+          "on-primary": "#ffffff",
+          "on-secondary-container": "#4d5b7e",
+          "on-error": "#ffffff",
+          "surface-dim": "#dbdad6",
+          "surface-container-lowest": "#ffffff",
+          "error-container": "#ffdad6",
+          "surface-container-highest": "#e8e3d8",
+          "surface-container-high": "#f0ebe1",
+          "primary-fixed-dim": "#efc04b",
+          "tertiary-fixed": "#ffdeae",
+          "inverse-primary": "#efc04b",
+          "background": "#fbf9f5",
+          "primary": "#8d6d1b",
+          "surface-container-low": "#f7f4ed",
+          "secondary": "#4f5e81",
+          "on-tertiary-fixed-variant": "#604100",
+          "error": "#ba1a1a",
+          "primary-container": "#c59a27",
+          "tertiary": "#127c56",
+          "surface-container": "#f2eee6",
+          "on-secondary-fixed-variant": "#384668",
+          "secondary-fixed": "#d9e2ff",
+          "tertiary-fixed-dim": "#f3bd67",
+          "outline": "#8b8272",
+          "on-background": "#18181b",
+          "inverse-surface": "#30312e",
+          "primary-fixed": "#ffdf9a",
+          "on-surface-variant": "#575249",
+          "surface-bright": "#fbf9f5",
+          "on-primary-fixed-variant": "#5a4300",
+          "on-tertiary": "#ffffff",
+          "on-primary-container": "#ffffff",
+          "surface": "#fdfbf7",
+          "on-tertiary-container": "#003b28",
+          "tertiary-container": "#d1fae5",
+          "on-secondary": "#ffffff",
+          "on-tertiary-fixed": "#281800"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.25rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+        "spacing": {
+          "space-lg": "1.5rem",
+          "space-sm": "0.5rem",
+          "space-xs": "0.25rem",
+          "space-md": "1rem",
+          "margin": "3rem",
+          "gutter-mobile": "1rem",
+          "margin-mobile": "1.25rem",
+          "space-xl": "2.5rem",
+          "gutter": "1.5rem"
+        },
+        "fontFamily": {
+          "body-lg": ["Manrope", "sans-serif"],
+          "title-md": ["Playfair Display", "serif"],
+          "label-md": ["Manrope", "sans-serif"],
+          "label-sm": ["Manrope", "sans-serif"],
+          "body-md": ["Manrope", "sans-serif"],
+          "headline-lg-mobile": ["Playfair Display", "serif"],
+          "headline-sm": ["Playfair Display", "serif"],
+          "headline-lg": ["Playfair Display", "serif"],
+          "display-lg": ["Playfair Display", "serif"],
+          "headline-md": ["Playfair Display", "serif"],
+          "display-lg-mobile": ["Playfair Display", "serif"],
+          "body-sm": ["Manrope", "sans-serif"],
+          "label-mono-sm": ["JetBrains Mono", "monospace"],
+          "label-mono-lg": ["JetBrains Mono", "monospace"]
+        },
+        "fontSize": {
+          "body-lg": ["17px", {"lineHeight": "28px", "fontWeight": "400"}],
+          "title-md": ["18px", {"lineHeight": "26px", "fontWeight": "600"}],
+          "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600"}],
+          "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.1em", "fontWeight": "600"}],
+          "body-md": ["15px", {"lineHeight": "24px", "fontWeight": "400"}],
+          "headline-lg-mobile": ["30px", {"lineHeight": "40px", "fontWeight": "600"}],
+          "headline-sm": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+          "headline-lg": ["40px", {"lineHeight": "52px", "fontWeight": "600"}],
+          "display-lg": ["56px", {"lineHeight": "68px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+          "headline-md": ["28px", {"lineHeight": "38px", "fontWeight": "600"}],
+          "display-lg-mobile": ["38px", {"lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+          "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+          "label-mono-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "500"}],
+          "label-mono-lg": ["15px", {"lineHeight": "20px", "letterSpacing": "0.03em", "fontWeight": "600"}]
+        }
+      }
+    }
+  }
+</script></head><body class="bg-surface font-body-md text-on-surface min-h-screen flex flex-col antialiased selection:bg-primary-container/20 selection:text-primary"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-outline-variant shadow-sm"><div class="h-20 max-w-7xl mx-auto px-gutter flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg flex-shrink-0"><a class="flex items-center gap-space-sm group" data-path="live-events" href="#"><img alt="Dastan Royal Palace Emblem" class="h-10 w-auto object-contain rounded-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf9Oy9ObhtOEEVfR3-6BTBcbFSGlVksGgUx2paUkGgwY_LXybDzIqyF5hRa7z0BX8yKDODUFJwvlRsum6iF24d7M3aeKPfoHzxyCiWLNrXhmcVIZBXgNUivlo8B50lkbuEqbicuDm80nlDzqewIxSCtkr1N7nu5iqgWCcXDt8WWm_x-N4GzzxvVi7yP9aSoZ99G84Q68YdDbF9A4Q7G4IuLCb3h5mHP7EaHaVxYB4QYHOSGHEpjSYJepnCsLnRjmqlydE"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm tracking-wider text-primary font-bold leading-none">DASTAN</span><span class="font-label-mono-sm text-[9px] text-on-surface-variant tracking-[0.25em] uppercase leading-tight font-semibold">Experiences</span></div></a><div class="relative hidden sm:block"><button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-low border border-outline-variant text-on-surface hover:border-primary/50 transition-all duration-200 group shadow-xs" type="button"><span class="material-symbols-outlined text-[16px] text-primary">location_on</span><span class="font-label-md text-label-md text-on-surface tracking-wide">Mumbai</span><span class="w-1.5 h-1.5 rounded-full bg-tertiary shadow-[0_0_8px_rgba(18,124,86,0.5)]"></span><span class="material-symbols-outlined text-[16px] group-hover:translate-y-0.5 transition-transform text-outline">arrow_drop_down</span></button></div></div><nav class="hidden lg:flex items-center gap-space-lg h-full" data-active-classes="text-primary border-b-2 border-primary font-semibold"><a class="font-body-md text-on-surface-variant hover:text-primary py-2 transition-colors font-medium" data-path="live-events" href="#">Live Events</a><a aria-current="page" class="font-body-md py-2 transition-colors text-primary border-b-2 border-primary font-bold" data-path="dining-deals" href="#">Dining Deals</a><a class="font-body-md text-on-surface-variant hover:text-primary py-2 transition-colors font-medium" data-path="social-table" href="#">Social Table</a><a class="font-body-md text-on-surface-variant hover:text-primary py-2 transition-colors font-medium" data-path="vendor-portal" href="#">Vendor Portal</a><a class="font-body-md text-on-surface-variant hover:text-primary py-2 transition-colors font-medium" data-path="admin-hub" href="#">Admin Hub</a></nav><div class="flex items-center gap-space-md flex-shrink-0"><div class="relative hidden xl:flex items-center"><span class="material-symbols-outlined absolute left-3 text-outline text-[18px]">search</span><input class="w-56 pl-9 pr-12 py-1.5 rounded-full bg-surface-container-low border border-outline-variant text-on-surface font-body-sm placeholder:text-outline/70 focus:outline-none focus:border-primary focus:bg-white focus:ring-1 focus:ring-primary/40 transition-all shadow-inner" placeholder="Search experiences..." type="text"/><kbd class="absolute right-2.5 px-1.5 py-0.5 rounded bg-surface-container border border-outline-variant/80 font-label-mono-sm text-[10px] text-on-surface-variant">⌘K</kbd></div><a class="hidden sm:inline-flex items-center px-4 py-2 rounded-lg border border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10 text-primary font-title-md text-[15px] font-semibold tracking-wide transition-all shadow-xs" data-path="host-experience" href="#">Host an Experience</a><div class="relative flex items-center pl-space-xs"><div class="p-[2px] rounded-full ring-2 ring-primary/60 shadow-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9z-I76gr4cbsMe4xvMS7e5y436TPglrDLvQ23vx58tBVWTqrgST0FbDjBlt_R3vpZCdIWR0JSuwvyLFxLjjhDkzO7oI4kh4RPFybdEdOKdDV9pykATutCp_xRW1MsI_r3hjwX6N1VntQ-Mt-6OkKxJMmwJk90PDYFMhOpxmyKaNOOblp4pHn7Q_wbYWzk4f0fDZGKv-5yg2_8ZfDz-DqwtpWFm-S0zugAh_1cfnmg0IOsRrF9A7L8TA"/></div><span class="absolute top-0 right-0 w-2.5 h-2.5 rounded-full bg-tertiary ring-2 ring-surface-container-lowest"></span></div></div></div></header><main class="flex-1 w-full pt-20 bg-surface"><div class="flex flex-col w-full relative">
+<!-- Warm Royal Luminous Background Sheens -->
+<div class="absolute top-12 left-1/4 w-[500px] h-[500px] rounded-full bg-amber-100/40 blur-[140px] pointer-events-none -z-10"></div>
+<div class="absolute top-72 right-10 w-[550px] h-[550px] rounded-full bg-yellow-50/70 blur-[160px] pointer-events-none -z-10"></div>
+<!-- Breadcrumbs & Quick Telemetry -->
+<div class="max-w-7xl mx-auto px-gutter w-full pt-space-lg pb-space-sm flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-2 font-label-mono-sm text-label-mono-sm text-on-surface-variant font-medium">
+<a class="hover:text-primary transition-colors uppercase tracking-wider" href="#">SANCTUARIES</a>
+<span class="text-outline/40">/</span>
+<a class="hover:text-primary transition-colors uppercase tracking-wider" href="#">SOUTH MUMBAI</a>
+<span class="text-outline/40">/</span>
+<span class="text-primary font-semibold tracking-wider uppercase">BUKHARA DARBAR</span>
+</div>
+<div class="flex items-center gap-space-sm bg-white/90 border border-outline-variant shadow-xs px-3.5 py-1.5 rounded-full">
+<span class="w-2 h-2 rounded-full bg-tertiary shadow-[0_0_8px_rgba(18,124,86,0.6)] animate-pulse"></span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface font-semibold tracking-wider">3 SECRET PRIVÉ TABLES OPEN TONIGHT</span>
+</div>
+</div>
+<!-- Venue Sanctuary Header -->
+<header class="max-w-7xl mx-auto px-gutter w-full pb-space-xl">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg">
+<div class="flex flex-col gap-space-xs max-w-3xl">
+<div class="flex flex-wrap items-center gap-space-sm">
+<span class="px-3.5 py-1 rounded-full bg-primary/10 border border-primary/25 text-primary font-label-md text-label-sm font-bold tracking-widest uppercase">
+            Michelin Guide Recommended 2024
+          </span>
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-outline-variant shadow-xs text-primary">
+<span class="material-symbols-outlined text-[16px] text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-mono-lg text-label-mono-lg text-on-surface font-bold">4.9</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant font-medium">(480 Connoisseur reviews)</span>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant flex items-center gap-1.5 font-medium bg-emerald-50 text-emerald-800 border border-emerald-200/80 px-2.5 py-1 rounded-full">
+<span class="material-symbols-outlined text-[15px] text-tertiary">verified</span>
+            Sovereign Guild Verified
+          </span>
+</div>
+<h1 class="font-display-lg text-headline-lg lg:text-display-lg text-on-surface tracking-tight mt-1 font-semibold">
+          Bukhara Darbar <span class="italic font-normal text-primary">&amp;</span> Secret Cellar
+        </h1>
+<div class="flex flex-wrap items-center gap-y-2 gap-x-4 text-on-surface-variant font-body-md pt-space-xs">
+<span class="flex items-center gap-1 text-on-surface font-medium">
+<span class="material-symbols-outlined text-[18px] text-primary">location_on</span>
+            Colaba Heritage Precinct, South Mumbai
+          </span>
+<span class="text-outline-variant">•</span>
+<span>Awadhi Royal Cuisine</span>
+<span class="text-outline-variant">•</span>
+<span>Dum Pukht Firecraft</span>
+<span class="text-outline-variant">•</span>
+<span class="text-tertiary font-semibold">Live Sitar &amp; Santoor (From 20:30)</span>
+<span class="text-outline-variant">•</span>
+<span class="font-label-mono-sm text-on-surface font-semibold">Avg. ₹3,200 for 2</span>
+</div>
+</div>
+<!-- Action Cluster -->
+<div class="flex items-center gap-space-sm flex-shrink-0">
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white border border-outline-variant hover:border-primary/50 hover:bg-surface-container-low text-on-surface font-title-md text-[15px] font-semibold transition-all shadow-xs" type="button">
+<span class="material-symbols-outlined text-[20px] text-primary">bookmark_border</span>
+<span>Bookmark Privé</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white border border-outline-variant hover:border-primary/50 hover:bg-surface-container-low text-on-surface font-title-md text-[15px] font-semibold transition-all shadow-xs" type="button">
+<span class="material-symbols-outlined text-[20px] text-primary">share</span>
+<span>Share</span>
+</button>
+</div>
+</div>
+<!-- Editorial Gallery Mosaic -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md mt-space-lg">
+<!-- Main Visual Showcase (7 cols) -->
+<div class="md:col-span-7 relative group rounded-xl overflow-hidden bg-surface-container-high min-h-[360px] lg:min-h-[440px] shadow-md border border-outline-variant/60">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Sumptuous royal Awadhi dining room in a candlelit haveli with ornate carved archways, warm ambient amber lanterns, deep indigo velvet booths, intricate gold leaf filigree patterns on ceiling, steam rising gently from brass degchis, photographed in a high-end editorial luxury aesthetic with cinematic shallow depth of field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJz2xRHbQkGgknpCXOXh3eHAlQ_27MX_bLtB3YeDJPaPohyOLe7P1UzCpHHslPexONq_Qn-nDQ0HXBEszY67cKLDDkq6H6I5VYTbFoOSk6W4k8q9oQJFxTIehLuly-xOQWVp5yvgxynGls8m7f-zTR06xIZAJ6KKOCsdllt0aowftGOVOrtNuqDl44hT1zRKKkoogHpjJPJO0dNPuyPZN3myBwksaCR-WNshTb30o09jQoW5Bwe6nXQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
+<div class="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md shadow-sm border border-outline-variant">
+<span class="material-symbols-outlined text-primary text-[16px]">local_fire_department</span>
+<span class="font-label-mono-sm text-[11px] text-on-surface uppercase tracking-wider font-semibold">Historic 1892 Cellar Vaults</span>
+</div>
+<div class="absolute bottom-5 left-6 right-6 flex items-end justify-between text-white">
+<div>
+<span class="font-label-mono-sm text-label-mono-sm text-primary-fixed uppercase tracking-widest block font-medium">Main Chamber</span>
+<p class="font-headline-sm text-headline-sm text-white font-serif">The Sultan's Alcove &amp; Scented Shama</p>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-white bg-black/50 backdrop-blur-md px-3 py-1 rounded-md border border-white/20">8 Photos</span>
+</div>
+</div>
+<!-- Secondary Stacked Vignettes (5 cols) -->
+<div class="md:col-span-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-space-md">
+<!-- Top Small Vignette -->
+<div class="relative group rounded-xl overflow-hidden bg-surface-container-high min-h-[170px] lg:min-h-[210px] shadow-sm border border-outline-variant/60">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Exquisite Awadhi slow-cooked Galouti kebab on silver damascened platter, garnished with fragile edible silver vark leaf, microscopic rose water drops, saffron strings, surrounded by antique brass decanters under dramatic moody chiaroscuro restaurant table lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4SKL5EhoK6ulgdvKyk6ekPEr2zjbvS0hQUv9kYX2_eYcFXi1d4pwVIF3bTePxCgFTrUi_NRXmnAMYUc6-G9XvO3QoJj1THE8RQa2GKP-mXgT9_fm9IykwQDJ0n0QzzZbBNf-FWxUKMnv1VIqFqh7XD1MgrOjgVuXvB6X8bcLPoQ3AC6UsfOd_g3va1u88B2lTbUNZyhCulAGFblwbasIqpTrIxs5Ui2FvyV6ndqPzYbnxXlTisma0yg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
+<div class="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white">
+<span class="font-title-md text-title-md text-white font-medium">Dum Pukht Signature Cuts</span>
+<span class="font-label-mono-sm text-label-mono-sm text-primary-fixed font-semibold">Rawalpindi Gosht</span>
+</div>
+</div>
+<!-- Bottom Small Vignette -->
+<div class="relative group rounded-xl overflow-hidden bg-surface-container-high min-h-[170px] lg:min-h-[210px] shadow-sm border border-outline-variant/60">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Intimate secret subterranean wine and single-malt whisky cellar, arched stone niches glowing with amber backlit bottles, an exclusive mahogany tasting table with crystal snifters, soft candlelight reflections, dramatic atmospheric luxury shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6wGxjefh3nWKruQH1wA3hyO2g9HMmWesA0DrbDOuKURG7Ps8PO7pXhoFQj5b4xQBwPPVyvehjtP9cDHNDJurJOvXKVXfF3gfswsWRcnSJW87z2HjMd0-ymTjSbYM6i3amZifREDMQG3sgeqBrTBS2dAPEqpu_dqdfIk7sGfK7uozbNoyuW-QdYBOVl9aP6yx_wRAuCOmJ4tsaNj9Pr62zJCk3_mOnVGk6osrC9E23MW_PEi50npFjjQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
+<div class="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white">
+<span class="font-title-md text-title-md text-white font-medium">Secret Vault Cellar</span>
+<span class="font-label-mono-sm text-label-mono-sm text-emerald-300 font-semibold">Rare Malts Archive</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Interactive Experience Engine: Secret Deals & Community Table Grid -->
+<section class="max-w-7xl mx-auto px-gutter w-full pb-36">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl">
+<!-- Left Column: Curated Privé Offers & Customization (8 cols) -->
+<div class="lg:col-span-8 flex flex-col gap-space-xl">
+<!-- Booking Customizer Matrix -->
+<div class="bg-white border border-outline-variant p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-sm border-b border-outline-variant/60">
+<div>
+<span class="font-label-mono-sm text-label-mono-sm text-primary tracking-widest uppercase font-semibold">Selection Chamber</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-serif mt-0.5">Curate Your Dining Party &amp; Window</h2>
+</div>
+<div class="flex items-center gap-1.5 font-label-mono-sm text-label-mono-sm text-tertiary bg-emerald-50 border border-emerald-200/80 px-3 py-1 rounded-full font-medium">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+<span>100% Escrow Refundable Deposit</span>
+</div>
+</div>
+<!-- Dynamic Selectors Row -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md">
+<!-- Guests Counter -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase tracking-wider font-semibold">Party Size</label>
+<div class="relative">
+<button class="w-full flex items-center justify-between px-4 py-3 rounded-lg bg-surface-container-low border border-outline-variant text-on-surface font-title-md text-[15px] hover:border-primary/50 hover:bg-white transition-all shadow-xs" id="guestSelectorBtn" type="button">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">group</span>
+<span id="selectedGuestsText">2 Connoisseurs</span>
+</div>
+<span class="material-symbols-outlined text-[20px] text-outline">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Date Selector -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase tracking-wider font-semibold">Evening Slot Date</label>
+<div class="w-full flex items-center justify-between px-4 py-3 rounded-lg bg-surface-container-low border border-outline-variant text-on-surface font-title-md text-[15px] shadow-xs">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">calendar_today</span>
+<span class="font-medium">Tonight, 24 Oct</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-tertiary font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">TODAY</span>
+</div>
+</div>
+<!-- Seating Section Preference -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase tracking-wider font-semibold">Chamber Preference</label>
+<div class="w-full flex items-center justify-between px-4 py-3 rounded-lg bg-surface-container-low border border-outline-variant text-on-surface font-title-md text-[15px] shadow-xs">
+<div class="flex items-center gap-2 truncate">
+<span class="material-symbols-outlined text-[20px] text-primary">table_restaurant</span>
+<span class="truncate font-medium">Candlelit Courtyard</span>
+</div>
+<span class="material-symbols-outlined text-[20px] text-outline">tune</span>
+</div>
+</div>
+</div>
+<!-- Time Slot Selection Pills -->
+<div class="flex flex-col gap-2 pt-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase tracking-wider font-semibold">Select Seating Window (IST)</label>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">Arrival grace: 15 mins</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm" id="timeSlotContainer">
+<button class="time-slot-btn py-3 px-4 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary/50 hover:bg-white transition-all flex flex-col items-center gap-1 shadow-xs" data-slot="19:00 - 20:30" type="button">
+<span class="font-label-mono-lg text-label-mono-lg text-on-surface">19:00 – 20:30</span>
+<span class="font-label-mono-sm text-[11px] text-on-surface-variant">Twilight Repast</span>
+</button>
+<button class="time-slot-btn active-slot py-3 px-4 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 text-white shadow-md flex flex-col items-center gap-1 transition-all border border-amber-600/40" data-slot="20:00 - 22:00" type="button">
+<div class="flex items-center gap-1.5">
+<span class="font-label-mono-lg text-label-mono-lg font-bold">20:00 – 22:00</span>
+<span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+</div>
+<span class="font-label-mono-sm text-[11px] font-bold uppercase tracking-wider text-amber-100">Most Coveted</span>
+</button>
+<button class="time-slot-btn py-3 px-4 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary/50 hover:bg-white transition-all flex flex-col items-center gap-1 shadow-xs" data-slot="21:30 - 23:30" type="button">
+<span class="font-label-mono-lg text-label-mono-lg text-on-surface">21:30 – 23:30</span>
+<span class="font-label-mono-sm text-[11px] text-tertiary font-semibold">Live Sitar Live</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Privé Secret Deals Section -->
+<div class="flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-space-xs">
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-mono-sm text-label-mono-sm text-primary tracking-widest uppercase font-semibold">Secret Cellar Pass</span>
+<span class="px-2 py-0.5 rounded-full bg-amber-100/90 text-amber-900 border border-amber-300/70 font-label-mono-sm text-[10px] font-bold">EXCLUSIVE ACCESS</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-serif mt-1">Curated Privé Dining Offers</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Pick one offer to apply to tonight's booking</p>
+</div>
+<!-- Cards Stack -->
+<div class="flex flex-col gap-space-md" id="priveOffersContainer">
+<!-- Card 1: 20% Off Food Bill (ACTIVE SELECTED) -->
+<div class="deal-card active-deal relative rounded-xl bg-white border-2 border-primary/60 p-space-lg shadow-md hover:shadow-lg cursor-pointer transition-all" data-deal-id="deal-1" data-deal-title="20% OFF Total Food Bill" data-deposit="1000">
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md">
+<div class="w-12 h-12 rounded-lg bg-amber-100 text-primary flex items-center justify-center flex-shrink-0 border border-amber-200">
+<span class="material-symbols-outlined text-[28px]">percent</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-serif">20% OFF Total Food Bill</span>
+<span class="px-2.5 py-0.5 rounded-full bg-primary text-white font-label-md text-[10px] font-bold uppercase tracking-wider">ACTIVE DEAL</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Valid across entire à la carte menu for tables of 2 to 4 guests.</p>
+<div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-label-mono-sm text-label-mono-sm text-on-surface-variant mt-2">
+<span class="text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                        Slot: 20:00 - 22:30 IST
+                      </span>
+<span class="text-outline-variant">•</span>
+<span>Cover guarantee: ₹500/guest refundable</span>
+</div>
+</div>
+</div>
+<div class="flex md:flex-col items-center md:items-end justify-between w-full md:w-auto gap-2 pt-2 md:pt-0">
+<span class="font-label-mono-lg text-label-mono-lg text-primary font-bold">SAVE UP TO ₹1,400</span>
+<div class="deal-check-icon w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2: Complimentary Cocktail & Kebab Platter -->
+<div class="deal-card relative rounded-xl bg-white border border-outline-variant hover:border-primary/40 p-space-lg shadow-sm hover:shadow-md cursor-pointer transition-all" data-deal-id="deal-2" data-deal-title="Complimentary Saffron Cocktail &amp; Kebab Platter" data-deposit="1000">
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md">
+<div class="w-12 h-12 rounded-lg bg-surface-container-low text-primary flex items-center justify-center flex-shrink-0 border border-outline-variant">
+<span class="material-symbols-outlined text-[28px]">liquor</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-serif">Complimentary Royal Saffron Cocktail &amp; Kebab Platter</span>
+<span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-tertiary border border-emerald-200/80 font-label-md text-[10px] font-bold uppercase tracking-wider">EARLY BIRD PRIVILEGE</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Paired Kakori Kababs + 2 bespoke Royal Saffron cocktails handcrafted by Master Mixologist.</p>
+<div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-label-mono-sm text-label-mono-sm text-on-surface-variant mt-2">
+<span class="text-on-surface font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-tertiary">verified</span>
+                        Tables seated prior to 19:30
+                      </span>
+<span class="text-outline-variant">•</span>
+<span class="text-on-surface-variant">Valued at ₹1,800 complimentary</span>
+</div>
+</div>
+</div>
+<div class="flex md:flex-col items-center md:items-end justify-between w-full md:w-auto gap-2 pt-2 md:pt-0">
+<span class="font-label-mono-lg text-label-mono-lg text-tertiary font-bold">₹1,800 VALUE FREE</span>
+<div class="deal-check-icon w-6 h-6 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 3: Chef's 7-Course Royal Tasting Menu -->
+<div class="deal-card relative rounded-xl bg-white border border-outline-variant hover:border-primary/40 p-space-lg shadow-sm hover:shadow-md cursor-pointer transition-all" data-deal-id="deal-3" data-deal-title="Chef's 7-Course Royal Tasting Menu" data-deposit="1500">
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md">
+<div class="w-12 h-12 rounded-lg bg-surface-container-low text-primary flex items-center justify-center flex-shrink-0 border border-outline-variant">
+<span class="material-symbols-outlined text-[28px]">restaurant</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-serif">Chef's 7-Course Royal Tasting Menu</span>
+<span class="px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200 font-label-md text-[10px] font-bold uppercase tracking-wider">CHEF’S SPECIAL</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Curated degustation featuring saffron shorba, 24-hr slow dum biryani &amp; silver vark dessert.</p>
+<div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-label-mono-sm text-label-mono-sm text-on-surface-variant mt-2">
+<span class="text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">shield</span>
+                        Exclusive Dastan Escrow Slot
+                      </span>
+<span class="text-outline-variant">•</span>
+<span class="text-on-surface-variant line-through">Regular ₹3,500</span>
+<span class="text-tertiary font-bold">₹2,199 / guest</span>
+</div>
+</div>
+</div>
+<div class="flex md:flex-col items-center md:items-end justify-between w-full md:w-auto gap-2 pt-2 md:pt-0">
+<span class="font-label-mono-lg text-label-mono-lg text-primary font-bold">37% PRIVÉ REBATE</span>
+<div class="deal-check-icon w-6 h-6 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Provenance & House Ethics Accordion strip -->
+<div class="bg-white border border-outline-variant p-space-md rounded-xl flex items-center justify-between text-on-surface-variant font-body-sm shadow-xs">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">workspace_premium</span>
+<span class="font-medium">Halal Certified • Hand-ground Awadhi Spices • Valet Parking at Heritage Gate</span>
+</div>
+<a class="text-primary hover:underline font-label-mono-sm font-semibold" href="#">Cellar Protocol Codex →</a>
+</div>
+</div>
+<!-- Right Column: The Social Table & Connoisseurs Syndicate (4 cols) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- The Social Table Opt-In Glass Box -->
+<div class="relative bg-white border border-outline-variant rounded-2xl p-space-lg shadow-md overflow-hidden flex flex-col gap-space-md">
+<!-- Background Royal Ambient Sheen -->
+<div class="absolute -top-16 -right-16 w-48 h-48 bg-amber-100/60 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">diversity_3</span>
+<span class="font-label-mono-sm text-label-mono-sm text-primary tracking-widest uppercase font-semibold">Curated Camaraderie</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-tertiary border border-emerald-200/80 font-label-md text-[11px] font-bold">96% SYNERGY</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-serif">The Social Table</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">A shared imperial repast for connoisseurs open to cultured dialogue.</p>
+</div>
+<!-- Prominent Toggle Switch -->
+<div class="bg-surface-container-low border border-outline-variant p-space-md rounded-xl flex items-center justify-between gap-space-sm shadow-xs">
+<div class="flex flex-col">
+<span class="font-title-md text-body-md text-on-surface font-bold">Opt-in to Social Table</span>
+<span class="font-body-sm text-[12px] text-tertiary font-semibold" id="toggleStatusLabel">Active • Joined Tonight's 6-Person Table</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+<input checked="" class="sr-only peer" id="socialTableToggle" type="checkbox"/>
+<div class="w-14 h-8 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary shadow-inner"></div>
+</label>
+</div>
+<!-- Microcopy Privacy & Ethos -->
+<p class="font-body-sm text-[13px] text-on-surface-variant leading-relaxed">
+            Connect with fellow food, wine, and culture connoisseurs. When enabled, your verified profile joins tonight's 6-person curated table. Private contact details remain masked until both parties connect.
+          </p>
+<!-- Tonight's Table Vibe & Synergy Card -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-space-md flex flex-col gap-space-xs">
+<span class="font-label-mono-sm text-[11px] text-primary uppercase tracking-wider font-semibold">Tonight's Table Archetype</span>
+<span class="font-title-md text-title-md text-on-surface font-serif italic">"Whisky Collectors &amp; Culinary Travellers"</span>
+<!-- Synergy Meter Bar -->
+<div class="w-full bg-surface-container-highest h-2 rounded-full mt-2 overflow-hidden flex">
+<div class="bg-gradient-to-r from-amber-500 via-emerald-600 to-amber-500 h-full w-[96%] rounded-full shadow-xs"></div>
+</div>
+<div class="flex justify-between font-label-mono-sm text-[10px] text-on-surface-variant pt-0.5">
+<span>Aesthetic Affinity: High</span>
+<span class="text-tertiary font-bold">96% Collective Match</span>
+</div>
+</div>
+<!-- Anonymized Co-diner Avatar Strip -->
+<div class="flex flex-col gap-2 pt-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase tracking-wider font-semibold">Confirmed Co-Diners (3/6 Seated)</span>
+<span class="font-label-mono-sm text-[11px] text-tertiary font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">3 SLOTS REMAIN</span>
+</div>
+<!-- Co-diner Avatars -->
+<div class="flex flex-col gap-2.5">
+<!-- Diner 1 -->
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/70">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-full bg-amber-100 border border-amber-200/90 flex items-center justify-center text-primary font-title-md text-sm font-bold">
+                    SK
+                  </div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-sm text-on-surface font-semibold">Patron #1042</span>
+<span class="font-label-mono-sm text-[11px] text-primary font-medium">Sommelier (Verified)</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-white border border-outline-variant text-on-surface-variant font-label-mono-sm text-[10px] font-medium">French Bordeaux</span>
+</div>
+<!-- Diner 2 -->
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/70">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-full bg-emerald-100 border border-emerald-200 flex items-center justify-center text-tertiary font-title-md text-sm font-bold">
+                    MR
+                  </div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-sm text-on-surface font-semibold">Patron #882</span>
+<span class="font-label-mono-sm text-[11px] text-tertiary font-medium">Novelist (Verified)</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-white border border-outline-variant text-on-surface-variant font-label-mono-sm text-[10px] font-medium">South Asian History</span>
+</div>
+<!-- Diner 3 -->
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/70">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-800 font-title-md text-sm font-bold">
+                    AA
+                  </div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-sm text-on-surface font-semibold">Patron #219</span>
+<span class="font-label-mono-sm text-[11px] text-secondary font-medium">Venture Partner</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-white border border-outline-variant text-on-surface-variant font-label-mono-sm text-[10px] font-medium">Culinary Angel</span>
+</div>
+</div>
+</div>
+<!-- Escrow Safety Seal -->
+<div class="p-3 rounded-lg bg-surface-container-low border border-outline-variant/70 flex items-center gap-2 text-on-surface-variant font-body-sm text-[12px]">
+<span class="material-symbols-outlined text-[18px] text-tertiary flex-shrink-0">gavel</span>
+<span>Zero harassment charter strictly enforced. Royal Steward present at table.</span>
+</div>
+</div>
+<!-- Venue Cellar Master Mini-Card -->
+<div class="bg-white border border-outline-variant rounded-xl p-space-md flex items-center gap-space-md shadow-xs">
+<img class="w-14 h-14 rounded-full object-cover flex-shrink-0 shadow-sm border border-outline-variant" data-alt="Distinguished mature Indian Master Chef in black bespoke culinary coat with gold embroidery, smiling warmly in a candlelit kitchen background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSjcCuUaJIR_b9cbxP_7-UsERvCFSmxGldn7kc_Eoi2V5BFWEaztjHDN2ryyh4Rfw2nSPdHB19Ar3RT5iWS5tPhjRs295iQD_0cZl2j1RoRUuuwiyMPc9wX4UdxRWygkyJCeYtFPQPW-pNFYhMDzK0K3VVWA1X9P4qPuihBifXzRG1WkPT7XE__g-I0YNX9s-S-u_OuSBnbfyjP_9ZhYFiMvUzuF7sQ7fSi0dPOnAv8X232omzvAJyVQ"/>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-[11px] text-primary uppercase tracking-wider font-semibold">Tonight's Kitchen Custodian</span>
+<span class="font-headline-sm text-[18px] text-on-surface font-serif leading-snug">Ustad Imtiaz Qureshi Lineage</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Preserving 170-year-old Dum Pukht manuscripts.</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Sticky Instant Confirmation & Razorpay Escrow Booking Bar -->
+<aside class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-2xl border-t border-outline-variant shadow-[0_-8px_30px_rgba(0,0,0,0.06)] py-space-md">
+<div class="max-w-7xl mx-auto px-gutter flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<!-- Selection Summary Cluster -->
+<div class="flex flex-wrap items-center gap-x-space-lg gap-y-2 w-full sm:w-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-amber-100 border border-amber-200 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">restaurant_menu</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-[11px] text-on-surface-variant uppercase tracking-wider font-semibold">Selected Privé Privilege</span>
+<div class="flex items-center gap-2">
+<span class="font-title-md text-title-md text-on-surface font-semibold" id="summaryDealTitle">20% OFF Total Food Bill</span>
+<span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300/70 font-label-mono-sm text-[10px] font-bold" id="summarySocialBadge">
+                + Social Table
+              </span>
+</div>
+</div>
+</div>
+<div class="hidden md:flex items-center gap-6">
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-[11px] text-on-surface-variant uppercase tracking-wider font-semibold">Arrival Time</span>
+<span class="font-label-mono-lg text-label-mono-lg text-primary font-bold" id="summarySlotTime">20:00 - 22:00 IST</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-[11px] text-on-surface-variant uppercase tracking-wider font-semibold">Refundable Cover Deposit</span>
+<div class="flex items-baseline gap-1">
+<span class="font-label-mono-lg text-label-mono-lg text-on-surface font-bold" id="summaryDepositAmount">₹1,000</span>
+<span class="font-body-sm text-[11px] text-tertiary font-medium">(100% adjusted in bill)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Escrow CTA & Trust Badges -->
+<div class="flex items-center gap-space-md w-full sm:w-auto justify-end">
+<div class="hidden xl:flex flex-col items-end text-right">
+<div class="flex items-center gap-1.5 font-label-mono-sm text-[11px] text-tertiary font-bold">
+<span class="material-symbols-outlined text-[15px]">verified_user</span>
+<span>Razorpay Escrow Vault Protected</span>
+</div>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Instant 1-click refund if cancelled 2h prior</span>
+</div>
+<button class="w-full sm:w-auto flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-title-md text-[16px] font-bold tracking-wide transition-all shadow-[0_4px_16px_rgba(197,154,39,0.35)] hover:shadow-[0_6px_22px_rgba(197,154,39,0.45)] hover:brightness-105 flex-shrink-0" id="reserveEscrowBtn" type="button">
+<span class="material-symbols-outlined text-[20px]">shield_with_heart</span>
+<span>Reserve Table via Escrow</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Guest Selection Interactive Dropdown Modal -->
+<div class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" id="guestModal">
+<div class="w-full max-w-sm bg-white border border-outline-variant rounded-2xl p-space-lg shadow-2xl flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/60">
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-serif">Select Connoisseurs</h4>
+<button class="text-on-surface-variant hover:text-on-surface" id="closeGuestModal" type="button">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-space-sm" id="guestOptionList">
+<button class="py-3 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary font-body-md text-on-surface transition-colors" data-guests="1" type="button">1 Connoisseur</button>
+<button class="py-3 rounded-lg bg-primary text-white font-body-md font-bold transition-colors shadow-xs" data-guests="2" type="button">2 Connoisseurs</button>
+<button class="py-3 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary font-body-md text-on-surface transition-colors" data-guests="3" type="button">3 Connoisseurs</button>
+<button class="py-3 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary font-body-md text-on-surface transition-colors" data-guests="4" type="button">4 Connoisseurs</button>
+<button class="py-3 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary font-body-md text-on-surface transition-colors" data-guests="5" type="button">5 Connoisseurs</button>
+<button class="py-3 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary font-body-md text-on-surface transition-colors" data-guests="6" type="button">6 (Syndicate)</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-center">For parties larger than 6, connect with Sovereign Royal Concierge.</p>
+</div>
+</div>
+</div>
+<script>
+  (function initDiningSanctuary() {
+    // State Store
+    let selectedDeal = "20% OFF Total Food Bill";
+    let selectedDeposit = 1000;
+    let selectedTimeSlot = "20:00 - 22:00 IST";
+    let isSocialTableActive = true;
+    let guestCount = 2;
+
+    // Elements
+    const dealCards = document.querySelectorAll('.deal-card');
+    const timeSlotBtns = document.querySelectorAll('.time-slot-btn');
+    const socialToggle = document.getElementById('socialTableToggle');
+    const toggleStatusLabel = document.getElementById('toggleStatusLabel');
+    const summaryDealTitle = document.getElementById('summaryDealTitle');
+    const summarySocialBadge = document.getElementById('summarySocialBadge');
+    const summarySlotTime = document.getElementById('summarySlotTime');
+    const summaryDepositAmount = document.getElementById('summaryDepositAmount');
+    const reserveEscrowBtn = document.getElementById('reserveEscrowBtn');
+    
+    // Guest Modal Elements
+    const guestSelectorBtn = document.getElementById('guestSelectorBtn');
+    const guestModal = document.getElementById('guestModal');
+    const closeGuestModal = document.getElementById('closeGuestModal');
+    const selectedGuestsText = document.getElementById('selectedGuestsText');
+    const guestOptionBtns = document.querySelectorAll('#guestOptionList button');
+
+    // Handle Deal Card Selection
+    dealCards.forEach(card => {
+      card.addEventListener('click', () => {
+        dealCards.forEach(c => {
+          c.classList.remove('active-deal', 'border-2', 'border-primary/60', 'shadow-md');
+          c.classList.add('border', 'border-outline-variant', 'shadow-sm');
+          const badge = c.querySelector('.deal-check-icon');
+          if (badge) {
+            badge.className = "deal-check-icon w-6 h-6 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant flex items-center justify-center";
+            badge.innerHTML = '<span class="material-symbols-outlined text-[16px]">add</span>';
+          }
+        });
+
+        card.classList.add('active-deal', 'border-2', 'border-primary/60', 'shadow-md');
+        card.classList.remove('border-outline-variant', 'shadow-sm');
+        const activeBadge = card.querySelector('.deal-check-icon');
+        if (activeBadge) {
+          activeBadge.className = "deal-check-icon w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center shadow-xs";
+          activeBadge.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span>';
+        }
+
+        selectedDeal = card.getAttribute('data-deal-title');
+        selectedDeposit = parseInt(card.getAttribute('data-deposit') || '1000', 10);
+        updateSummary();
+      });
+    });
+
+    // Handle Slot Selection
+    timeSlotBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        timeSlotBtns.forEach(b => {
+          b.className = "time-slot-btn py-3 px-4 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary/50 hover:bg-white transition-all flex flex-col items-center gap-1 shadow-xs";
+          const subText = b.querySelector('span:last-child');
+          if (subText) subText.className = "font-label-mono-sm text-[11px] text-on-surface-variant";
+        });
+
+        btn.className = "time-slot-btn active-slot py-3 px-4 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 text-white shadow-md flex flex-col items-center gap-1 transition-all border border-amber-600/40";
+        const sub = btn.querySelector('span:last-child');
+        if (sub) sub.className = "font-label-mono-sm text-[11px] font-bold uppercase tracking-wider text-amber-100";
+
+        selectedTimeSlot = btn.getAttribute('data-slot') + " IST";
+        updateSummary();
+      });
+    });
+
+    // Handle Social Table Toggle
+    if (socialToggle) {
+      socialToggle.addEventListener('change', (e) => {
+        isSocialTableActive = e.target.checked;
+        if (isSocialTableActive) {
+          toggleStatusLabel.textContent = "Active • Joined Tonight's 6-Person Table";
+          toggleStatusLabel.className = "font-body-sm text-[12px] text-tertiary font-semibold";
+          summarySocialBadge.classList.remove('hidden');
+        } else {
+          toggleStatusLabel.textContent = "Disabled • Private Dining Enclave Only";
+          toggleStatusLabel.className = "font-body-sm text-[12px] text-on-surface-variant font-medium";
+          summarySocialBadge.classList.add('hidden');
+        }
+      });
+    }
+
+    // Guest Picker Flyout
+    if (guestSelectorBtn && guestModal && closeGuestModal) {
+      guestSelectorBtn.addEventListener('click', () => {
+        guestModal.classList.remove('hidden');
+      });
+
+      closeGuestModal.addEventListener('click', () => {
+        guestModal.classList.add('hidden');
+      });
+
+      guestOptionBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          guestCount = btn.getAttribute('data-guests');
+          selectedGuestsText.textContent = guestCount + (guestCount === '1' ? ' Connoisseur' : ' Connoisseurs');
+          
+          guestOptionBtns.forEach(b => {
+            b.className = "py-3 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary font-body-md text-on-surface transition-colors";
+          });
+          btn.className = "py-3 rounded-lg bg-primary text-white font-body-md font-bold transition-colors shadow-xs";
+          
+          guestModal.classList.add('hidden');
+        });
+      });
+    }
+
+    // Update Summary Bar Values
+    function updateSummary() {
+      if (summaryDealTitle) summaryDealTitle.textContent = selectedDeal;
+      if (summarySlotTime) summarySlotTime.textContent = selectedTimeSlot;
+      if (summaryDepositAmount) summaryDepositAmount.textContent = "₹" + selectedDeposit.toLocaleString('en-IN');
+    }
+
+    // Reserve Escrow Action Feedback
+    if (reserveEscrowBtn) {
+      reserveEscrowBtn.addEventListener('click', () => {
+        const originalText = reserveEscrowBtn.innerHTML;
+        reserveEscrowBtn.innerHTML = `
+          <span class="material-symbols-outlined text-[20px] animate-spin">sync</span>
+          <span>Connecting to Razorpay Vault...</span>
+        `;
+        reserveEscrowBtn.disabled = true;
+
+        setTimeout(() => {
+          reserveEscrowBtn.innerHTML = `
+            <span class="material-symbols-outlined text-[20px] text-white">check_circle</span>
+            <span>Reserved &bull; Escrow Dispatched</span>
+          `;
+          reserveEscrowBtn.classList.remove('from-amber-500', 'to-amber-600');
+          reserveEscrowBtn.classList.add('bg-emerald-700', 'text-white');
+        }, 1200);
+      });
+    }
+  })();
+</script></main><footer class="w-full bg-white border-t border-outline-variant pt-space-xl pb-space-lg mt-auto shadow-xs"><div class="max-w-7xl mx-auto px-gutter"><div class="grid grid-cols-1 md:grid-cols-12 gap-space-xl pb-space-xl border-b border-outline-variant"><div class="md:col-span-5 flex flex-col gap-space-md"><div class="flex items-center gap-space-sm"><img alt="Dastan Royal Palace Emblem" class="h-9 w-auto object-contain rounded-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf9Oy9ObhtOEEVfR3-6BTBcbFSGlVksGgUx2paUkGgwY_LXybDzIqyF5hRa7z0BX8yKDODUFJwvlRsum6iF24d7M3aeKPfoHzxyCiWLNrXhmcVIZBXgNUivlo8B50lkbuEqbicuDm80nlDzqewIxSCtkr1N7nu5iqgWCcXDt8WWm_x-N4GzzxvVi7yP9aSoZ99G84Q68YdDbF9A4Q7G4IuLCb3h5mHP7EaHaVxYB4QYHOSGHEpjSYJepnCsLnRjmqlydE"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm tracking-wider text-primary font-bold leading-none">DASTAN</span><span class="font-label-mono-sm text-[9px] text-on-surface-variant tracking-[0.2em] uppercase leading-tight font-semibold">Experiences</span></div></div><p class="font-display-lg text-headline-sm text-on-surface italic font-normal leading-relaxed max-w-md">“Every Event Has a Story.”</p><p class="font-body-md text-body-md text-on-surface-variant leading-relaxed max-w-md">Preserving timeless gatherings and modern camaraderie across India's imperial cities—from candlelit havelis to exclusive subterranean salons.</p><div class="flex items-center gap-2 pt-space-xs"><span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span><span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant tracking-wider uppercase font-semibold">Concierge Dispatch Active • 24/7</span></div></div><div class="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-space-lg"><div class="flex flex-col gap-space-sm"><span class="font-label-mono-lg text-label-mono-lg text-primary tracking-wider uppercase font-bold">Sovereign Guilds</span><ul class="flex flex-col gap-2 font-body-sm text-body-sm text-on-surface-variant"><li class="hover:text-primary transition-colors cursor-pointer">Curated Guilds</li><li class="hover:text-primary transition-colors cursor-pointer">The Royal Repast</li><li class="hover:text-primary transition-colors cursor-pointer">Private Soirées</li><li class="hover:text-primary transition-colors cursor-pointer">Cultural Salons</li></ul></div><div class="flex flex-col gap-space-sm"><span class="font-label-mono-lg text-label-mono-lg text-primary tracking-wider uppercase font-bold">Privilege &amp; Trust</span><ul class="flex flex-col gap-2 font-body-sm text-body-sm text-on-surface-variant"><li class="hover:text-primary transition-colors cursor-pointer">Patron Privilege Pass</li><li class="hover:text-primary transition-colors cursor-pointer">Razorpay Escrow Guarantee</li><li class="hover:text-primary transition-colors cursor-pointer">Provenance Authentication</li><li class="hover:text-primary transition-colors cursor-pointer">Member Charter</li></ul></div><div class="flex flex-col gap-space-sm col-span-2 sm:col-span-1"><span class="font-label-mono-lg text-label-mono-lg text-primary tracking-wider uppercase font-bold">Concierge</span><ul class="flex flex-col gap-2 font-body-sm text-body-sm text-on-surface-variant"><li class="hover:text-primary transition-colors cursor-pointer">Concierge Support</li><li class="hover:text-primary transition-colors cursor-pointer">WhatsApp VIP Line</li><li class="hover:text-primary transition-colors cursor-pointer">Bespoke Itineraries</li><li class="hover:text-primary transition-colors cursor-pointer">Dispute Arbitration</li></ul></div></div></div><div class="pt-space-lg flex flex-col sm:flex-row items-center justify-between gap-space-md"><div class="flex items-center gap-space-sm font-label-mono-sm text-label-mono-sm text-outline font-medium"><span class="text-primary font-semibold">© 2025 DASTAN EXPERIENCES PVT. LTD.</span><span>•</span><span>MUMBAI • DELHI-NCR • JAIPUR • BENGALURU • HYDERABAD</span></div><div class="flex items-center gap-space-md font-body-sm text-body-sm text-on-surface-variant"><span class="hover:text-on-surface transition-colors cursor-pointer">Privacy Codex</span><span class="hover:text-on-surface transition-colors cursor-pointer">Terms of Royal Access</span><span class="hover:text-on-surface transition-colors cursor-pointer">Escrow Protocol</span></div></div></div></footer></body></html>

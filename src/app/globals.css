@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: #fdfbf7;
+    --foreground: #18181b;
+    --card: #ffffff;
+    --card-foreground: #18181b;
+    --primary: #775a00;
+    --primary-container: #c59a27;
+    --primary-foreground: #ffffff;
+    --secondary: #4f5e81;
+    --secondary-container: #c5d4fd;
+    --accent: #e11d48;
+    --success: #15803d;
+    --muted: #f5f3ef;
+    --muted-foreground: #71717a;
+    --border: #e6dfd5;
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(at 15% 10%, rgba(197, 154, 39, 0.08) 0px, transparent 55%),
+    radial-gradient(at 85% 15%, rgba(79, 94, 129, 0.06) 0px, transparent 55%),
+    radial-gradient(at 50% 80%, rgba(201, 151, 69, 0.06) 0px, transparent 60%);
+  background-attachment: fixed;
+}
+
+/* Typography Utility Classes from Stitch */
+.font-display-lg {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+.font-headline-lg {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+.font-headline-md {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+.font-headline-sm {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+.font-title-md {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+.font-title-lg {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+.font-body-lg {
+  font-family: 'Manrope', sans-serif;
+}
+.font-body-md {
+  font-family: 'Manrope', sans-serif;
+}
+.font-body-sm {
+  font-family: 'Manrope', sans-serif;
+}
+.font-label-mono-sm {
+  font-family: 'JetBrains Mono', monospace;
+}
+.font-label-mono-lg {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Material Symbols Outlined helper */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Stitch Ivory & Champagne Gold Surface Panels */
+.luxury-header {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid #E6DFD5;
+  box-shadow: 0 4px 20px rgba(119, 90, 0, 0.05);
+}
+
+.luxury-card {
+  background: #ffffff;
+  border: 1px solid #e6dfd5;
+  box-shadow: 0 4px 24px rgba(119, 90, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.luxury-card:hover {
+  border-color: rgba(197, 154, 39, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(119, 90, 0, 0.12);
+}
+
+.luxury-pill {
+  background: #ffffff;
+  border: 1px solid #e6dfd5;
+  transition: all 0.2s ease;
+}
+
+.luxury-pill:hover {
+  border-color: #c59a27;
+  color: #775a00;
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #775a00 0%, #c59a27 50%, #604100 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-button {
+  background: linear-gradient(135deg, #c59a27 0%, #b8860b 50%, #775a00 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(119, 90, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.gold-button:hover {
+  box-shadow: 0 6px 22px rgba(119, 90, 0, 0.32);
+  transform: translateY(-1px);
+}
+
+/* Custom modern scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fbf9f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1c5af;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #807663;
+}
