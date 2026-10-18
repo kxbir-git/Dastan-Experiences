@@ -1,6 +1,19 @@
 -- Migration: 002_seed_data.sql
 -- Seed Data for Dastan Experiences (Storytelling • Culture • Luxury)
 
+-- Ensure any optional/extended columns exist smoothly
+ALTER TABLE events ADD COLUMN IF NOT EXISTS category_label TEXT;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS starting_price NUMERIC(10,2) DEFAULT 0;
+ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS banner_url TEXT;
+ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS review_count INTEGER DEFAULT 0;
+ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS discount_pct INTEGER DEFAULT 0;
+ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS average_cost_for_two NUMERIC(10,2) DEFAULT 1000;
+ALTER TABLE restaurants ALTER COLUMN description DROP NOT NULL;
+ALTER TABLE restaurants ALTER COLUMN images DROP NOT NULL;
+ALTER TABLE restaurant_offers ALTER COLUMN description DROP NOT NULL;
+ALTER TABLE restaurant_offers ALTER COLUMN valid_from DROP NOT NULL;
+ALTER TABLE restaurant_offers ALTER COLUMN valid_to DROP NOT NULL;
+
 -- 1. Seed Admin Settings
 INSERT INTO admin_settings (key, value, updated_at)
 VALUES
@@ -21,7 +34,7 @@ VALUES
         'rohan.sharma@example.com',
         '+91 98201 98201',
         'Mumbai',
-        'Storytelling enthusiast, vinyl collector, and craft cocktail aficionado exploring luxury dining in Mumbai.',
+        'Storytelling enthusiast, vinyl collector, and craft cocktail aficionado exploring luxury dining.',
         ARRAY['Storytelling', 'Culture & Arts', 'Jazz & Blues', 'Luxury Dining', 'Culinary Fests'],
         TRUE
     ),
@@ -33,7 +46,7 @@ VALUES
         'ananya@indigoexperiences.in',
         '+91 98450 44321',
         'Mumbai',
-        'Curating intimate rooftop jazz soirees, Persian poetry storytelling, and cultural experiences in Mumbai.',
+        'Curating intimate rooftop jazz soirees, Persian poetry storytelling, and cultural experiences.',
         ARRAY['Cultural Curation', 'Heritage Dining', 'Live Jazz'],
         FALSE
     ),
