@@ -126,6 +126,10 @@ export function Navbar() {
     { label: 'Live Events', href: '/events' },
     { label: 'Dining Deals', href: '/dining' },
     { label: 'Social Table', href: '/#social-experience' },
+    { label: 'About', href: '/about' },
+  ];
+
+  const portalLinks = [
     { label: 'Vendor Portal', href: '/vendor' },
     { label: 'Admin Hub', href: '/admin' },
   ];
@@ -484,7 +488,7 @@ export function Navbar() {
           {/* Navigation Links */}
           <div className="space-y-1">
             <div className="font-label-mono-sm text-[10px] font-bold text-[#807663] px-3 py-1 uppercase tracking-wider">
-              Navigation
+              Experiences
             </div>
             {navLinks.map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
@@ -497,6 +501,30 @@ export function Navbar() {
                     isActive
                       ? 'bg-[#ffdf9a]/40 text-[#775a00] font-bold'
                       : 'text-[#18181b] hover:bg-[#f5f3ef]'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Portals */}
+          <div className="space-y-1 pt-2 border-t border-[#E6DFD5]">
+            <div className="font-label-mono-sm text-[10px] font-bold text-[#807663] px-3 py-1 uppercase tracking-wider">
+              Host &amp; Admin Portals
+            </div>
+            {portalLinks.map((link) => {
+              const isActive = pathname === link.href || pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setIsMobileOpen(false)}
+                  className={`block px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
+                    isActive
+                      ? 'bg-[#ffdf9a]/40 text-[#775a00] font-bold'
+                      : 'text-[#4e4635] hover:bg-[#f5f3ef]'
                   }`}
                 >
                   {link.label}
