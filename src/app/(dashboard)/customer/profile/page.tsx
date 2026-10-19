@@ -15,7 +15,7 @@ import {
   Info,
 } from 'lucide-react';
 import { store } from '@/lib/store';
-import { SUPPORTED_CITIES } from '@/lib/mock-data';
+import { CitySelect } from '@/components/ui/city-select';
 
 const INTEREST_OPTIONS = [
   'Live Jazz', 'Standup Comedy', 'Craft Beer', 'Wine Tasting',
@@ -120,18 +120,14 @@ export default function CustomerProfilePage() {
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">
-              <MapPin className="w-3.5 h-3.5 inline mr-1 text-amber-400" /> City
-            </label>
-            <select
+            <CitySelect
               value={city}
-              onChange={(e) => setCity(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500/50 transition-colors"
-            >
-              {SUPPORTED_CITIES.map((c) => (
-                <option key={c} value={c} className="bg-slate-900">{c}</option>
-              ))}
-            </select>
+              onChange={(newCity) => setCity(newCity)}
+              label="City (India)"
+              placeholder="Search or select your city in India..."
+              allowAllCities={false}
+              dark={true}
+            />
           </div>
 
           <div>

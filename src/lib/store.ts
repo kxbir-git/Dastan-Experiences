@@ -74,7 +74,11 @@ class AzaadDataStore {
   // Events
   getEvents(city?: string, category?: string): EventListing[] {
     return this.events.filter((evt) => {
-      const matchCity = !city || city === 'All' || evt.city.toLowerCase() === city.toLowerCase();
+      const matchCity =
+        !city ||
+        city === 'All' ||
+        city.toLowerCase().startsWith('all') ||
+        evt.city.toLowerCase() === city.toLowerCase();
       const matchCat = !category || category === 'All' || evt.category === category;
       return matchCity && matchCat && evt.status === 'published';
     });
@@ -150,7 +154,11 @@ class AzaadDataStore {
   // Restaurants
   getRestaurants(city?: string, cuisine?: string): Restaurant[] {
     return this.restaurants.filter((rest) => {
-      const matchCity = !city || city === 'All' || rest.city.toLowerCase() === city.toLowerCase();
+      const matchCity =
+        !city ||
+        city === 'All' ||
+        city.toLowerCase().startsWith('all') ||
+        rest.city.toLowerCase() === city.toLowerCase();
       const matchCuisine = !cuisine || cuisine === 'All' || rest.cuisineTypes.some((c) => c.toLowerCase().includes(cuisine.toLowerCase()));
       return matchCity && matchCuisine && rest.status === 'published';
     });

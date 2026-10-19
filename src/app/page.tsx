@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { store } from '@/lib/store';
 import { EventCard } from '@/components/events/event-card';
 import { RestaurantCard } from '@/components/dining/restaurant-card';
-import { SUPPORTED_CITIES } from '@/lib/mock-data';
+import { CitySelect } from '@/components/ui/city-select';
 
 export default function HomePage() {
   const [selectedCity, setSelectedCity] = useState<string>('All');
@@ -17,7 +17,11 @@ export default function HomePage() {
 
   // Filter events
   const filteredEvents = allEvents.filter((evt) => {
-    const matchCity = selectedCity === 'All' || evt.city === selectedCity;
+    const matchCity =
+      !selectedCity ||
+      selectedCity === 'All' ||
+      selectedCity.toLowerCase().startsWith('all') ||
+      evt.city.toLowerCase() === selectedCity.toLowerCase();
     const matchCategory =
       activeCategory === 'All' || evt.category === activeCategory;
     const matchSearch =
@@ -30,7 +34,11 @@ export default function HomePage() {
 
   // Filter restaurants
   const filteredRestaurants = allRestaurants.filter((rest) => {
-    const matchCity = selectedCity === 'All' || rest.city === selectedCity;
+    const matchCity =
+      !selectedCity ||
+      selectedCity === 'All' ||
+      selectedCity.toLowerCase().startsWith('all') ||
+      rest.city.toLowerCase() === selectedCity.toLowerCase();
     const matchSearch =
       !searchQuery ||
       rest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -108,18 +116,13 @@ export default function HomePage() {
                 <span className="material-symbols-outlined text-[14px] text-[#775a00]">location_on</span>
                 Enclave City
               </label>
-              <select
+              <CitySelect
                 value={selectedCity}
-                onChange={(e) => setSelectedCity(e.target.value)}
-                className="bg-transparent font-title-md text-sm font-semibold text-[#18181B] focus:outline-none w-full cursor-pointer appearance-none"
-              >
-                <option value="All">All Indian Enclaves</option>
-                {SUPPORTED_CITIES.map((city) => (
-                  <option key={city} value={city}>
-                    {city}
-                  </option>
-                ))}
-              </select>
+                onChange={(city) => setSelectedCity(city)}
+                placeholder="Search any Indian city..."
+                allowAllCities={true}
+                compact={true}
+              />
             </div>
 
             {/* CTA Button */}

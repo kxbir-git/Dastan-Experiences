@@ -3,7 +3,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { ALL_INDIAN_CITIES, POPULAR_INDIAN_CITIES } from '@/lib/indian-cities';
+import {
+  ALL_INDIAN_CITIES,
+  POPULAR_INDIAN_CITIES,
+  filterIndianCities,
+} from '@/lib/indian-cities';
 import { store } from '@/lib/store';
 import { UserRole } from '@/types';
 
@@ -167,42 +171,84 @@ export function Navbar() {
             </button>
 
             {isCityOpen && (
-              <div className="absolute left-0 mt-2 w-64 rounded-2xl bg-white shadow-2xl p-2 z-50 border border-[#E6DFD5] max-h-80 flex flex-col">
+              <div className="absolute left-0 mt-2 w-72 rounded-2xl bg-white shadow-2xl p-2 z-50 border border-[#E6DFD5] max-h-80 flex flex-col">
                 <div className="p-1.5 border-b border-[#E6DFD5] mb-1">
                   <input
                     type="text"
                     value={citySearch}
                     onChange={(e) => setCitySearch(e.target.value)}
-                    placeholder="Search Indian cities..."
+                    placeholder="Type any Indian city or state..."
                     className="w-full bg-[#FAF7F2] border border-[#E6DFD5] focus:border-[#775a00] rounded-lg px-2.5 py-1.5 text-xs text-[#18181B] placeholder-[#807663] focus:outline-none transition-colors"
                     autoFocus
                   />
                 </div>
-                <div className="font-label-mono-sm text-[10px] font-bold text-[#807663] px-3 py-1 uppercase tracking-wider">
-                  {citySearch ? 'Matching Cities' : 'Popular Cities'}
-                </div>
-                <div className="overflow-y-auto flex-1 space-y-0.5 max-h-52">
-                  {(citySearch
-                    ? ALL_INDIAN_CITIES.filter((c) =>
-                        c.toLowerCase().includes(citySearch.toLowerCase())
-                      )
-                    : (POPULAR_INDIAN_CITIES as readonly string[])
-                  ).map((city) => (
+
+                <div className="overflow-y-auto flex-1 space-y-0.5 max-h-56">
+                  {/* Option for custom typed city */}
+                  {citySearch.trim().length > 1 && (
                     <button
-                      key={city}
-                      onClick={() => handleCitySelect(city)}
-                      className={`w-full text-left px-3 py-1.5 text-xs rounded-xl flex items-center justify-between transition-colors cursor-pointer ${
-                        selectedCity === city
+                      type="button"
+                      onClick={() => handleCitySelect(citySearch.trim())}
+                      className="w-full text-left px-3 py-1.5 text-xs rounded-xl flex items-center justify-between bg-[#ffdf9a]/30 text-[#775a00] hover:bg-[#ffdf9a]/50 transition-colors mb-1 font-semibold cursor-pointer"
+                    >
+                      <span>Use &quot;{citySearch.trim()}&quot;</span>
+                      <span className="text-[10px] uppercase opacity-75">Custom</span>
+                    </button>
+                  )}
+
+                  {/* All Cities Option: Visible when empty or when user types all/india/pan */}
+                  {(!citySearch ||
+                    /all|india|pan|every|any|nation|sab|bharat|desh/i.test(citySearch)) && (
+                    <button
+                      type="button"
+                      onClick={() => handleCitySelect('All')}
+                      className={`w-full text-left px-3 py-1.5 text-xs rounded-xl flex items-center justify-between transition-colors cursor-pointer mb-1 ${
+                        selectedCity === 'All'
                           ? 'bg-[#ffdf9a]/40 text-[#775a00] font-bold'
                           : 'text-[#18181b] hover:bg-[#f5f3ef]'
                       }`}
                     >
-                      <span>{city}</span>
-                      {selectedCity === city && (
+                      <span className="font-semibold">All Indian Cities (Pan-India)</span>
+                      {selectedCity === 'All' && (
                         <span className="w-1.5 h-1.5 rounded-full bg-[#775a00]" />
                       )}
                     </button>
-                  ))}
+                  )}
+
+                  <div className="font-label-mono-sm text-[10px] font-bold text-[#807663] px-3 py-1 uppercase tracking-wider">
+                    {citySearch ? 'Matching Indian Cities' : 'Popular Cultural Hubs'}
+                  </div>
+
+                  {(citySearch
+                    ? filterIndianCities(citySearch)
+                    : POPULAR_INDIAN_CITIES.map((c) => ({ name: c, state: 'India' }))
+                  ).map((item) => {
+                    const cityName = typeof item === 'string' ? item : item.name;
+                    const stateName = typeof item === 'string' ? '' : item.state;
+                    return (
+                      <button
+                        key={`${cityName}-${stateName}`}
+                        onClick={() => handleCitySelect(cityName)}
+                        className={`w-full text-left px-3 py-1.5 text-xs rounded-xl flex items-center justify-between transition-colors cursor-pointer ${
+                          selectedCity === cityName
+                            ? 'bg-[#ffdf9a]/40 text-[#775a00] font-bold'
+                            : 'text-[#18181b] hover:bg-[#f5f3ef]'
+                        }`}
+                      >
+                        <div className="flex items-center gap-1.5 truncate">
+                          <span>{cityName}</span>
+                          {stateName && stateName !== 'India' && (
+                            <span className="text-[9px] text-[#807663] bg-[#FAF7F2] px-1 rounded border border-[#E6DFD5]">
+                              {stateName}
+                            </span>
+                          )}
+                        </div>
+                        {selectedCity === cityName && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#775a00] shrink-0" />
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -380,28 +426,56 @@ export function Navbar() {
                   type="text"
                   value={citySearch}
                   onChange={(e) => setCitySearch(e.target.value)}
-                  placeholder="Search cities..."
+                  placeholder="Type any Indian city or state..."
                   className="w-full bg-white border border-[#E6DFD5] focus:border-[#775a00] rounded-lg px-2.5 py-1.5 text-xs text-[#18181B] placeholder-[#807663] focus:outline-none"
                 />
-                <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto pt-1">
-                  {(citySearch
-                    ? ALL_INDIAN_CITIES.filter((c) =>
-                        c.toLowerCase().includes(citySearch.toLowerCase())
-                      )
-                    : (POPULAR_INDIAN_CITIES as readonly string[])
-                  ).map((city) => (
+
+                {citySearch.trim().length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => handleCitySelect(citySearch.trim())}
+                    className="w-full text-left px-2.5 py-1.5 text-xs rounded-lg bg-[#ffdf9a]/40 text-[#775a00] font-semibold flex items-center justify-between"
+                  >
+                    <span>Use &quot;{citySearch.trim()}&quot;</span>
+                    <span className="text-[10px] uppercase opacity-75">Custom</span>
+                  </button>
+                )}
+
+                <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto pt-1">
+                  {(!citySearch ||
+                    /all|india|pan|every|any|nation|sab|bharat|desh/i.test(citySearch)) && (
                     <button
-                      key={city}
-                      onClick={() => handleCitySelect(city)}
+                      type="button"
+                      onClick={() => handleCitySelect('All')}
                       className={`px-2.5 py-1 text-xs rounded-lg transition-colors cursor-pointer ${
-                        selectedCity === city
+                        selectedCity === 'All'
                           ? 'bg-[#775a00] text-white font-bold'
                           : 'bg-white border border-[#E6DFD5] text-[#18181B] hover:bg-[#f5f3ef]'
                       }`}
                     >
-                      {city}
+                      All Indian Cities
                     </button>
-                  ))}
+                  )}
+
+                  {(citySearch
+                    ? filterIndianCities(citySearch)
+                    : POPULAR_INDIAN_CITIES.map((c) => ({ name: c, state: 'India' }))
+                  ).map((item) => {
+                    const cityName = typeof item === 'string' ? item : item.name;
+                    return (
+                      <button
+                        key={cityName}
+                        onClick={() => handleCitySelect(cityName)}
+                        className={`px-2.5 py-1 text-xs rounded-lg transition-colors cursor-pointer ${
+                          selectedCity === cityName
+                            ? 'bg-[#775a00] text-white font-bold'
+                            : 'bg-white border border-[#E6DFD5] text-[#18181B] hover:bg-[#f5f3ef]'
+                        }`}
+                      >
+                        {cityName}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}

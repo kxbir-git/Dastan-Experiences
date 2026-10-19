@@ -21,6 +21,7 @@ import {
   Calendar,
 } from 'lucide-react';
 import { SUPPORTED_CITIES } from '@/lib/mock-data';
+import { CitySelect } from '@/components/ui/city-select';
 
 const CUISINE_OPTIONS = [
   'Modern Indian',
@@ -233,16 +234,14 @@ export default function NewRestaurantPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-400 mb-1.5">City *</label>
-              <select
+              <CitySelect
                 value={city}
-                onChange={(e) => setCity(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500/50 transition-colors"
-              >
-                {SUPPORTED_CITIES.map((c) => (
-                  <option key={c} value={c} className="bg-slate-900">{c}</option>
-                ))}
-              </select>
+                onChange={(c) => setCity(c)}
+                label="City *"
+                placeholder="Type city (e.g. Pune, Jaipur)..."
+                allowAllCities={false}
+                dark={true}
+              />
             </div>
           </div>
 

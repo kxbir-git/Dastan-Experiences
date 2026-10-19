@@ -17,6 +17,7 @@ import {
 import { store } from '@/lib/store';
 import { formatINR } from '@/lib/utils';
 import { DEMO_USERS } from '@/lib/mock-data';
+import { CitySelect } from '@/components/ui/city-select';
 
 export default function VendorDashboardPage() {
   const vendorUser = DEMO_USERS.vendor;
@@ -314,20 +315,16 @@ export default function VendorDashboardPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-slate-400 block mb-1 font-medium">City</label>
-                  <select
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="relative">
+                  <CitySelect
                     value={newCity}
-                    onChange={(e) => setNewCity(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white"
-                  >
-                    <option value="Mumbai">Mumbai</option>
-                    <option value="Delhi-NCR">Delhi-NCR</option>
-                    <option value="Bengaluru">Bengaluru</option>
-                    <option value="Pune">Pune</option>
-                    <option value="Goa">Goa</option>
-                  </select>
+                    onChange={(city) => setNewCity(city)}
+                    label="City *"
+                    placeholder="Type city (e.g. Pune, Jaipur)..."
+                    allowAllCities={false}
+                    dark={true}
+                  />
                 </div>
 
                 <div>
@@ -335,7 +332,7 @@ export default function VendorDashboardPage() {
                   <select
                     value={newCategory}
                     onChange={(e) => setNewCategory(e.target.value as any)}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white"
+                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-amber-500"
                   >
                     <option value="live_music">Live Music</option>
                     <option value="standup_comedy">Standup Comedy</option>

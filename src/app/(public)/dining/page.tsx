@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { store } from '@/lib/store';
 import { RestaurantCard } from '@/components/dining/restaurant-card';
-import { SUPPORTED_CITIES } from '@/lib/mock-data';
+import { CitySelect } from '@/components/ui/city-select';
 
 export default function DiningListingPage() {
   const [selectedCity, setSelectedCity] = useState<string>('All');
@@ -22,7 +22,11 @@ export default function DiningListingPage() {
   ];
 
   const filtered = allRestaurants.filter((rest) => {
-    const matchCity = selectedCity === 'All' || rest.city === selectedCity;
+    const matchCity =
+      !selectedCity ||
+      selectedCity === 'All' ||
+      selectedCity.toLowerCase().startsWith('all') ||
+      rest.city.toLowerCase() === selectedCity.toLowerCase();
     const matchCuisine =
       selectedCuisine === 'All' ||
       rest.cuisineTypes.some((c) =>
@@ -72,18 +76,12 @@ export default function DiningListingPage() {
 
           {/* City */}
           <div className="relative">
-            <select
+            <CitySelect
               value={selectedCity}
-              onChange={(e) => setSelectedCity(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] border border-[#E6DFD5] text-[#18181B] text-xs font-body-md font-semibold focus:outline-none focus:border-[#775a00]"
-            >
-              <option value="All">All Enclave Cities</option>
-              {SUPPORTED_CITIES.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
+              onChange={(city) => setSelectedCity(city)}
+              placeholder="All Enclave Cities"
+              allowAllCities={true}
+            />
           </div>
 
           {/* Cuisine */}
