@@ -13,7 +13,7 @@ export default function SignupPage() {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [city, setCity] = useState('Mumbai');
+  const [city, setCity] = useState('Lucknow');
   const [role, setRole] = useState<'customer' | 'vendor'>('customer');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -79,11 +79,10 @@ export default function SignupPage() {
             <button
               type="button"
               onClick={() => setRole('customer')}
-              className={`py-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${
-                role === 'customer'
+              className={`py-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${role === 'customer'
                   ? 'bg-gradient-to-r from-[#c59a27] to-[#775a00] text-white shadow-sm'
                   : 'text-[#4e4635] hover:text-[#18181B]'
-              }`}
+                }`}
             >
               <User className="w-3.5 h-3.5" />
               <span>Guest Member</span>
@@ -91,11 +90,10 @@ export default function SignupPage() {
             <button
               type="button"
               onClick={() => setRole('vendor')}
-              className={`py-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${
-                role === 'vendor'
+              className={`py-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${role === 'vendor'
                   ? 'bg-gradient-to-r from-[#c59a27] to-[#775a00] text-white shadow-sm'
                   : 'text-[#4e4635] hover:text-[#18181B]'
-              }`}
+                }`}
             >
               <Store className="w-3.5 h-3.5" />
               <span>Event/Venue Host</span>

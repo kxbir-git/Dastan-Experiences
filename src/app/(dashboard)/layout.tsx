@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -22,8 +22,12 @@ import {
   Tag,
   Menu,
   X,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { store } from '@/lib/store';
+
+import { useRouter } from 'next/navigation';
+import { isAdminUnlocked, lockAdmin } from '@/lib/admin-auth';
 
 const NAV_ITEMS = {
   customer: [
@@ -44,6 +48,7 @@ const NAV_ITEMS = {
   ],
   admin: [
     { href: '/admin', icon: TrendingUp, label: 'Revenue Dashboard' },
+    { href: '/admin/sponsors', icon: ImageIcon, label: 'Sponsors & Ad Banners' },
     { href: '/admin/payouts', icon: Receipt, label: 'Payout Reports & Route' },
     { href: '/admin/refunds', icon: RotateCcw, label: 'Refund Management' },
     { href: '/admin/promos', icon: Tag, label: 'Promo Codes' },
@@ -67,17 +72,59 @@ const ROLE_COLORS = {
 };
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [role, setRole] = useState<'customer' | 'vendor' | 'admin'>(store.getCurrentRole());
+  const [adminUnlocked, setAdminUnlocked] = useState(false);
+  const [role, setRole] = useState<'customer' | 'vendor' | 'admin'>(() => {
+    if (pathname.startsWith('/admin')) return 'admin';
+    if (pathname.startsWith('/vendor')) return 'vendor';
+    return 'customer';
+  });
+
+  useEffect(() => {
+    setAdminUnlocked(isAdminUnlocked());
+
+    const handleAdminChange = (e: any) => {
+      setAdminUnlocked(Boolean(e?.detail?.unlocked));
+    };
+
+    window.addEventListener('dastan_admin_status_changed', handleAdminChange);
+    return () => window.removeEventListener('dastan_admin_status_changed', handleAdminChange);
+  }, []);
+
+  useEffect(() => {
+    if (pathname.startsWith('/admin')) {
+      setRole('admin');
+      store.setCurrentRole('admin');
+    } else if (pathname.startsWith('/vendor')) {
+      setRole('vendor');
+      store.setCurrentRole('vendor');
+    } else if (pathname.startsWith('/customer')) {
+      setRole('customer');
+      store.setCurrentRole('customer');
+    }
+  }, [pathname]);
 
   const user = store.getCurrentUser();
-  const navItems = NAV_ITEMS[role];
+  const navItems = NAV_ITEMS[role] || NAV_ITEMS.customer;
 
   const handleRoleSwitch = (newRole: 'customer' | 'vendor' | 'admin') => {
     store.setCurrentRole(newRole);
     setRole(newRole);
+    router.push(`/${newRole}`);
   };
+
+  const handleLockAdmin = () => {
+    lockAdmin();
+    setAdminUnlocked(false);
+    setRole('customer');
+    router.push('/');
+  };
+
+  const visibleRoles: ('customer' | 'vendor' | 'admin')[] = adminUnlocked
+    ? ['customer', 'vendor', 'admin']
+    : ['customer', 'vendor'];
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-white text-[#18181B]">
@@ -114,13 +161,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         </div>
 
-        {/* Role Switcher */}
-        <div className="mt-3 flex gap-1">
-          {(['customer', 'vendor', 'admin'] as const).map((r) => (
+        {/* Role Switcher - Admin is only visible if unlocked */}
+        <div className="mt-3 flex gap-1 items-center">
+          {visibleRoles.map((r) => (
             <button
               key={r}
               onClick={() => handleRoleSwitch(r)}
-              className={`flex-1 px-1.5 py-1 text-[10px] font-bold rounded-lg border transition-all ${
+              className={`flex-1 px-1.5 py-1 text-[10px] font-bold rounded-lg border transition-all cursor-pointer ${
                 role === r
                   ? ROLE_COLORS[r]
                   : 'text-[#807663] bg-white border-[#E6DFD5] hover:bg-[#FAF7F2]'
@@ -129,6 +176,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               {ROLE_LABELS[r]}
             </button>
           ))}
+          {adminUnlocked && (
+            <button
+              onClick={handleLockAdmin}
+              title="Lock Admin session"
+              className="p-1 rounded-lg border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-600 transition-colors"
+            >
+              <RotateCcw className="w-3 h-3" />
+            </button>
+          )}
         </div>
       </div>
 

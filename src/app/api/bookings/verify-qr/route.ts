@@ -13,7 +13,14 @@ export async function POST(request: Request) {
 
     if (!result.success) {
       return NextResponse.json(
-        { error: result.message, booking: result.booking },
+        {
+          error: result.message,
+          message: result.message,
+          alreadyCheckedIn: result.alreadyCheckedIn,
+          checkedInAt: result.checkedInAt,
+          dailyPass: result.dailyPass,
+          booking: result.booking,
+        },
         { status: 400 }
       );
     }
@@ -21,6 +28,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       message: result.message,
+      dailyPass: result.dailyPass,
       booking: result.booking,
     });
   } catch (error: any) {

@@ -38,6 +38,7 @@ export interface Vendor {
   businessName: string;
   businessType: 'restaurant' | 'event_organizer' | 'hospitality_group';
   city: string;
+  upiId?: string;
   pan?: string;
   gstin?: string;
   bankName?: string;
@@ -66,6 +67,24 @@ export interface TicketTier {
   salesEnd?: string;
 }
 
+export interface EventDaySchedule {
+  dayNumber: number;
+  date: string;
+  label: string;
+  theme?: string;
+}
+
+export interface DailyPass {
+  passId: string;
+  dayNumber: number;
+  date: string;
+  dayLabel: string;
+  qrCodeHash: string;
+  status: 'valid' | 'checked_in' | 'expired';
+  checkedInAt?: string;
+  checkedInGate?: string;
+}
+
 export interface EventListing {
   id: string;
   vendorId: string;
@@ -88,6 +107,8 @@ export interface EventListing {
   termsConditions: string;
   ticketTiers: TicketTier[];
   startingPrice: number;
+  daysCount?: number;
+  eventDays?: EventDaySchedule[];
 }
 
 export interface RestaurantOffer {
@@ -164,6 +185,12 @@ export interface Booking {
   checkedInAt?: string;
   createdAt: string;
   
+  // Multi-day Event Pass Architecture
+  dailyPasses?: DailyPass[];
+  passType?: 'single_day' | 'multi_day';
+  selectedDayNumber?: number;
+  totalDays?: number;
+
   // Payment link
   razorpayOrderId?: string;
   razorpayPaymentId?: string;
@@ -267,4 +294,21 @@ export interface RevenueSummary {
   activeSubscriptionsCount: number;
   featuredListingsCount: number;
 }
+
+export interface SponsorCampaign {
+  id: string;
+  sponsor: string;
+  tagline: string;
+  title: string;
+  description: string;
+  badge: string;
+  perk: string;
+  ctaText: string;
+  ctaHref: string;
+  image: string;
+  logo: string;
+  isActive: boolean;
+  createdAt?: string;
+}
+
 

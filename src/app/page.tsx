@@ -4,16 +4,25 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { store } from '@/lib/store';
 import { EventCard } from '@/components/events/event-card';
-import { RestaurantCard } from '@/components/dining/restaurant-card';
 import { CitySelect } from '@/components/ui/city-select';
+import { AdvertisementBox } from '@/components/ui/advertisement-box';
 
 export default function HomePage() {
   const [selectedCity, setSelectedCity] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [allEvents, setAllEvents] = useState<any[]>(() => store.getAllEvents());
 
-  const allEvents = store.getAllEvents();
-  const allRestaurants = store.getAllRestaurants();
+  React.useEffect(() => {
+    fetch('/api/events')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.events) {
+          setAllEvents(data.events);
+        }
+      })
+      .catch((e) => console.warn('Could not sync events for homepage:', e));
+  }, []);
 
   // Filter events
   const filteredEvents = allEvents.filter((evt) => {
@@ -29,24 +38,7 @@ export default function HomePage() {
       evt.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       evt.venueName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       evt.city.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchCity && matchCategory && matchSearch;
-  });
-
-  // Filter restaurants
-  const filteredRestaurants = allRestaurants.filter((rest) => {
-    const matchCity =
-      !selectedCity ||
-      selectedCity === 'All' ||
-      selectedCity.toLowerCase().startsWith('all') ||
-      rest.city.toLowerCase() === selectedCity.toLowerCase();
-    const matchSearch =
-      !searchQuery ||
-      rest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      rest.cuisineTypes.some((c) =>
-        c.toLowerCase().includes(searchQuery.toLowerCase())
-      ) ||
-      rest.area.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchCity && matchSearch;
+    return matchCity && matchCategory && matchSearch && (evt.status === 'published' || !evt.status);
   });
 
   const categories = [
@@ -66,18 +58,8 @@ export default function HomePage() {
 
       {/* SECTION 1: HERO & UNIFIED GLASS SEARCH */}
       <section className="relative w-full px-4 sm:px-6 lg:px-8 pt-10 pb-16 lg:pt-16 lg:pb-24 max-w-7xl mx-auto flex flex-col items-center text-center">
-        {/* Royal Badge Pill */}
-        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-[#E6DFD5] shadow-sm mb-6 group cursor-default transition-all duration-300 hover:bg-[#efeeea]">
-          <span className="inline-block w-2 h-2 rounded-full bg-[#775a00] animate-pulse"></span>
-          <span className="font-label-mono-sm text-xs text-[#4e4635] tracking-wider uppercase flex items-center gap-1.5">
-            <span className="text-[#775a00] font-bold">DASTAN PROTOCOL</span>
-            <span className="text-[#d1c5af]">•</span>
-            <span>Curated Indian Heritage &amp; Contemporary Soirées</span>
-          </span>
-          <span className="material-symbols-outlined text-[16px] text-[#775a00]">
-            auto_awesome
-          </span>
-        </div>
+        {/* Full Sponsored Brand Showcase Bar with Image */}
+        <AdvertisementBox variant="bar" className="mb-8" />
 
         {/* Editorial Typography Title */}
         <div className="max-w-4xl mx-auto space-y-4 mb-8">
@@ -88,7 +70,7 @@ export default function HomePage() {
             </span>
           </h1>
           <p className="font-body-lg text-base sm:text-lg text-[#4e4635] max-w-2xl mx-auto font-normal leading-relaxed">
-            Handcrafted musical soirées, private palace dining, and curated social tables designed exclusively for patrons who seek extraordinary evenings.
+            Handcrafted musical soirées, intimate classical baithaks, comedy nights, and curated live cultural gatherings designed exclusively for patrons who seek extraordinary evenings.
           </p>
         </div>
 
@@ -214,209 +196,86 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* SECTION 3: CURATED SECRET CHEF DINING TABLES */}
-      <section className="w-full px-4 sm:px-6 lg:px-8 py-12 max-w-7xl mx-auto">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 pb-4 border-b border-[#E6DFD5]">
-          <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#127c56]"></span>
-              <span className="font-label-mono-sm text-xs uppercase text-[#127c56] font-bold tracking-widest">
-                Fine Dining Enclaves
-              </span>
-            </div>
-            <h2 className="font-headline-lg text-2xl sm:text-4xl text-[#18181B] tracking-tight">
-              Secret Chef Tables &amp; Exclusive Deals
-            </h2>
-          </div>
-          <Link
-            href="/dining"
-            className="inline-flex items-center gap-1.5 font-title-md font-semibold text-[#775a00] hover:text-[#c59a27] transition-colors group"
-          >
-            <span>View All Dining Enclaves ({filteredRestaurants.length})</span>
-            <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">
-              arrow_right_alt
-            </span>
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredRestaurants.map((restaurant) => (
-            <RestaurantCard key={restaurant.id} restaurant={restaurant} />
-          ))}
-        </div>
+      {/* LUXURY SPONSORED SPOTLIGHT ADVERTISEMENT SHOWCASE BANNER */}
+      <section className="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-6">
+        <AdvertisementBox variant="banner" />
       </section>
 
-      {/* SECTION 4: THE SOCIAL TABLE (NEVER DINE ALONE) */}
-      <section id="social-experience" className="w-full px-4 sm:px-6 lg:px-8 py-16 max-w-7xl mx-auto">
-        <div className="relative rounded-3xl bg-[#FAF7F2] border border-[#E6DFD5] p-8 sm:p-12 shadow-[0_12px_40px_rgba(119,90,0,0.06)] overflow-hidden">
-          <div className="pointer-events-none absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-[#c5d4fd]/20 blur-[100px]" />
+      {/* SECTION 3: HOW DASTAN GATE PASSES WORK */}
+      <section className="w-full px-4 sm:px-6 lg:px-8 py-14 max-w-7xl mx-auto">
+        <div className="relative rounded-3xl bg-[#FAF7F2] border border-[#E6DFD5] p-8 sm:p-12 shadow-[0_8px_30px_rgba(119,90,0,0.05)] overflow-hidden">
+          <div className="text-center max-w-2xl mx-auto space-y-2 mb-10">
+            <span className="font-label-mono-sm text-xs uppercase tracking-widest text-[#775a00] font-bold">
+              Seamless Patron Experience
+            </span>
+            <h2 className="font-headline-lg text-2xl sm:text-4xl text-[#18181B] font-bold">
+              How Your Entry Pass Works
+            </h2>
+            <p className="font-body-md text-sm text-[#4e4635]">
+              Direct from verified artists and curators into your inbox — no paper tickets, no ticket resale bots.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            {/* Left Column: Story & Philosophy */}
-            <div className="lg:col-span-6 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#c5d4fd]/40 text-[#4f5e81] border border-[#4f5e81]/20">
-                <span className="material-symbols-outlined text-[14px]">groups</span>
-                <span className="font-label-mono-sm text-xs tracking-wider uppercase font-semibold">
-                  Signature Innovation
-                </span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-2xl bg-white border border-[#E6DFD5] shadow-sm space-y-3">
+              <div className="w-12 h-12 rounded-xl bg-[#ffdf9a]/40 border border-[#c59a27]/30 flex items-center justify-center text-[#775a00]">
+                <span className="material-symbols-outlined text-[24px]">confirmation_number</span>
               </div>
-
-              <div className="space-y-3">
-                <h2 className="font-display-lg text-3xl sm:text-5xl text-[#18181B] leading-tight">
-                  Never Dine Alone. <br />
-                  <span className="italic text-[#775a00] font-display-lg">
-                    The Curated Social Table.
-                  </span>
-                </h2>
-                <p className="font-body-md text-base text-[#4e4635] font-normal leading-relaxed">
-                  We hand-match 6 to 8 fascinating strangers around shared passions—from architecture and rare vinyl to founder stories. No networking awkwardness; only sublime food, vintage pours, and magnetic dialogue.
-                </p>
+              <div className="font-label-mono-sm text-[10px] text-[#775a00] uppercase font-bold tracking-wider">
+                Step 01
               </div>
-
-              {/* Feature Matrix */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                <div className="p-4 rounded-xl bg-white border border-[#E6DFD5] space-y-1 shadow-sm">
-                  <div className="flex items-center gap-2 text-[#775a00]">
-                    <span className="material-symbols-outlined text-[20px]">psychology</span>
-                    <span className="font-headline-sm text-sm font-semibold">94% Synergy Match</span>
-                  </div>
-                  <p className="font-body-sm text-xs text-[#71717A]">
-                    Matched by cultural tastes &amp; conversational archetypes.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-white border border-[#E6DFD5] space-y-1 shadow-sm">
-                  <div className="flex items-center gap-2 text-[#127c56]">
-                    <span className="material-symbols-outlined text-[20px]">verified_user</span>
-                    <span className="font-headline-sm text-sm font-semibold">Vetted Patrons</span>
-                  </div>
-                  <p className="font-body-sm text-xs text-[#71717A]">
-                    Verified profiles preserving intimacy and courtly decorum.
-                  </p>
-                </div>
-              </div>
-
-              <div className="pt-2">
-                <div className="flex items-center gap-3">
-                  <div className="flex -space-x-2">
-                    {['A', 'K', 'S', 'R'].map((initial, i) => (
-                      <div
-                        key={i}
-                        className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#775a00] to-[#c59a27] text-white flex items-center justify-center font-bold text-xs ring-2 ring-white shadow-sm"
-                      >
-                        {initial}
-                      </div>
-                    ))}
-                  </div>
-                  <span className="font-body-sm text-xs text-[#4e4635]">
-                    Over 340+ patrons seated across 48 tables this month
-                  </span>
-                </div>
-              </div>
+              <h3 className="font-headline-sm text-lg font-bold text-[#18181B]">Choose Your Soirée</h3>
+              <p className="font-body-sm text-xs text-[#71717A] leading-relaxed">
+                Explore vetted musical concerts, standup comedy, Sufi baithaks, and rooftop gatherings across your enclave.
+              </p>
             </div>
 
-            {/* Right Column: Interactive Social Table Preview Card */}
-            <div className="lg:col-span-6">
-              <div className="rounded-2xl bg-white border border-[#E6DFD5] p-6 sm:p-8 shadow-[0_8px_30px_rgba(119,90,0,0.08)] space-y-5">
-                {/* Table Status Banner */}
-                <div className="flex items-center justify-between pb-4 border-b border-[#E6DFD5]">
-                  <div className="flex items-center gap-2.5">
-                    <span className="flex h-3 w-3 relative">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c59a27] opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-[#c59a27]"></span>
-                    </span>
-                    <span className="font-label-mono-sm text-xs uppercase text-[#775a00] tracking-wider font-bold">
-                      Table Formation Active
-                    </span>
-                  </div>
-                  <div className="px-2.5 py-1 rounded-full bg-[#ffdf9a] text-[#251a00] font-label-mono-sm text-[11px] font-bold border border-[#c59a27]/30">
-                    Match Confidence: 94%
-                  </div>
-                </div>
-
-                {/* Table Headline & Venue */}
-                <div className="space-y-1">
-                  <span className="font-label-mono-sm text-[10px] text-[#807663] uppercase tracking-widest">
-                    Friday Night Salon • 6 Patrons Total
-                  </span>
-                  <h3 className="font-headline-sm text-xl text-[#18181B] font-bold">
-                    The Vinyl, Art &amp; Single Malt Table
-                  </h3>
-                  <p className="font-body-sm text-xs text-[#4e4635] flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-[#775a00] text-[16px]">restaurant</span>
-                    Worli Heritage Village, Mumbai
-                  </p>
-                </div>
-
-                {/* Visual Seating Archetype Layout */}
-                <div className="p-4 rounded-xl bg-[#f5f3ef] border border-[#E6DFD5] space-y-3">
-                  <div className="flex items-center justify-between font-label-mono-sm text-[11px] text-[#807663]">
-                    <span>CONFIRMED CO-DINERS (4/6 FILLED)</span>
-                    <span className="text-[#775a00] font-bold">2 SEATS UNCLAIMED</span>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                    <div className="p-2.5 rounded-lg bg-white border border-[#E6DFD5] text-center space-y-1 shadow-sm">
-                      <span className="material-symbols-outlined text-[#775a00] text-[20px]">album</span>
-                      <div className="font-body-md text-xs text-[#18181B] font-semibold truncate">Vinyl Collector</div>
-                      <div className="font-label-mono-sm text-[9px] text-[#807663]">Verified • 32</div>
-                    </div>
-
-                    <div className="p-2.5 rounded-lg bg-white border border-[#E6DFD5] text-center space-y-1 shadow-sm">
-                      <span className="material-symbols-outlined text-[#4f5e81] text-[20px]">architecture</span>
-                      <div className="font-body-md text-xs text-[#18181B] font-semibold truncate">Architect</div>
-                      <div className="font-label-mono-sm text-[9px] text-[#807663]">Verified • 29</div>
-                    </div>
-
-                    <div className="p-2.5 rounded-lg bg-white border border-[#E6DFD5] text-center space-y-1 shadow-sm">
-                      <span className="material-symbols-outlined text-[#127c56] text-[20px]">palette</span>
-                      <div className="font-body-md text-xs text-[#18181B] font-semibold truncate">Art Curator</div>
-                      <div className="font-label-mono-sm text-[9px] text-[#807663]">Verified • 34</div>
-                    </div>
-
-                    <div className="p-2.5 rounded-lg bg-[#ffdf9a]/40 border border-[#c59a27]/40 text-center space-y-1 flex flex-col justify-center items-center">
-                      <span className="material-symbols-outlined text-[#775a00] text-[20px] animate-pulse">lock_open</span>
-                      <div className="font-body-md text-xs text-[#775a00] font-bold">Your Seat</div>
-                      <div className="font-label-mono-sm text-[9px] text-[#807663]">Claim Now</div>
-                    </div>
-                  </div>
-
-                  {/* Shared Topics */}
-                  <div className="pt-2 flex flex-wrap gap-1.5 items-center">
-                    <span className="font-label-mono-sm text-[10px] text-[#807663] uppercase mr-1">Interests:</span>
-                    {['Bebop Jazz', 'Modernist Design', 'Islay Malts', 'Amir Khusrau'].map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2 py-0.5 rounded bg-white border border-[#E6DFD5] text-[#18181B] font-body-sm text-[10px]"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Booking / Claim Footer */}
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-                  <div className="text-left w-full sm:w-auto">
-                    <span className="font-label-mono-sm text-[10px] text-[#807663] uppercase block">
-                      Tasting Menu + Curated Pairing
-                    </span>
-                    <div className="flex items-baseline gap-1">
-                      <span className="font-label-mono-lg text-xl text-[#775a00] font-bold">₹1,499</span>
-                      <span className="font-body-sm text-xs text-[#71717A]">/ patron pass</span>
-                    </div>
-                  </div>
-
-                  <Link
-                    href="/dining"
-                    className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#c59a27] to-[#775a00] hover:from-[#d4af37] hover:to-[#8d6d1b] text-white font-body-md font-semibold text-xs tracking-wide flex items-center justify-center gap-2 shadow-md shadow-[#775a00]/20 transition-all"
-                  >
-                    <span>Join This Social Table</span>
-                    <span className="material-symbols-outlined text-[16px]">key</span>
-                  </Link>
-                </div>
+            <div className="p-6 rounded-2xl bg-white border border-[#E6DFD5] shadow-sm space-y-3">
+              <div className="w-12 h-12 rounded-xl bg-[#d1fae5] border border-[#127c56]/30 flex items-center justify-center text-[#127c56]">
+                <span className="material-symbols-outlined text-[24px]">verified_user</span>
               </div>
+              <div className="font-label-mono-sm text-[10px] text-[#127c56] uppercase font-bold tracking-wider">
+                Step 02
+              </div>
+              <h3 className="font-headline-sm text-lg font-bold text-[#18181B]">Instant UPI / Card Payment</h3>
+              <p className="font-body-sm text-xs text-[#71717A] leading-relaxed">
+                Pay in seconds via Google Pay, PhonePe, Paytm, or Razorpay Secured Gateway with 100% escrow protection.
+              </p>
             </div>
+
+            <div className="p-6 rounded-2xl bg-white border border-[#E6DFD5] shadow-sm space-y-3">
+              <div className="w-12 h-12 rounded-xl bg-[#c5d4fd]/40 border border-[#4f5e81]/30 flex items-center justify-center text-[#4f5e81]">
+                <span className="material-symbols-outlined text-[24px]">qr_code_scanner</span>
+              </div>
+              <div className="font-label-mono-sm text-[10px] text-[#4f5e81] uppercase font-bold tracking-wider">
+                Step 03
+              </div>
+              <h3 className="font-headline-sm text-lg font-bold text-[#18181B]">Email Gate Pass &amp; QR Entry</h3>
+              <p className="font-body-sm text-xs text-[#71717A] leading-relaxed">
+                Instant payment receipt and scannable QR Gate Pass dispatched to your email for seamless wristband entry.
+              </p>
+            </div>
+          </div>
+
+          {/* Host an Event CTA */}
+          <div className="mt-10 p-6 rounded-2xl bg-gradient-to-r from-[#251a00] to-[#422e03] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div className="space-y-1">
+              <div className="font-label-mono-sm text-xs text-[#ffdf9a] uppercase tracking-wider font-bold">
+                For Artists &amp; Independent Curators
+              </div>
+              <h3 className="font-headline-sm text-xl sm:text-2xl font-bold">
+                Host Your Live Experience on Dastan
+              </h3>
+              <p className="font-body-sm text-xs text-white/80 max-w-xl">
+                Register your event in under 3 minutes, set custom ticket tiers, and issue automated QR gate passes.
+              </p>
+            </div>
+            <Link
+              href="/vendor/events/new"
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#c59a27] to-[#ffdf9a] text-[#251a00] font-bold text-xs uppercase tracking-wider hover:brightness-105 transition-all shrink-0 text-center shadow-lg"
+            >
+              Register An Event →
+            </Link>
           </div>
         </div>
       </section>

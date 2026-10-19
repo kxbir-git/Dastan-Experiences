@@ -16,6 +16,8 @@ import {
   TicketTier,
   RestaurantOffer,
   ListingStatus,
+  DailyPass,
+  SponsorCampaign,
 } from '@/types';
 import {
   INITIAL_EVENTS,
@@ -30,6 +32,7 @@ import {
   INITIAL_REFUNDS,
   INITIAL_VENDORS,
   SUBSCRIPTION_PLANS,
+  INITIAL_SPONSORS,
 } from './mock-data';
 
 export interface PaymentRecord {
@@ -70,6 +73,7 @@ class AzaadDataStore {
   private payouts: PayoutRecord[] = [...INITIAL_PAYOUTS];
   private refunds: RefundRecord[] = [...INITIAL_REFUNDS];
   private vendors: Vendor[] = [...INITIAL_VENDORS];
+  private sponsors: SponsorCampaign[] = [...INITIAL_SPONSORS];
 
   // Events
   getEvents(city?: string, category?: string): EventListing[] {
@@ -249,7 +253,26 @@ class AzaadDataStore {
   }
 
   getBookingByQrHash(hash: string): Booking | undefined {
-    return this.bookings.find((b) => b.qrCodeHash === hash);
+    const cleanHash = hash.trim();
+    return this.bookings.find(
+      (b) => b.qrCodeHash === cleanHash || b.dailyPasses?.some((dp) => dp.qrCodeHash === cleanHash)
+    );
+  }
+
+  getBookingAndDailyPass(hash: string): { booking?: Booking; dailyPass?: DailyPass } {
+    const cleanHash = hash.trim();
+    for (const b of this.bookings) {
+      if (b.qrCodeHash === cleanHash) {
+        return { booking: b, dailyPass: b.dailyPasses?.[0] };
+      }
+      if (b.dailyPasses) {
+        const found = b.dailyPasses.find((dp) => dp.qrCodeHash === cleanHash);
+        if (found) {
+          return { booking: b, dailyPass: found };
+        }
+      }
+    }
+    return {};
   }
 
   createBooking(newBooking: Booking): { success: boolean; error?: string; booking?: Booking } {
@@ -301,25 +324,79 @@ class AzaadDataStore {
     return { success: true, booking: newBooking };
   }
 
-  checkInBooking(qrHash: string): { success: boolean; message: string; booking?: Booking } {
-    const booking = this.getBookingByQrHash(qrHash);
+  checkInBooking(qrHash: string): {
+    success: boolean;
+    message: string;
+    booking?: Booking;
+    dailyPass?: DailyPass;
+    alreadyCheckedIn?: boolean;
+    checkedInAt?: string;
+  } {
+    const { booking, dailyPass } = this.getBookingAndDailyPass(qrHash);
     if (!booking) {
       return { success: false, message: 'Invalid ticket pass or QR code not found.' };
     }
-    if (booking.status === 'checked_in') {
+
+    if (booking.status === 'refunded') {
+      return { success: false, message: 'This ticket was refunded and cancelled.', booking };
+    }
+
+    // Check specific daily pass
+    if (dailyPass) {
+      if (dailyPass.status === 'checked_in') {
+        const timeStr = dailyPass.checkedInAt
+          ? new Date(dailyPass.checkedInAt).toLocaleTimeString('en-IN')
+          : 'earlier today';
+        return {
+          success: false,
+          alreadyCheckedIn: true,
+          checkedInAt: dailyPass.checkedInAt,
+          message: `⛔ ALREADY CHECKED IN! This [${dailyPass.dayLabel}] was already scanned at ${timeStr}. Passes are strictly ONE-TIME access only.`,
+          booking,
+          dailyPass,
+        };
+      }
+
+      // Mark single-use pass as checked-in
+      dailyPass.status = 'checked_in';
+      dailyPass.checkedInAt = new Date().toISOString();
+
+      // Check if all daily passes in booking are checked in
+      const allCheckedIn = booking.dailyPasses?.every((p) => p.status === 'checked_in');
+      if (allCheckedIn) {
+        booking.status = 'checked_in';
+        booking.checkedInAt = dailyPass.checkedInAt;
+      }
+
       return {
-        success: false,
-        message: `Ticket already checked in at ${new Date(booking.checkedInAt!).toLocaleTimeString('en-IN')}`,
+        success: true,
+        message: `✅ ADMISSION APPROVED! [${dailyPass.dayLabel}] verified for ${booking.customerName} (${booking.quantity} guest(s)). One-time access consumed.`,
         booking,
+        dailyPass,
       };
     }
-    if (booking.status !== 'confirmed') {
-      return { success: false, message: `Ticket status is ${booking.status}. Cannot check in.` };
+
+    // Fallback for bookings without dailyPasses breakdown
+    if (booking.status === 'checked_in') {
+      const timeStr = booking.checkedInAt
+        ? new Date(booking.checkedInAt).toLocaleTimeString('en-IN')
+        : 'earlier';
+      return {
+        success: false,
+        alreadyCheckedIn: true,
+        checkedInAt: booking.checkedInAt,
+        message: `⛔ ALREADY CHECKED IN! This pass was already scanned at ${timeStr}. Passes are strictly ONE-TIME access only.`,
+        booking,
+      };
     }
 
     booking.status = 'checked_in';
     booking.checkedInAt = new Date().toISOString();
-    return { success: true, message: `Check-in approved for ${booking.customerName}! (${booking.quantity} guest(s))`, booking };
+    return {
+      success: true,
+      message: `✅ ADMISSION APPROVED for ${booking.customerName}! (${booking.quantity} guest(s)). One-time access consumed.`,
+      booking,
+    };
   }
 
   refundBooking(
@@ -396,6 +473,71 @@ class AzaadDataStore {
     const idx = this.promoCodes.findIndex((p) => p.id === id);
     if (idx >= 0) {
       this.promoCodes.splice(idx, 1);
+      return true;
+    }
+    return false;
+  }
+
+  // Sponsor Campaigns & Ad Banners
+  private saveSponsorsToStorage(): void {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('dastan_sponsors', JSON.stringify(this.sponsors));
+        window.dispatchEvent(new CustomEvent('dastan_sponsors_updated', { detail: this.sponsors }));
+      } catch (e) {
+        console.warn('Failed to persist sponsors to localStorage', e);
+      }
+    }
+  }
+
+  getSponsors(): SponsorCampaign[] {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('dastan_sponsors');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            this.sponsors = parsed;
+          }
+        }
+      } catch (e) {
+        // use in-memory fallback
+      }
+    }
+    return this.sponsors;
+  }
+
+  getActiveSponsors(): SponsorCampaign[] {
+    return this.getSponsors().filter((s) => s.isActive !== false);
+  }
+
+  getSponsorById(id: string): SponsorCampaign | undefined {
+    return this.getSponsors().find((s) => s.id === id);
+  }
+
+  addSponsor(sponsor: SponsorCampaign): void {
+    this.getSponsors();
+    this.sponsors.unshift(sponsor);
+    this.saveSponsorsToStorage();
+  }
+
+  updateSponsor(id: string, updates: Partial<SponsorCampaign>): boolean {
+    this.getSponsors();
+    const sp = this.sponsors.find((s) => s.id === id);
+    if (sp) {
+      Object.assign(sp, updates);
+      this.saveSponsorsToStorage();
+      return true;
+    }
+    return false;
+  }
+
+  deleteSponsor(id: string): boolean {
+    this.getSponsors();
+    const idx = this.sponsors.findIndex((s) => s.id === id);
+    if (idx >= 0) {
+      this.sponsors.splice(idx, 1);
+      this.saveSponsorsToStorage();
       return true;
     }
     return false;
@@ -631,6 +773,10 @@ class AzaadDataStore {
     return this.vendors.find((v) => v.id === id);
   }
 
+  addVendor(vendor: Vendor): void {
+    this.vendors.unshift(vendor);
+  }
+
   updateVendor(id: string, updates: Partial<Vendor>): boolean {
     const vendor = this.vendors.find((v) => v.id === id);
     if (vendor) {
@@ -811,6 +957,16 @@ class AzaadDataStore {
 }
 
 // Global Singleton to maintain hot-reload in dev
-const globalForStore = global as unknown as { azaadStore?: AzaadDataStore };
+const globalForStore = (typeof globalThis !== 'undefined' ? globalThis : global) as unknown as {
+  azaadStore?: AzaadDataStore;
+};
+
+if (globalForStore.azaadStore) {
+  Object.setPrototypeOf(globalForStore.azaadStore, AzaadDataStore.prototype);
+  if (!(globalForStore.azaadStore as any).sponsors) {
+    (globalForStore.azaadStore as any).sponsors = [...INITIAL_SPONSORS];
+  }
+}
+
 export const store = globalForStore.azaadStore || new AzaadDataStore();
 if (process.env.NODE_ENV !== 'production') globalForStore.azaadStore = store;

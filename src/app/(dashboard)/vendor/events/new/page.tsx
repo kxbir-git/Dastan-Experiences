@@ -57,65 +57,77 @@ export default function NewEventPage() {
   const [ageRestriction, setAgeRestriction] = useState('18+');
   const [terms, setTerms] = useState('');
 
+  const [publishImmediately, setPublishImmediately] = useState(true);
+  const [createdEvent, setCreatedEvent] = useState<EventListing | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   // Ticket tiers
-  const [tiers, setTiers] = useState<TierDraft[]>([{ ...EMPTY_TIER }]);
+  const [tiers, setTiers] = useState<TierDraft[]>([
+    { tierName: 'Standard Pass', price: '899', totalCapacity: '50', perks: 'Gate Entry, Welcome Drink' }
+  ]);
 
   const addTier = () => setTiers((prev) => [...prev, { ...EMPTY_TIER }]);
   const removeTier = (i: number) => setTiers((prev) => prev.filter((_, idx) => idx !== i));
   const updateTier = (i: number, field: keyof TierDraft, val: string) =>
     setTiers((prev) => prev.map((t, idx) => (idx === i ? { ...t, [field]: val } : t)));
 
+  const PRESET_BANNERS = [
+    { label: '🎷 Live Jazz & Wine', url: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80' },
+    { label: '🎭 Standup Comedy', url: 'https://images.unsplash.com/photo-1585699324551-f6c309eedeca?auto=format&fit=crop&w=1200&q=80' },
+    { label: '🪕 Sufi & Classical', url: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=1200&q=80' },
+    { label: '🌃 Rooftop Lounge', url: 'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1200&q=80' },
+  ];
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !venueName || !startDate || tiers.length === 0) return;
 
     setSaving(true);
+    setErrorMsg(null);
 
     const categoryObj = CATEGORIES.find((c) => c.value === category)!;
-    const slug = title
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .slice(0, 50);
+    const finalBanner = bannerUrl || PRESET_BANNERS[0].url;
 
-    const startingPrice = Math.min(...tiers.map((t) => Number(t.price) || 0));
+    try {
+      const res = await fetch('/api/vendor/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title,
+          category,
+          categoryLabel: categoryObj.label,
+          city,
+          venueName,
+          venueAddress: venueAddress || `${venueName}, ${city}`,
+          description,
+          bannerUrl: finalBanner,
+          startTime: startDate && startTime ? `${startDate}T${startTime}:00+05:30` : new Date().toISOString(),
+          endTime: endDate && endTime ? `${endDate}T${endTime}:00+05:30` : new Date().toISOString(),
+          status: publishImmediately ? 'published' : 'pending_approval',
+          ageRestriction,
+          termsConditions: terms,
+          ticketTiers: tiers.map((t) => ({
+            tierName: t.tierName || 'Standard Pass',
+            price: Number(t.price) || 0,
+            totalCapacity: Number(t.totalCapacity) || 50,
+            perks: t.perks,
+          })),
+        }),
+      });
 
-    const newEvent: EventListing = {
-      id: `evt-${Date.now()}`,
-      vendorId: 'ven-demo-vendor',
-      vendorName: 'Demo Vendor',
-      title,
-      slug: `${slug}-${Date.now()}`,
-      category: category as EventListing['category'],
-      categoryLabel: categoryObj.label,
-      description,
-      city,
-      venueName,
-      venueAddress,
-      bannerUrl: bannerUrl || 'https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=1200&q=80',
-      galleryUrls: [],
-      startTime: startDate && startTime ? `${startDate}T${startTime}:00+05:30` : new Date().toISOString(),
-      endTime: endDate && endTime ? `${endDate}T${endTime}:00+05:30` : new Date().toISOString(),
-      status: 'pending_approval',
-      isFeatured: false,
-      ageRestriction,
-      termsConditions: terms,
-      startingPrice,
-      ticketTiers: tiers.map((t, i) => ({
-        id: `tier-new-${Date.now()}-${i}`,
-        eventId: `evt-${Date.now()}`,
-        tierName: t.tierName,
-        price: Number(t.price) || 0,
-        totalCapacity: Number(t.totalCapacity) || 50,
-        soldCount: 0,
-        perks: t.perks.split(',').map((p) => p.trim()).filter(Boolean),
-      })),
-    };
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Failed to publish event');
+      }
 
-    store.addEvent(newEvent);
-    setSaving(false);
-    setSaved(true);
-    setTimeout(() => router.push('/vendor/events'), 1500);
+      setCreatedEvent(data.event);
+      setSaved(true);
+    } catch (err: any) {
+      console.error('Error creating event:', err);
+      setErrorMsg(err.message || 'Failed to create event. Please check inputs.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -130,17 +142,46 @@ export default function NewEventPage() {
         </Link>
         <div>
           <h1 className="text-2xl font-black text-white">Create New Event</h1>
-          <p className="text-xs text-slate-400 mt-0.5">Submit for admin review — goes live within 24 hours</p>
+          <p className="text-xs text-slate-400 mt-0.5">Register your experience and make it live for patrons to book</p>
         </div>
       </div>
 
-      {saved && (
-        <div className="flex items-center gap-3 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30">
-          <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-          <div>
-            <div className="text-sm font-bold text-emerald-300">Event submitted for review!</div>
-            <div className="text-xs text-emerald-400/70">Redirecting to your events list...</div>
+      {saved && createdEvent && (
+        <div className="p-6 rounded-3xl bg-emerald-500/10 border border-emerald-500/30 space-y-4">
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="w-7 h-7 text-emerald-400 shrink-0" />
+            <div>
+              <div className="text-base font-bold text-white">
+                🎉 Event &quot;{createdEvent.title}&quot; is Registered!
+              </div>
+              <div className="text-xs text-emerald-300/80 mt-0.5">
+                {createdEvent.status === 'published'
+                  ? 'Your event is LIVE on the Customer portal right now. Patrons can browse and purchase passes.'
+                  : 'Your event draft has been saved successfully.'}
+              </div>
+            </div>
           </div>
+
+          <div className="flex flex-wrap items-center gap-3 pt-2">
+            <Link
+              href={`/events/${createdEvent.slug}`}
+              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-xs font-bold transition-all shadow-md flex items-center gap-2"
+            >
+              <span>View Live on Customer Portal →</span>
+            </Link>
+            <Link
+              href="/vendor/events"
+              className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition-colors"
+            >
+              Manage in Vendor Dashboard
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {errorMsg && (
+        <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-semibold">
+          ⚠️ {errorMsg}
         </div>
       )}
 
@@ -262,10 +303,31 @@ export default function NewEventPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-400 mb-1.5">Banner Image URL</label>
-              <input type="url" value={bannerUrl} onChange={(e) => setBannerUrl(e.target.value)}
-                placeholder="https://... (Unsplash or Cloudinary URL)"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500/50 transition-colors" />
+              <label className="block text-xs font-medium text-slate-400 mb-1.5">Banner Image</label>
+              <input
+                type="url"
+                value={bannerUrl}
+                onChange={(e) => setBannerUrl(e.target.value)}
+                placeholder="Paste Image URL or pick a preset below..."
+                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500/50 transition-colors"
+              />
+              <div className="flex flex-wrap items-center gap-2 mt-2">
+                <span className="text-[10px] text-slate-400 font-medium">Quick Presets:</span>
+                {PRESET_BANNERS.map((preset) => (
+                  <button
+                    key={preset.label}
+                    type="button"
+                    onClick={() => setBannerUrl(preset.url)}
+                    className={`px-2 py-1 rounded-lg text-[10px] font-semibold border transition-all ${
+                      bannerUrl === preset.url
+                        ? 'bg-amber-500 text-slate-950 border-amber-400'
+                        : 'bg-slate-800 text-slate-300 border-slate-700 hover:border-slate-600'
+                    }`}
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -361,25 +423,53 @@ export default function NewEventPage() {
           />
         </div>
 
-        {/* Submit */}
-        <div className="flex items-center justify-end gap-3">
-          <Link
-            href="/vendor/events"
-            className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-sm font-bold border border-slate-700 transition-colors"
-          >
-            Cancel
-          </Link>
-          <button
-            type="submit"
-            disabled={saving}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl saffron-gradient text-slate-950 font-bold text-sm hover:brightness-110 transition-all shadow-lg shadow-amber-500/20 disabled:opacity-70"
-          >
-            {saving ? (
-              <><div className="w-4 h-4 border-2 border-slate-950/30 border-t-slate-950 rounded-full animate-spin" /> Saving...</>
-            ) : (
-              <><Save className="w-4 h-4" /> Submit for Review</>
-            )}
-          </button>
+        {/* Publication Control & Submit */}
+        <div className="glass-card rounded-3xl p-6 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <label className="flex items-center gap-3 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={publishImmediately}
+              onChange={(e) => setPublishImmediately(e.target.checked)}
+              className="w-5 h-5 rounded-md accent-amber-500 bg-slate-900 border-slate-700 cursor-pointer"
+            />
+            <div>
+              <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                <span>Publish Live Immediately</span>
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  RECOMMENDED
+                </span>
+              </div>
+              <div className="text-[11px] text-slate-400">
+                Instantly displays on Customer View so patrons can discover and book tickets right away.
+              </div>
+            </div>
+          </label>
+
+          <div className="flex items-center gap-3 shrink-0">
+            <Link
+              href="/vendor/events"
+              className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold border border-slate-700 transition-colors"
+            >
+              Cancel
+            </Link>
+            <button
+              type="submit"
+              disabled={saving}
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 text-slate-950 font-bold text-xs hover:brightness-110 transition-all shadow-lg shadow-amber-500/20 disabled:opacity-70 cursor-pointer"
+            >
+              {saving ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-slate-950/30 border-t-slate-950 rounded-full animate-spin" />
+                  <span>Publishing Experience...</span>
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4" />
+                  <span>{publishImmediately ? '🚀 Publish Live Now' : 'Save as Draft'}</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </form>
     </div>

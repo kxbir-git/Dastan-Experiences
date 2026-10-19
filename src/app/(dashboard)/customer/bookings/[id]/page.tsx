@@ -19,14 +19,36 @@ interface BookingDetailPageProps {
 
 export default function BookingDetailPage({ params }: BookingDetailPageProps) {
   const resolvedParams = use(params);
-  const booking = store.getBookingById(resolvedParams.id);
-
-  if (!booking) {
-    notFound();
-  }
-
+  const [booking, setBooking] = useState<any>(() => store.getBookingById(resolvedParams.id) || null);
   const [refundStatus, setRefundStatus] = useState<string | null>(null);
   const [loadingRefund, setLoadingRefund] = useState(false);
+
+  React.useEffect(() => {
+    if (!booking) {
+      const found = store.getBookingById(resolvedParams.id) || store.getBookings().find((b) => b.bookingNumber === resolvedParams.id);
+      if (found) {
+        setBooking(found);
+      }
+    }
+  }, [resolvedParams.id, booking]);
+
+  if (!booking) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-24 text-center space-y-4 bg-[#FDFBF7]">
+        <div className="w-16 h-16 rounded-full bg-[#FAF7F2] border border-[#E6DFD5] flex items-center justify-center mx-auto text-[#775a00]">
+          <span className="material-symbols-outlined text-[32px]">receipt_long</span>
+        </div>
+        <h1 className="font-display-lg text-2xl font-bold text-[#18181B]">Pass Not Found</h1>
+        <p className="text-sm text-[#4e4635]">This booking reference might belong to another session.</p>
+        <Link
+          href="/customer"
+          className="inline-block px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#c59a27] to-[#775a00] text-white text-xs font-bold"
+        >
+          View My Passes →
+        </Link>
+      </div>
+    );
+  }
 
   const handleRequestRefund = async () => {
     if (!confirm('Are you sure you want to request a refund for this booking?')) return;
@@ -79,6 +101,22 @@ export default function BookingDetailPage({ params }: BookingDetailPageProps) {
           <Printer className="w-4 h-4 text-[#775a00]" />
           <span>Print Pass</span>
         </button>
+      </div>
+
+      {/* Email Dispatched Notice */}
+      <div className="p-3.5 rounded-2xl bg-[#ecfdf5] border border-[#a7f3d0] text-left flex items-start sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <span className="material-symbols-outlined text-[20px] text-[#059669]">mark_email_read</span>
+          <div className="text-xs">
+            <span className="font-bold text-[#065f46]">Digital Pass Emailed</span>
+            <span className="text-[#047857] text-[11px] ml-1.5">
+              Receipt &amp; QR Pass dispatched to <strong>{booking.customerEmail || 'your email'}</strong>
+            </span>
+          </div>
+        </div>
+        <span className="text-[10px] uppercase font-label-mono-sm font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full shrink-0">
+          CONFIRMED
+        </span>
       </div>
 
       {refundStatus && (

@@ -1,4 +1,5 @@
 import React from 'react';
+import { AdvertisementBox } from '@/components/ui/advertisement-box';
 
 export default function AboutPage() {
   return (
@@ -60,6 +61,11 @@ export default function AboutPage() {
         <p>
           Headquartered in Mumbai with enclaves across Delhi-NCR, Bengaluru, Pune, Hyderabad, and Goa, our mission is to revive courtly warmth, elevate culinary mastery, and spark meaningful human connection through the magic of shared experience.
         </p>
+      </div>
+
+      {/* Official Brand Patronage & Advertisement Showcase */}
+      <div className="pt-2">
+        <AdvertisementBox variant="banner" />
       </div>
     </div>
   );

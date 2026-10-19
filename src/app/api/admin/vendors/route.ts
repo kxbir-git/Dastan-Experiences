@@ -29,6 +29,50 @@ export async function GET() {
   }
 }
 
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const {
+      businessName,
+      businessType = 'event_organizer',
+      ownerName,
+      email,
+      phone,
+      city = 'Mumbai',
+      upiId,
+      commissionOverridePct,
+    } = body;
+
+    if (!businessName || !ownerName) {
+      return NextResponse.json({ error: 'Business name and Owner name are required' }, { status: 400 });
+    }
+
+    const newId = `vnd_${Date.now()}`;
+    const newVendor = {
+      id: newId,
+      userId: `usr_vnd_${Date.now()}`,
+      businessName,
+      businessType,
+      city,
+      upiId: upiId || undefined,
+      isVerified: true,
+      kycStatus: 'verified' as const,
+      kycVerifiedAt: new Date().toISOString(),
+      commissionOverridePct: commissionOverridePct ? Number(commissionOverridePct) : 10,
+    };
+
+    store.addVendor(newVendor);
+
+    return NextResponse.json({
+      success: true,
+      message: `Vendor ${businessName} registered successfully!`,
+      vendor: newVendor,
+    });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();

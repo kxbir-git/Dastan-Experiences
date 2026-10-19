@@ -8,22 +8,22 @@ import { Footer } from '@/components/layout/footer';
 export const metadata: Metadata = {
   title: 'Dastan Experiences | Every Event Has a Story — Storytelling, Culture & Luxury',
   description:
-    'Every event becomes a story worth remembering. Discover curated cultural soirées, luxury dining deals, and immersive live storytelling experiences with opt-in community tables.',
+    'Every event becomes a story worth remembering. Discover curated cultural soirées, live jazz, standup comedy, Sufi baithaks, and intimate musical experiences with verified QR gate passes.',
   keywords: [
     'Dastan Experiences',
     'Storytelling Culture Luxury',
     'Every Event Has a Story',
-    'Luxury Dining India',
-    'Live Events Mumbai',
+    'Live Events India',
+    'Live Concerts Mumbai',
     'Cultural Evenings Delhi',
-    'Community Table Booking',
+    'Sufi Baithaks Jaipur',
     'Curated Experiences',
   ],
   authors: [{ name: 'Dastan Experiences Technologies' }],
   openGraph: {
     title: 'Dastan Experiences | Storytelling • Culture • Luxury',
     description:
-      'Every event becomes a story worth remembering. Curated live concerts, cultural soirees, and exclusive dining perks with verified community connections.',
+      'Every event becomes a story worth remembering. Curated live concerts, cultural soirees, and intimate gatherings with verified entry passes.',
     url: 'https://dastanexperiences.com',
     siteName: 'Dastan Experiences',
     locale: 'en_IN',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Dastan Experiences | Every Event Has a Story',
     description:
-      'Storytelling • Culture • Luxury — Discover curated gigs, exclusive restaurant perks, and opt-in social tables across India.',
+      'Storytelling • Culture • Luxury — Discover curated gigs, concerts, and cultural gatherings across India.',
   },
   icons: {
     icon: [

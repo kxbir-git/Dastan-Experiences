@@ -79,23 +79,25 @@ export default function AdminPromosPage() {
   const totalUsed = promos.reduce((sum, p) => sum + p.usageCount, 0);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Header Banner */}
-      <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E6DFD5] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">
+          <div className="flex items-center gap-2 text-xs font-bold text-[#775a00] uppercase tracking-wider mb-1">
             <Tag className="w-4 h-4" />
             <span>Growth & Promotional Discounts</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white">Promo Codes Engine</h1>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Configure percentage discounts, flat cashback vouchers, caps, and min booking values.
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#18181B] tracking-tight">
+            Promo Codes Engine
+          </h1>
+          <p className="text-xs text-[#71717A] mt-1 max-w-xl">
+            Configure percentage discounts, flat cashback vouchers, caps, and minimum booking order values.
           </p>
         </div>
 
         <button
           onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl saffron-gradient text-slate-950 font-bold text-xs hover:brightness-110 transition-all shadow-lg shadow-amber-500/20"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#775a00] hover:bg-[#5c4600] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           Create Promo Code
@@ -103,83 +105,83 @@ export default function AdminPromosPage() {
       </div>
 
       {feedback && (
-        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+        <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2.5 shadow-xs">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
           <span>{feedback}</span>
         </div>
       )}
 
       {/* Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="glass-card rounded-2xl p-5 border border-slate-800">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Active Promo Codes</span>
-          <div className="text-2xl font-black text-white">{promos.filter((p) => p.isActive).length}</div>
-          <span className="text-[10px] text-slate-500">Live across checkout flows</span>
+        <div className="bg-white rounded-2xl p-5 border border-[#E6DFD5] shadow-xs">
+          <span className="text-[10px] uppercase font-bold text-[#71717A] block mb-1">Active Promo Codes</span>
+          <div className="text-2xl font-black text-[#18181B]">{promos.filter((p) => p.isActive).length}</div>
+          <span className="text-[11px] text-[#71717A] mt-0.5 block">Live across checkout flows</span>
         </div>
 
-        <div className="glass-card rounded-2xl p-5 border border-slate-800">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Total Redemptions</span>
-          <div className="text-2xl font-black text-emerald-400">{totalUsed}</div>
-          <span className="text-[10px] text-slate-500">Coupons redeemed by guests</span>
+        <div className="bg-white rounded-2xl p-5 border border-[#E6DFD5] shadow-xs">
+          <span className="text-[10px] uppercase font-bold text-[#71717A] block mb-1">Total Redemptions</span>
+          <div className="text-2xl font-black text-emerald-700">{totalUsed}</div>
+          <span className="text-[11px] text-[#71717A] mt-0.5 block">Coupons redeemed by guests</span>
         </div>
 
-        <div className="glass-card rounded-2xl p-5 border border-slate-800">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Most Popular Code</span>
-          <div className="text-xl font-mono font-black text-amber-400">DASTAN50</div>
-          <span className="text-[10px] text-slate-500">89 bookings completed</span>
+        <div className="bg-white rounded-2xl p-5 border border-[#E6DFD5] shadow-xs">
+          <span className="text-[10px] uppercase font-bold text-[#71717A] block mb-1">Most Popular Code</span>
+          <div className="text-xl font-mono font-black text-[#775a00]">DASTAN50</div>
+          <span className="text-[11px] text-[#71717A] mt-0.5 block">Platform-wide promotion</span>
         </div>
       </div>
 
       {/* Promos Table */}
-      <div className="glass-panel rounded-3xl border border-slate-800 overflow-hidden">
+      <div className="bg-white rounded-3xl border border-[#E6DFD5] shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-slate-800 bg-slate-900/50 text-slate-400">
-                <th className="py-3.5 px-4 font-semibold">Promo Code</th>
-                <th className="py-3.5 px-4 font-semibold">Discount</th>
-                <th className="py-3.5 px-4 font-semibold">Min Order</th>
-                <th className="py-3.5 px-4 font-semibold">Max Cap</th>
-                <th className="py-3.5 px-4 font-semibold">Times Used</th>
-                <th className="py-3.5 px-4 font-semibold">Valid Until</th>
-                <th className="py-3.5 px-4 font-semibold">Status</th>
-                <th className="py-3.5 px-4 font-semibold text-right">Actions</th>
+              <tr className="border-b border-[#E6DFD5] bg-[#FAF7F2] text-[#775a00]">
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Promo Code</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Discount</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Min Order</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Max Cap</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Times Used</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Valid Until</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Status</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px] text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60">
+            <tbody className="divide-y divide-[#E6DFD5]">
               {promos.map((p) => (
-                <tr key={p.id} className="text-slate-300 hover:bg-slate-900/30 transition-colors">
+                <tr key={p.id} className="text-[#18181B] hover:bg-[#FAF7F2]/60 transition-colors">
                   <td className="py-3.5 px-4">
-                    <span className="font-mono font-bold text-white bg-slate-900 border border-slate-700 px-2.5 py-1 rounded-lg text-xs">
+                    <span className="font-mono font-bold text-[#775a00] bg-[#ffdf9a]/30 border border-[#c59a27]/40 px-2.5 py-1 rounded-lg text-xs shadow-xs">
                       {p.code}
                     </span>
                   </td>
 
-                  <td className="py-3.5 px-4 font-semibold text-amber-400">
+                  <td className="py-3.5 px-4 font-bold text-[#775a00]">
                     {p.discountType === 'percentage' ? `${p.discountValue}% OFF` : `₹${p.discountValue} FLAT OFF`}
                   </td>
 
-                  <td className="py-3.5 px-4 text-slate-300">
+                  <td className="py-3.5 px-4 font-medium text-[#18181B]">
                     {p.minBookingAmount ? formatINR(p.minBookingAmount) : 'None'}
                   </td>
 
-                  <td className="py-3.5 px-4 text-slate-300">
+                  <td className="py-3.5 px-4 font-medium text-[#18181B]">
                     {p.maxDiscountCap ? formatINR(p.maxDiscountCap) : 'Unlimited'}
                   </td>
 
-                  <td className="py-3.5 px-4 font-mono text-emerald-400 font-bold">{p.usageCount}</td>
+                  <td className="py-3.5 px-4 font-mono text-emerald-700 font-bold text-sm">{p.usageCount}</td>
 
-                  <td className="py-3.5 px-4 text-slate-400 font-mono text-[11px]">
+                  <td className="py-3.5 px-4 text-[#71717A] font-mono text-[11px]">
                     {p.validUntil ? new Date(p.validUntil).toLocaleDateString('en-IN') : 'Never'}
                   </td>
 
                   <td className="py-3.5 px-4">
                     <button
                       onClick={() => handleToggleActive(p.id, p.isActive)}
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold transition-all ${
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold transition-all cursor-pointer ${
                         p.isActive
-                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                          : 'bg-slate-700/20 text-slate-500 border border-slate-700/30'
+                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                          : 'bg-slate-100 text-slate-500 border border-slate-200'
                       }`}
                     >
                       {p.isActive ? 'Active' : 'Disabled'}
@@ -189,7 +191,7 @@ export default function AdminPromosPage() {
                   <td className="py-3.5 px-4 text-right">
                     <button
                       onClick={() => handleDelete(p.id)}
-                      className="p-1.5 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+                      className="p-1.5 rounded-lg text-[#71717A] hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                       title="Delete Promo"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -204,16 +206,16 @@ export default function AdminPromosPage() {
 
       {/* Create Promo Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-950 border border-slate-800 rounded-3xl p-6 max-w-lg w-full space-y-5">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <div className="text-sm font-bold text-white flex items-center gap-2">
-                <Tag className="w-4 h-4 text-amber-400" />
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white border border-[#E6DFD5] rounded-3xl p-6 max-w-lg w-full space-y-5 shadow-2xl animate-fade-in">
+            <div className="flex items-center justify-between border-b border-[#E6DFD5] pb-3">
+              <div className="text-sm font-bold text-[#18181B] flex items-center gap-2">
+                <Tag className="w-4 h-4 text-[#775a00]" />
                 <span>Create New Promo Voucher</span>
               </div>
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="text-slate-400 hover:text-white text-xs font-bold"
+                className="text-[#71717A] hover:text-[#18181B] text-xs font-bold p-1 cursor-pointer"
               >
                 ✕
               </button>
@@ -221,24 +223,24 @@ export default function AdminPromosPage() {
 
             <form onSubmit={handleCreatePromo} className="space-y-4 text-xs">
               <div>
-                <label className="text-slate-300 font-semibold block mb-1">Promo Code</label>
+                <label className="text-[#18181B] font-semibold block mb-1">Promo Code</label>
                 <input
                   type="text"
                   required
                   value={code}
                   onChange={(e) => setCode(e.target.value.toUpperCase())}
                   placeholder="e.g. FESTIVE25"
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono uppercase focus:outline-none focus:border-amber-500"
+                  className="w-full bg-[#FAF7F2] border border-[#E6DFD5] rounded-xl px-3 py-2 text-[#18181B] font-mono uppercase focus:outline-none focus:border-[#775a00] focus:bg-white"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-slate-300 font-semibold block mb-1">Discount Type</label>
+                  <label className="text-[#18181B] font-semibold block mb-1">Discount Type</label>
                   <select
                     value={discountType}
                     onChange={(e) => setDiscountType(e.target.value as any)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white"
+                    className="w-full bg-[#FAF7F2] border border-[#E6DFD5] rounded-xl px-3 py-2 text-[#18181B] focus:outline-none focus:border-[#775a00] focus:bg-white cursor-pointer font-medium"
                   >
                     <option value="percentage">Percentage (%)</option>
                     <option value="fixed">Flat Amount (₹)</option>
@@ -246,7 +248,7 @@ export default function AdminPromosPage() {
                 </div>
 
                 <div>
-                  <label className="text-slate-300 font-semibold block mb-1">
+                  <label className="text-[#18181B] font-semibold block mb-1">
                     {discountType === 'percentage' ? 'Discount Percentage (%)' : 'Discount Amount (₹)'}
                   </label>
                   <input
@@ -255,44 +257,44 @@ export default function AdminPromosPage() {
                     max={discountType === 'percentage' ? 90 : 5000}
                     value={discountValue}
                     onChange={(e) => setDiscountValue(Number(e.target.value))}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono"
+                    className="w-full bg-[#FAF7F2] border border-[#E6DFD5] rounded-xl px-3 py-2 text-[#18181B] font-mono focus:outline-none focus:border-[#775a00] focus:bg-white"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-slate-300 font-semibold block mb-1">
+                  <label className="text-[#18181B] font-semibold block mb-1">
                     Max Discount Cap (₹) {discountType === 'fixed' && '(Optional)'}
                   </label>
                   <input
                     type="number"
                     value={maxDiscountCap}
                     onChange={(e) => setMaxDiscountCap(Number(e.target.value))}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono"
+                    className="w-full bg-[#FAF7F2] border border-[#E6DFD5] rounded-xl px-3 py-2 text-[#18181B] font-mono focus:outline-none focus:border-[#775a00] focus:bg-white"
                   />
                 </div>
 
                 <div>
-                  <label className="text-slate-300 font-semibold block mb-1">Min Booking Amount (₹)</label>
+                  <label className="text-[#18181B] font-semibold block mb-1">Min Booking Amount (₹)</label>
                   <input
                     type="number"
                     value={minBookingAmount}
                     onChange={(e) => setMinBookingAmount(Number(e.target.value))}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono"
+                    className="w-full bg-[#FAF7F2] border border-[#E6DFD5] rounded-xl px-3 py-2 text-[#18181B] font-mono focus:outline-none focus:border-[#775a00] focus:bg-white"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-slate-300 font-semibold block mb-1">Validity (Days from today)</label>
+                <label className="text-[#18181B] font-semibold block mb-1">Validity (Days from today)</label>
                 <input
                   type="number"
                   min="1"
                   max="365"
                   value={validUntilDays}
                   onChange={(e) => setValidUntilDays(Number(e.target.value))}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono"
+                  className="w-full bg-[#FAF7F2] border border-[#E6DFD5] rounded-xl px-3 py-2 text-[#18181B] font-mono focus:outline-none focus:border-[#775a00] focus:bg-white"
                 />
               </div>
 
@@ -300,13 +302,13 @@ export default function AdminPromosPage() {
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white"
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-[#71717A] hover:text-[#18181B] cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl saffron-gradient text-slate-950 font-bold text-xs hover:brightness-110 transition-all shadow-lg shadow-amber-500/20"
+                  className="px-5 py-2.5 rounded-xl bg-[#775a00] hover:bg-[#5c4600] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer"
                 >
                   Publish Promo Code
                 </button>

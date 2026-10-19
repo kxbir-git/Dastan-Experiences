@@ -26,11 +26,11 @@ import { formatINR } from '@/lib/utils';
 import type { EventListing, ListingStatus, Restaurant } from '@/types';
 
 const STATUS_STYLE: Record<ListingStatus, string> = {
-  published: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-  pending_approval: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
-  draft: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
-  rejected: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
-  archived: 'bg-slate-700/20 text-slate-500 border-slate-700/30',
+  published: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  pending_approval: 'bg-amber-50 text-amber-800 border-amber-200',
+  draft: 'bg-slate-100 text-slate-600 border-slate-200',
+  rejected: 'bg-rose-50 text-rose-700 border-rose-200',
+  archived: 'bg-slate-100 text-slate-500 border-slate-200',
 };
 
 export default function AdminModerationPage() {
@@ -127,16 +127,16 @@ export default function AdminModerationPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       {/* Header Banner */}
-      <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E6DFD5] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
         <div className="space-y-1 relative z-10">
-          <div className="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-xs font-bold text-[#775a00] uppercase tracking-wider">
             <Sliders className="w-4 h-4" />
             <span>Listing Governance & Quality Control</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#18181B] tracking-tight">
             Listings Moderation & Publishing Hub
           </h1>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-[#71717A]">
             Audit live events, dining deals, ticket tier capacities, and approve listings for public discovery.
           </p>
         </div>
@@ -144,14 +144,14 @@ export default function AdminModerationPage() {
         <div className="flex items-center gap-3 relative z-10">
           <Link
             href="/admin/vendors"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-xs font-semibold text-slate-200 hover:text-white transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-[#E6DFD5] text-xs font-semibold text-[#18181B] hover:bg-[#FAF7F2] transition-colors shadow-xs"
           >
-            <Building className="w-4 h-4 text-amber-400" />
+            <Building className="w-4 h-4 text-[#775a00]" />
             <span>Vendor Approvals</span>
           </Link>
           <Link
             href="/admin/refunds"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl saffron-gradient text-slate-950 font-bold text-xs hover:brightness-110 transition-all shadow-lg shadow-amber-500/20"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#775a00] hover:bg-[#5c4600] text-white font-bold text-xs transition-all shadow-md"
           >
             <span>Refunds Hub</span>
           </Link>
@@ -159,16 +159,17 @@ export default function AdminModerationPage() {
       </div>
 
       {/* Stats Cards */}
+      <h2 className="text-xl font-bold text-[#18181B] mt-4">Signature Dastans</h2>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: 'Pending Review', value: pendingEvents.length + pendingRestaurants.length, color: 'text-amber-400' },
-          { label: 'Published Events', value: events.filter((e) => e.status === 'published').length, color: 'text-emerald-400' },
-          { label: 'Published Dining', value: restaurants.filter((r) => r.status === 'published').length, color: 'text-indigo-400' },
-          { label: 'Featured Spotlight', value: events.filter((e) => e.isFeatured).length + restaurants.filter((r) => r.isFeatured).length, color: 'text-amber-400' },
+          { label: 'Pending Review', value: pendingEvents.length + pendingRestaurants.length, color: 'text-[#775a00]' },
+          { label: 'Published Events', value: events.filter((e) => e.status === 'published').length, color: 'text-emerald-700' },
+          { label: 'Published Dining', value: restaurants.filter((r) => r.status === 'published').length, color: 'text-indigo-700' },
+          { label: 'Featured Spotlight', value: events.filter((e) => e.isFeatured).length + restaurants.filter((r) => r.isFeatured).length, color: 'text-[#775a00]' },
         ].map((s) => (
-          <div key={s.label} className="glass-card rounded-2xl p-4 border border-slate-800">
+          <div key={s.label} className="bg-white rounded-2xl p-4 border border-[#E6DFD5] shadow-xs">
             <div className={`text-2xl font-black ${s.color}`}>{s.value}</div>
-            <div className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">{s.label}</div>
+            <div className="text-[10px] text-[#71717A] uppercase tracking-wider font-bold mt-0.5">{s.label}</div>
           </div>
         ))}
       </div>
@@ -181,20 +182,20 @@ export default function AdminModerationPage() {
       )}
 
       {/* Tabs & Filter Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E6DFD5] pb-3">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveTab('events')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
               activeTab === 'events'
-                ? 'saffron-gradient text-slate-950 shadow-md'
-                : 'text-slate-400 hover:text-white bg-slate-900/50'
+                ? 'bg-[#775a00] text-white shadow-md'
+                : 'text-[#71717A] hover:text-[#18181B] bg-[#FAF7F2] border border-[#E6DFD5]'
             }`}
           >
             <Calendar className="w-4 h-4" />
             <span>Live Events ({events.length})</span>
             {pendingEvents.length > 0 && (
-              <span className="px-1.5 py-0.5 rounded-full bg-amber-500 text-slate-950 text-[10px] font-black">
+              <span className="px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200 text-[10px] font-black">
                 {pendingEvents.length}
               </span>
             )}
@@ -202,16 +203,16 @@ export default function AdminModerationPage() {
 
           <button
             onClick={() => setActiveTab('dining')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
               activeTab === 'dining'
-                ? 'saffron-gradient text-slate-950 shadow-md'
-                : 'text-slate-400 hover:text-white bg-slate-900/50'
+                ? 'bg-[#775a00] text-white shadow-md'
+                : 'text-[#71717A] hover:text-[#18181B] bg-[#FAF7F2] border border-[#E6DFD5]'
             }`}
           >
-            <UtensilsCrossed className="w-4 h-4 text-emerald-400" />
+            <UtensilsCrossed className="w-4 h-4" />
             <span>Restaurants & Deals ({restaurants.length})</span>
             {pendingRestaurants.length > 0 && (
-              <span className="px-1.5 py-0.5 rounded-full bg-amber-500 text-slate-950 text-[10px] font-black">
+              <span className="px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200 text-[10px] font-black">
                 {pendingRestaurants.length}
               </span>
             )}
@@ -220,11 +221,11 @@ export default function AdminModerationPage() {
 
         {/* Status Filter */}
         <div className="flex items-center gap-2">
-          <Filter className="w-3.5 h-3.5 text-slate-400" />
+          <Filter className="w-3.5 h-3.5 text-[#71717A]" />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500/50"
+            className="bg-white border border-[#E6DFD5] rounded-xl px-3 py-1.5 text-xs text-[#18181B] focus:outline-none focus:border-[#775a00] cursor-pointer font-medium"
           >
             <option value="all">All Statuses</option>
             <option value="pending_approval">Pending Approval</option>
@@ -245,7 +246,7 @@ export default function AdminModerationPage() {
             return (
               <div
                 key={event.id}
-                className="glass-card rounded-3xl p-5 border border-slate-800 space-y-4 hover:border-slate-700 transition-all"
+                className="bg-white rounded-3xl p-5 border border-[#E6DFD5] shadow-xs space-y-4 hover:border-[#c59a27]/40 transition-all"
               >
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div className="flex gap-4">
@@ -259,16 +260,16 @@ export default function AdminModerationPage() {
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${STATUS_STYLE[event.status]}`}>
                           {event.status.replace('_', ' ')}
                         </span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-900 text-amber-400 border border-slate-800">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FAF7F2] text-[#775a00] border border-[#E6DFD5]">
                           {event.categoryLabel}
                         </span>
-                        <span className="text-xs text-slate-400">Host: <strong className="text-white">{event.vendorName}</strong></span>
+                        <span className="text-xs text-[#71717A]">Host: <strong className="text-[#18181B]">{event.vendorName}</strong></span>
                       </div>
-                      <h3 className="text-base font-bold text-white leading-snug">{event.title}</h3>
-                      <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400">
-                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-amber-400" /> {event.venueName}, {event.city}</span>
-                        <span className="flex items-center gap-1"><Clock className="w-3 h-3 text-slate-500" /> {new Date(event.startTime).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
-                        <span>Total Capacity: <strong className="text-white">{totalCapacity} seats</strong></span>
+                      <h3 className="text-base font-bold text-[#18181B] leading-snug">{event.title}</h3>
+                      <div className="flex flex-wrap items-center gap-3 text-xs text-[#71717A]">
+                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-[#775a00]" /> {event.venueName}, {event.city}</span>
+                        <span className="flex items-center gap-1"><Clock className="w-3 h-3 text-[#71717A]" /> {new Date(event.startTime).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
+                        <span>Total Capacity: <strong className="text-[#18181B]">{totalCapacity} seats</strong></span>
                       </div>
                     </div>
                   </div>
@@ -276,18 +277,18 @@ export default function AdminModerationPage() {
                   <div className="flex items-center gap-2 shrink-0">
                     <button
                       onClick={() => handleToggleFeatured('event', event.id, event.isFeatured)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors flex items-center gap-1.5 ${
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors flex items-center gap-1.5 cursor-pointer ${
                         event.isFeatured
-                          ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                          : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
+                          ? 'bg-[#ffdf9a]/40 text-[#775a00] border-[#c59a27]/40'
+                          : 'bg-white text-[#71717A] border-[#E6DFD5] hover:text-[#18181B] hover:bg-[#FAF7F2]'
                       }`}
                     >
-                      <Star className={`w-3.5 h-3.5 ${event.isFeatured ? 'fill-amber-400 text-amber-400' : ''}`} />
+                      <Star className={`w-3.5 h-3.5 ${event.isFeatured ? 'fill-[#c59a27] text-[#c59a27]' : ''}`} />
                       {event.isFeatured ? 'Featured' : 'Make Featured'}
                     </button>
                     <Link
                       href={`/events/${event.slug}`}
-                      className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-800"
+                      className="p-2 rounded-xl bg-white hover:bg-[#FAF7F2] text-[#71717A] hover:text-[#18181B] border border-[#E6DFD5]"
                       title="Preview Public Page"
                     >
                       <Eye className="w-4 h-4" />
@@ -296,18 +297,18 @@ export default function AdminModerationPage() {
                 </div>
 
                 {/* Ticket Tiers Details */}
-                <div className="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80 space-y-2">
-                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#E6DFD5] space-y-2">
+                  <div className="text-[10px] font-bold text-[#775a00] uppercase tracking-wider">
                     Ticket Tiers & Capacity Distribution
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     {event.ticketTiers.map((t) => (
-                      <div key={t.id} className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs space-y-0.5">
-                        <div className="font-bold text-white flex items-center justify-between">
+                      <div key={t.id} className="p-2.5 rounded-xl bg-white border border-[#E6DFD5] text-xs space-y-0.5 shadow-xs">
+                        <div className="font-bold text-[#18181B] flex items-center justify-between">
                           <span>{t.tierName}</span>
-                          <span className="text-emerald-400">{formatINR(t.price)}</span>
+                          <span className="text-emerald-700 font-mono">{formatINR(t.price)}</span>
                         </div>
-                        <div className="text-[11px] text-slate-400">
+                        <div className="text-[11px] text-[#71717A]">
                           Capacity: {t.totalCapacity} ({t.soldCount} sold)
                         </div>
                       </div>
@@ -316,12 +317,12 @@ export default function AdminModerationPage() {
                 </div>
 
                 {/* Moderation Actions */}
-                <div className="flex items-center justify-end gap-3 pt-1 border-t border-slate-800">
+                <div className="flex items-center justify-end gap-3 pt-2 border-t border-[#E6DFD5]">
                   {event.status !== 'published' && (
                     <button
                       onClick={() => handleApprove('event', event.id)}
                       disabled={isProc}
-                      className="px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-all shadow-md flex items-center gap-1.5 disabled:opacity-50"
+                      className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
                     >
                       <CheckCircle className="w-4 h-4" />
                       Approve & Publish Live
@@ -337,7 +338,7 @@ export default function AdminModerationPage() {
                           title: event.title,
                         })
                       }
-                      className="px-4 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold transition-colors"
+                      className="px-4 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition-colors cursor-pointer"
                     >
                       Reject with Feedback
                     </button>
@@ -358,7 +359,7 @@ export default function AdminModerationPage() {
             return (
               <div
                 key={restaurant.id}
-                className="glass-card rounded-3xl p-5 border border-slate-800 space-y-4 hover:border-slate-700 transition-all"
+                className="bg-white rounded-3xl p-5 border border-[#E6DFD5] shadow-xs space-y-4 hover:border-[#c59a27]/40 transition-all"
               >
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div className="flex gap-4">
@@ -411,18 +412,18 @@ export default function AdminModerationPage() {
                 </div>
 
                 {/* Offers & Deals details */}
-                <div className="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80 space-y-2">
-                  <div className="text-[10px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1">
+                <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#E6DFD5] space-y-2">
+                  <div className="text-[10px] font-bold text-[#775a00] uppercase tracking-wider flex items-center gap-1">
                     <Percent className="w-3 h-3" /> Dining Deals Configured ({restaurant.offers.length})
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {restaurant.offers.map((offer) => (
-                      <div key={offer.id} className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs space-y-1">
+                      <div key={offer.id} className="p-2.5 rounded-xl bg-white border border-[#E6DFD5] text-xs space-y-1 shadow-xs">
                         <div className="flex items-center justify-between">
-                          <span className="font-bold text-white">{offer.title}</span>
-                          <span className="font-black text-emerald-400">{offer.discountPct}% OFF</span>
+                          <span className="font-bold text-[#18181B]">{offer.title}</span>
+                          <span className="font-black text-emerald-700">{offer.discountPct}% OFF</span>
                         </div>
-                        <div className="text-[11px] text-slate-400">
+                        <div className="text-[11px] text-[#71717A]">
                           {offer.availableDays.join(', ')} · {offer.validFrom} - {offer.validTo} · {offer.maxCoversPerSlot} covers capacity/slot
                         </div>
                       </div>
@@ -431,12 +432,12 @@ export default function AdminModerationPage() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center justify-end gap-3 pt-1 border-t border-slate-800">
+                <div className="flex items-center justify-end gap-3 pt-2 border-t border-[#E6DFD5]">
                   {restaurant.status !== 'published' && (
                     <button
                       onClick={() => handleApprove('dining', restaurant.id)}
                       disabled={isProc}
-                      className="px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-all shadow-md flex items-center gap-1.5 disabled:opacity-50"
+                      className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
                     >
                       <CheckCircle className="w-4 h-4" />
                       Approve & Publish Restaurant
@@ -452,7 +453,7 @@ export default function AdminModerationPage() {
                           title: restaurant.name,
                         })
                       }
-                      className="px-4 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold transition-colors"
+                      className="px-4 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition-colors cursor-pointer"
                     >
                       Reject with Feedback
                     </button>
@@ -466,33 +467,33 @@ export default function AdminModerationPage() {
 
       {/* Reject Listing Modal */}
       {rejectModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-slate-900 border border-slate-700 rounded-3xl p-6 max-w-md w-full space-y-4 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+          <div className="bg-white border border-[#E6DFD5] rounded-3xl p-6 max-w-md w-full space-y-4 shadow-2xl animate-fade-in">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <XCircle className="w-4 h-4 text-rose-400" />
+              <h3 className="text-sm font-bold text-[#18181B] flex items-center gap-2">
+                <XCircle className="w-4 h-4 text-rose-600" />
                 Reject Listing: {rejectModal.title}
               </h3>
               <button
                 onClick={() => setRejectModal(null)}
-                className="text-slate-400 hover:text-white"
+                className="text-[#71717A] hover:text-[#18181B] p-1 cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-[#71717A]">
               Provide feedback for the vendor explaining why this listing was not approved so they can correct it.
             </p>
 
             <div>
-              <label className="block text-[11px] font-medium text-slate-400 mb-1">Feedback Note *</label>
+              <label className="block text-xs font-semibold text-[#18181B] mb-1.5">Feedback Note *</label>
               <textarea
                 value={rejectionFeedback}
                 onChange={(e) => setRejectionFeedback(e.target.value)}
                 rows={3}
                 required
-                className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-rose-500/50"
+                className="w-full bg-[#FAF7F2] border border-[#E6DFD5] rounded-xl p-3 text-xs text-[#18181B] focus:outline-none focus:border-rose-500 focus:bg-white"
               />
             </div>
 
@@ -500,14 +501,14 @@ export default function AdminModerationPage() {
               <button
                 type="button"
                 onClick={() => setRejectModal(null)}
-                className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white"
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-[#71717A] hover:text-[#18181B] cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleConfirmReject}
-                className="px-4 py-2 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold transition-colors"
+                className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-colors shadow-sm cursor-pointer"
               >
                 Confirm Rejection
               </button>

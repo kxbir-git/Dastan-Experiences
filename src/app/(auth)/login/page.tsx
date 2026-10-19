@@ -8,11 +8,12 @@ import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { store } from '@/lib/store';
 import { supabase } from '@/lib/supabase/client';
 import { CitySelect } from '@/components/ui/city-select';
+import { verifyAndUnlockAdmin, DEFAULT_ADMIN_PIN } from '@/lib/admin-auth';
 
+// Customer and Vendor public demo accounts (Admin hidden for safety)
 const DEMO_CREDENTIALS = [
   { role: 'Customer', email: 'rohan.sharma@example.com', password: 'Demo123!' },
   { role: 'Vendor', email: 'ananya@indigoexperiences.in', password: 'Demo123!' },
-  { role: 'Admin', email: 'admin@dastan.in', password: 'AdminDastan!' },
 ];
 
 export default function LoginPage() {
@@ -56,6 +57,9 @@ export default function LoginPage() {
           const role = (data.user.user_metadata?.role || 'customer') as 'customer' | 'vendor' | 'admin';
           store.setCurrentRole(role);
           store.setSelectedCity(selectedCity);
+          if (role === 'admin') {
+            verifyAndUnlockAdmin(DEFAULT_ADMIN_PIN);
+          }
           router.push(`/${role}`);
           return;
         }
@@ -69,12 +73,22 @@ export default function LoginPage() {
 
       // Demo credentials simulation
       await new Promise((r) => setTimeout(r, 600));
+
+      // Admin manual credentials check
+      if (email.trim().toLowerCase() === 'admin@dastan.in' && (password === 'AdminDastan!' || password === 'Demo123!')) {
+        store.setCurrentRole('admin');
+        store.setSelectedCity(selectedCity);
+        verifyAndUnlockAdmin(DEFAULT_ADMIN_PIN);
+        router.push('/admin');
+        return;
+      }
+
       const demo = DEMO_CREDENTIALS.find(
         (c) => c.email.toLowerCase() === email.trim().toLowerCase() && c.password === password
       );
 
       if (demo) {
-        const role = demo.role.toLowerCase() as 'customer' | 'vendor' | 'admin';
+        const role = demo.role.toLowerCase() as 'customer' | 'vendor';
         store.setCurrentRole(role);
         store.setSelectedCity(selectedCity);
         router.push(`/${role}`);

@@ -10,8 +10,8 @@ interface EventCardProps {
 }
 
 export function EventCard({ event }: EventCardProps) {
-  const remainingSeats = event.ticketTiers.reduce(
-    (acc, t) => acc + Math.max(0, t.totalCapacity - t.soldCount),
+  const remainingSeats = (event.ticketTiers || []).reduce(
+    (acc, t) => acc + Math.max(0, (t.totalCapacity || 50) - (t.soldCount || 0)),
     0
   );
 

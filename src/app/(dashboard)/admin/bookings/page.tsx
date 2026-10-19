@@ -16,11 +16,11 @@ import {
 import type { BookingStatus } from '@/types';
 
 const STATUS_STYLE: Record<BookingStatus, string> = {
-  confirmed: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-  checked_in: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
-  pending_payment: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
-  cancelled: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
-  refunded: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+  confirmed: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  checked_in: 'bg-blue-50 text-blue-700 border-blue-200',
+  pending_payment: 'bg-amber-50 text-amber-800 border-amber-200',
+  cancelled: 'bg-slate-100 text-slate-700 border-slate-200',
+  refunded: 'bg-rose-50 text-rose-700 border-rose-200',
 };
 
 export default function AdminBookingsPage() {
@@ -76,32 +76,38 @@ export default function AdminBookingsPage() {
   const totalRefunds = bookings.filter((b) => b.status === 'refunded').reduce((s, b) => s + b.totalAmount, 0);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-black text-white">All Bookings</h1>
-        <p className="text-xs text-slate-400 mt-0.5">Platform-wide booking management and refund controls</p>
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E6DFD5] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 text-xs font-bold text-[#775a00] uppercase tracking-wider mb-1">
+            <Ticket className="w-4 h-4" />
+            <span>Master Guest Ledger</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#18181B] tracking-tight">Platform Bookings</h1>
+          <p className="text-xs text-[#71717A] mt-1">Platform-wide booking management, guest attendance and refund controls</p>
+        </div>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: 'Total Bookings', value: bookings.length, color: 'text-white' },
-          { label: 'Confirmed', value: bookings.filter((b) => b.status === 'confirmed').length, color: 'text-emerald-400' },
-          { label: 'GMV', value: formatINR(totalGMV), color: 'text-amber-400' },
-          { label: 'Refunded', value: formatINR(totalRefunds), color: 'text-rose-400' },
+          { label: 'Total Bookings', value: bookings.length, color: 'text-[#18181B]' },
+          { label: 'Confirmed', value: bookings.filter((b) => b.status === 'confirmed').length, color: 'text-emerald-700' },
+          { label: 'Gross GMV', value: formatINR(totalGMV), color: 'text-[#775a00]' },
+          { label: 'Total Refunded', value: formatINR(totalRefunds), color: 'text-rose-600' },
         ].map((s) => (
-          <div key={s.label} className="glass-card rounded-2xl p-4 border border-slate-800">
-            <div className={`text-lg font-black ${s.color}`}>{s.value}</div>
-            <div className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">{s.label}</div>
+          <div key={s.label} className="bg-white rounded-2xl p-4 border border-[#E6DFD5] shadow-xs">
+            <div className={`text-xl font-black ${s.color}`}>{s.value}</div>
+            <div className="text-[10px] text-[#71717A] uppercase tracking-wider mt-1 font-bold">{s.label}</div>
           </div>
         ))}
       </div>
 
       {/* Issue Refund Panel */}
-      <div className="glass-panel rounded-3xl p-6 border border-rose-500/20 space-y-4">
-        <h2 className="text-sm font-bold text-rose-400 flex items-center gap-2">
-          <RotateCcw className="w-4 h-4" /> Issue Refund via Razorpay
+      <div className="bg-white rounded-3xl p-6 border border-[#E6DFD5] shadow-xs space-y-4">
+        <h2 className="text-sm font-bold text-rose-700 flex items-center gap-2">
+          <RotateCcw className="w-4 h-4" /> Issue Direct Refund via Razorpay
         </h2>
         <form onSubmit={handleRefund} className="flex flex-col sm:flex-row gap-3">
           <input
@@ -110,7 +116,7 @@ export default function AdminBookingsPage() {
             onChange={(e) => setRefundId(e.target.value)}
             placeholder="Booking ID (e.g. bk-94821)"
             required
-            className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-rose-500/50 transition-colors"
+            className="flex-1 bg-[#FAF7F2] border border-[#E6DFD5] rounded-xl px-3.5 py-2.5 text-xs text-[#18181B] placeholder-[#A1A1AA] focus:outline-none focus:border-rose-500 focus:bg-white transition-colors"
           />
           <input
             type="text"
@@ -118,15 +124,15 @@ export default function AdminBookingsPage() {
             onChange={(e) => setRefundReason(e.target.value)}
             placeholder="Refund reason"
             required
-            className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-rose-500/50 transition-colors"
+            className="flex-1 bg-[#FAF7F2] border border-[#E6DFD5] rounded-xl px-3.5 py-2.5 text-xs text-[#18181B] placeholder-[#A1A1AA] focus:outline-none focus:border-rose-500 focus:bg-white transition-colors"
           />
           <button
             type="submit"
             disabled={refundLoading || !refundId}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 font-bold text-sm border border-rose-500/30 transition-colors disabled:opacity-60 whitespace-nowrap"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-60 whitespace-nowrap shadow-xs cursor-pointer"
           >
             {refundLoading ? (
-              <div className="w-4 h-4 border-2 border-rose-300/30 border-t-rose-300 rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
             ) : (
               <RotateCcw className="w-4 h-4" />
             )}
@@ -134,10 +140,10 @@ export default function AdminBookingsPage() {
           </button>
         </form>
         {refundMessage && (
-          <div className={`flex items-start gap-2 p-3 rounded-xl text-xs font-medium ${
+          <div className={`flex items-start gap-2 p-3 rounded-xl text-xs font-semibold ${
             refundMessage.type === 'success'
-              ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-300'
-              : 'bg-rose-500/10 border border-rose-500/30 text-rose-300'
+              ? 'bg-emerald-50 border border-emerald-200 text-emerald-800'
+              : 'bg-rose-50 border border-rose-200 text-rose-800'
           }`}>
             {refundMessage.type === 'success' ? <CheckCircle className="w-4 h-4 flex-shrink-0" /> : <AlertCircle className="w-4 h-4 flex-shrink-0" />}
             {refundMessage.text}
@@ -148,19 +154,19 @@ export default function AdminBookingsPage() {
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#71717A]" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search bookings..."
-            className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500/50 transition-colors"
+            placeholder="Search by booking #, customer, or title..."
+            className="w-full bg-white border border-[#E6DFD5] rounded-xl pl-9 pr-4 py-2.5 text-xs text-[#18181B] placeholder-[#A1A1AA] focus:outline-none focus:border-[#775a00] shadow-xs"
           />
         </div>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500/50 transition-colors"
+          className="bg-white border border-[#E6DFD5] rounded-xl px-3 py-2.5 text-xs text-[#18181B] focus:outline-none focus:border-[#775a00] shadow-xs cursor-pointer font-medium"
         >
           <option value="all">All Statuses</option>
           <option value="confirmed">Confirmed</option>
@@ -174,31 +180,33 @@ export default function AdminBookingsPage() {
       {/* Bookings List */}
       <div className="space-y-3">
         {filtered.map((booking) => (
-          <div key={booking.id} className="glass-card rounded-2xl p-4 border border-slate-800 flex flex-col sm:flex-row sm:items-center gap-4">
+          <div key={booking.id} className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E6DFD5] shadow-xs flex flex-col sm:flex-row sm:items-center gap-4 hover:border-[#775a00]/40 transition-all">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                <span className="text-xs font-bold text-amber-400">{booking.bookingNumber}</span>
+                <span className="text-xs font-mono font-bold text-[#775a00]">{booking.bookingNumber}</span>
                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${STATUS_STYLE[booking.status]}`}>
                   {booking.status.replace('_', ' ')}
                 </span>
-                <span className="text-[10px] text-slate-500">
+                <span className="text-[10px] text-[#71717A] bg-[#FAF7F2] px-2 py-0.5 rounded-full border border-[#E6DFD5]">
                   {booking.bookingType === 'event' ? '🎫 Event' : '🍽️ Dining'}
                 </span>
               </div>
-              <div className="text-sm font-bold text-white">{booking.eventTitle || booking.restaurantName}</div>
-              <div className="text-xs text-slate-400 mt-0.5">
+              <div className="text-sm font-bold text-[#18181B]">{booking.eventTitle || booking.restaurantName}</div>
+              <div className="text-xs text-[#71717A] mt-1">
                 {booking.customerName} · {booking.bookingDate} · {booking.quantity} guest{booking.quantity > 1 ? 's' : ''}
               </div>
             </div>
             <div className="text-right flex-shrink-0">
-              <div className="text-xs text-slate-500">Total</div>
-              <div className="text-sm font-black text-amber-400">{formatINR(booking.totalAmount)}</div>
-              <div className="text-[10px] text-slate-500 mt-0.5">ID: {booking.id}</div>
+              <div className="text-[10px] text-[#71717A] uppercase font-bold">Total Paid</div>
+              <div className="text-base font-extrabold text-[#775a00]">{formatINR(booking.totalAmount)}</div>
+              <div className="text-[10px] font-mono text-[#71717A] mt-0.5">ID: {booking.id}</div>
             </div>
           </div>
         ))}
         {filtered.length === 0 && (
-          <div className="text-center py-12 text-slate-500 text-sm">No bookings match your filters.</div>
+          <div className="text-center py-12 bg-white rounded-2xl border border-[#E6DFD5] text-[#71717A] text-sm">
+            No bookings match your filters.
+          </div>
         )}
       </div>
     </div>

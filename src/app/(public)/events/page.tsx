@@ -6,12 +6,22 @@ import { EventCard } from '@/components/events/event-card';
 import { CitySelect } from '@/components/ui/city-select';
 
 export default function EventsListingPage() {
-  const [selectedCity, setSelectedCity] = useState<string>('Mumbai');
+  const [selectedCity, setSelectedCity] = useState<string>('All');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'date' | 'price_asc' | 'price_desc'>('date');
+  const [allEvents, setAllEvents] = useState<any[]>(() => store.getAllEvents());
 
-  const allEvents = store.getAllEvents();
+  React.useEffect(() => {
+    fetch('/api/events')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.events) {
+          setAllEvents(data.events);
+        }
+      })
+      .catch((err) => console.warn('Could not sync events from API:', err));
+  }, []);
 
   let filtered = allEvents.filter((evt) => {
     const matchCity =

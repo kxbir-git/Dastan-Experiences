@@ -5,9 +5,10 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { store } from '@/lib/store';
 import { formatDate, formatTime, formatINR } from '@/lib/utils';
-import { TicketTier } from '@/types';
+import { TicketTier, EventListing } from '@/types';
 import { CheckoutModal } from '@/components/booking/checkout-modal';
 import { TablematesPreview } from '@/components/social/tablemates-preview';
+import { AdvertisementBox } from '@/components/ui/advertisement-box';
 
 interface EventDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -15,25 +16,88 @@ interface EventDetailPageProps {
 
 export default function EventDetailPage({ params }: EventDetailPageProps) {
   const resolvedParams = use(params);
-  const event = store.getEventBySlug(resolvedParams.slug);
-
-  if (!event) {
-    notFound();
-  }
-
-  const [selectedTier, setSelectedTier] = useState<TicketTier>(
-    event.ticketTiers[0]
+  const [event, setEvent] = useState<EventListing | null>(
+    () => store.getEventBySlug(resolvedParams.slug) || store.getEventById(resolvedParams.slug) || null
   );
+  const [loading, setLoading] = useState(!event);
+
+  React.useEffect(() => {
+    if (!event) {
+      fetch('/api/events')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.events) {
+            const found = data.events.find(
+              (e: any) => e.slug === resolvedParams.slug || e.id === resolvedParams.slug
+            );
+            if (found) {
+              setEvent(found);
+              if (found.ticketTiers?.length) {
+                setSelectedTier(found.ticketTiers[0]);
+              }
+            }
+          }
+        })
+        .catch((e) => console.warn('Error hydrating event:', e))
+        .finally(() => setLoading(false));
+    }
+  }, [resolvedParams.slug, event]);
+
+  const [selectedTier, setSelectedTier] = useState<TicketTier>(() => {
+    const initial = store.getEventBySlug(resolvedParams.slug) || store.getEventById(resolvedParams.slug);
+    return (
+      initial?.ticketTiers?.[0] || {
+        id: 'tier-default',
+        eventId: initial?.id || '',
+        tierName: 'General Pass',
+        price: initial?.startingPrice || 0,
+        totalCapacity: 100,
+        soldCount: 0,
+        perks: ['Gate Entry'],
+      }
+    );
+  });
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+
+  if (loading) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center p-8 bg-[#FDFBF7]">
+        <div className="w-10 h-10 border-3 border-[#775a00]/20 border-t-[#775a00] rounded-full animate-spin mb-4" />
+        <div className="font-display-lg text-lg text-[#18181B] font-bold">Curating Your Dastan...</div>
+        <div className="text-xs text-[#71717A] mt-1">Retrieving pass inventory & seating protocols</div>
+      </div>
+    );
+  }
+
+  if (!event) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-24 text-center space-y-4">
+        <div className="w-16 h-16 rounded-full bg-[#FAF7F2] border border-[#E6DFD5] flex items-center justify-center mx-auto text-[#775a00]">
+          <span className="material-symbols-outlined text-[32px]">event_busy</span>
+        </div>
+        <h1 className="font-display-lg text-2xl font-bold text-[#18181B]">Experience Not Found</h1>
+        <p className="text-sm text-[#4e4635]">
+          This curation may have concluded, or the pass URL is inactive.
+        </p>
+        <Link
+          href="/events"
+          className="inline-block px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#c59a27] to-[#775a00] text-white text-xs font-bold"
+        >
+          Explore All Live Experiences →
+        </Link>
+      </div>
+    );
+  }
 
   const socialProfiles = store.getSocialAttendees(
     event.id,
     event.startTime.split('T')[0]
   );
 
-  const isSoldOut = selectedTier.soldCount >= selectedTier.totalCapacity;
-  const remainingTickets = Math.max(0, selectedTier.totalCapacity - selectedTier.soldCount);
+  const activeTier = selectedTier || event.ticketTiers?.[0];
+  const isSoldOut = activeTier ? activeTier.soldCount >= activeTier.totalCapacity : false;
+  const remainingTickets = activeTier ? Math.max(0, activeTier.totalCapacity - activeTier.soldCount) : 50;
 
   return (
     <div className="flex flex-col w-full bg-[#FDFBF7]">
@@ -221,7 +285,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
               </div>
 
               <div className="space-y-4">
-                {event.ticketTiers.map((tier) => {
+                {(event.ticketTiers || []).map((tier: TicketTier) => {
                   const soldOut = tier.soldCount >= tier.totalCapacity;
                   const isSelected = selectedTier.id === tier.id;
                   const remaining = Math.max(0, tier.totalCapacity - tier.soldCount);
@@ -257,7 +321,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
                           </div>
 
                           <div className="flex flex-wrap gap-2 pt-1">
-                            {tier.perks.map((perk, idx) => (
+                            {(tier.perks || []).map((perk: string, idx: number) => (
                               <span
                                 key={idx}
                                 className="inline-flex items-center gap-1 text-xs text-[#4e4635] bg-[#FAF7F2] px-2.5 py-1 rounded-md border border-[#E6DFD5]"
@@ -311,14 +375,6 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
               </div>
             </div>
 
-            {/* Tablemates / Social Discovery Section */}
-            <div className="rounded-2xl bg-white border border-[#E6DFD5] p-6 shadow-sm">
-              <TablematesPreview
-                targetId={event.id}
-                targetTitle={event.title}
-                profiles={socialProfiles}
-              />
-            </div>
 
             {/* Venue Guidelines Card */}
             <div className="p-6 rounded-2xl bg-white border border-[#E6DFD5] space-y-2 text-xs text-[#71717A] shadow-sm">
@@ -408,6 +464,9 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
                 </div>
               </div>
             </div>
+
+            {/* Official Brand Partner / Sponsored Showcase */}
+            <AdvertisementBox variant="card" className="mt-6" />
           </div>
         </div>
       </section>

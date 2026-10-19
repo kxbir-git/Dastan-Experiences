@@ -54,9 +54,38 @@ export default function VendorEventsPage() {
     subscription.featuredListingCredits - subscription.usedListingCredits
   );
 
-  const reloadData = () => {
+  const reloadData = async () => {
+    try {
+      const res = await fetch('/api/vendor/events');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.events) {
+          setEvents(data.events);
+          setSubscription({ ...store.getVendorSubscription(vendorId) });
+          return;
+        }
+      }
+    } catch {}
     setEvents([...store.getAllEvents()]);
     setSubscription({ ...store.getVendorSubscription(vendorId) });
+  };
+
+  const handleToggleStatus = async (eventId: string, currentStatus: string) => {
+    try {
+      const newStatus = currentStatus === 'published' ? 'draft' : 'published';
+      const res = await fetch('/api/vendor/events', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eventId, status: newStatus }),
+      });
+      if (res.ok) {
+        setFeedback(`Event status changed to ${newStatus.toUpperCase()}!`);
+        await reloadData();
+        setTimeout(() => setFeedback(null), 3000);
+      }
+    } catch {
+      alert('Error updating status');
+    }
   };
 
   const handleBoost = async (eventId: string) => {
@@ -340,12 +369,24 @@ export default function VendorEventsPage() {
                 {/* Actions Footer */}
                 <div className="p-5 pt-0">
                   <div className="flex items-center gap-2 pt-3 border-t border-slate-800/80">
+                    <button
+                      onClick={() => handleToggleStatus(event.id, event.status)}
+                      className={`px-2.5 py-2 rounded-xl text-xs font-bold border transition-colors ${
+                        event.status === 'published'
+                          ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30 hover:bg-rose-500/20 hover:text-rose-300 hover:border-rose-500/40'
+                          : 'bg-amber-500/15 text-amber-300 border-amber-500/30 hover:bg-emerald-500/20 hover:text-emerald-300 hover:border-emerald-500/40'
+                      }`}
+                      title="Click to toggle Live on Customer View or Draft"
+                    >
+                      {event.status === 'published' ? '🟢 Live' : '🟡 Draft'}
+                    </button>
+
                     <Link
                       href={`/events/${event.slug}`}
                       className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold border border-slate-700 transition-colors"
                     >
                       <Eye className="w-3.5 h-3.5 text-amber-400" />
-                      Preview
+                      View as Customer
                     </Link>
 
                     <button

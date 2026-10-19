@@ -10,6 +10,7 @@ import {
 } from '@/lib/indian-cities';
 import { store } from '@/lib/store';
 import { UserRole } from '@/types';
+import { isAdminUnlocked as checkAdminUnlocked, lockAdmin } from '@/lib/admin-auth';
 
 export function Navbar() {
   const pathname = usePathname();
@@ -22,29 +23,56 @@ export function Navbar() {
   const [currentRole, setCurrentRole] = useState<UserRole>('customer');
   const [headerSearch, setHeaderSearch] = useState('');
   const [isMobileCityOpen, setIsMobileCityOpen] = useState(false);
+  const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
 
   const cityDropdownRef = useRef<HTMLDivElement>(null);
   const roleDropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Sync city & role from store
+  // Sync city, role & admin privileges safely
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedCity = store.getSelectedCity();
       if (savedCity) setSelectedCity(savedCity);
 
+      const unlocked = checkAdminUnlocked();
+      setIsAdminUnlocked(unlocked);
+
       const savedRole = store.getCurrentRole();
-      if (savedRole) setCurrentRole(savedRole);
+      if (pathname.startsWith('/admin')) {
+        if (unlocked) {
+          setCurrentRole('admin');
+        }
+      } else if (savedRole === 'admin' && !unlocked) {
+        store.setCurrentRole('customer');
+        setCurrentRole('customer');
+      } else if (savedRole) {
+        setCurrentRole(savedRole);
+      }
 
       const handleCityChange = (e: any) => {
         if (e.detail?.city) {
           setSelectedCity(e.detail.city);
         }
       };
+
+      const handleAdminStatusChange = (e: any) => {
+        const isUnlocked = Boolean(e.detail?.unlocked);
+        setIsAdminUnlocked(isUnlocked);
+        if (!isUnlocked && currentRole === 'admin') {
+          setCurrentRole('customer');
+          store.setCurrentRole('customer');
+        }
+      };
+
       window.addEventListener('dastan_city_changed', handleCityChange);
-      return () => window.removeEventListener('dastan_city_changed', handleCityChange);
+      window.addEventListener('dastan_admin_status_changed', handleAdminStatusChange);
+      return () => {
+        window.removeEventListener('dastan_city_changed', handleCityChange);
+        window.removeEventListener('dastan_admin_status_changed', handleAdminStatusChange);
+      };
     }
-  }, []);
+  }, [pathname, currentRole]);
 
   // Close menus on route change
   useEffect(() => {
@@ -124,21 +152,20 @@ export function Navbar() {
 
   const navLinks = [
     { label: 'Live Events', href: '/events' },
-    { label: 'Dining Deals', href: '/dining' },
-    { label: 'Social Table', href: '/#social-experience' },
+    { label: 'My Gate Passes', href: '/customer' },
     { label: 'About', href: '/about' },
   ];
 
   const portalLinks = [
     { label: 'Vendor Portal', href: '/vendor' },
-    { label: 'Admin Hub', href: '/admin' },
+    ...(isAdminUnlocked ? [{ label: 'Admin Hub', href: '/admin' }] : []),
   ];
 
   return (
     <header className="sticky top-0 left-0 right-0 z-50 bg-[#FFFFFF]/95 backdrop-blur-xl border-b border-[#E6DFD5] shadow-[0_2px_16px_rgba(119,90,0,0.06)] transition-all">
       <div className="h-16 sm:h-20 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-3 sm:gap-6">
         {/* Left Side: Brand Logo, City Selector, and Nav Links */}
-        <div className="flex items-center gap-3 sm:gap-5 lg:gap-7 min-w-0">
+        <div className="flex items-center gap-3 sm:gap-4 lg:gap-5 xl:gap-6 min-w-0">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
             <img
@@ -259,7 +286,7 @@ export function Navbar() {
           </div>
 
           {/* Navigation Links (placed on the LEFT side next to Logo & City) */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5">
             {navLinks.map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
               return (
@@ -280,21 +307,24 @@ export function Navbar() {
         </div>
 
         {/* Right Side: Quick Search, Host Experience, Role Switcher, Profile, Mobile Toggle */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-2.5 xl:gap-3 shrink-0 ml-4 xl:ml-8">
+          {/* Subtle vertical separator to cleanly isolate Navigation links (Live Events, Passes, About) from Tools */}
+          <div className="hidden xl:block h-4 w-px bg-[#E6DFD5] mr-1" />
+
           {/* Quick Search on Desktop */}
           <form onSubmit={handleSearchSubmit} className="relative hidden xl:flex items-center">
-            <span className="material-symbols-outlined absolute left-3 text-[#807663] text-[18px]">
+            <span className="material-symbols-outlined absolute left-2.5 text-[#807663] text-[17px]">
               search
             </span>
             <input
               ref={searchInputRef}
               value={headerSearch}
               onChange={(e) => setHeaderSearch(e.target.value)}
-              className="w-44 2xl:w-56 pl-9 pr-12 py-1.5 rounded-full bg-white border border-[#d1c5af]/70 text-[#1b1c1a] font-body-sm text-xs placeholder:text-[#807663] focus:outline-none focus:border-[#775a00] transition-all shadow-sm"
+              className="w-36 xl:w-40 2xl:w-52 pl-8 pr-11 py-1.5 rounded-full bg-white border border-[#d1c5af]/70 text-[#1b1c1a] font-body-sm text-xs placeholder:text-[#807663] focus:outline-none focus:border-[#775a00] focus:w-48 2xl:focus:w-56 transition-all shadow-sm"
               placeholder="Search experiences..."
               type="text"
             />
-            <kbd className="absolute right-2.5 px-1.5 py-0.5 rounded bg-[#eae8e4] border border-[#d1c5af]/50 font-label-mono-sm text-[10px] text-[#4e4635] pointer-events-none">
+            <kbd className="absolute right-2 px-1.5 py-0.5 rounded bg-[#eae8e4] border border-[#d1c5af]/50 font-label-mono-sm text-[9px] text-[#4e4635] pointer-events-none">
               ⌘K
             </kbd>
           </form>
@@ -329,7 +359,7 @@ export function Navbar() {
                 <div className="font-label-mono-sm text-[10px] font-bold text-[#807663] px-3 py-1 uppercase tracking-wider">
                   Select Persona
                 </div>
-                {(['customer', 'vendor', 'admin'] as UserRole[]).map((role) => (
+                {((isAdminUnlocked ? ['customer', 'vendor', 'admin'] : ['customer', 'vendor']) as UserRole[]).map((role) => (
                   <button
                     key={role}
                     onClick={() => handleRoleChange(role)}
@@ -345,6 +375,23 @@ export function Navbar() {
                     )}
                   </button>
                 ))}
+                {isAdminUnlocked && (
+                  <div className="pt-1.5 mt-1.5 border-t border-[#E6DFD5]">
+                    <button
+                      onClick={() => {
+                        lockAdmin();
+                        setIsAdminUnlocked(false);
+                        setIsRoleOpen(false);
+                        setCurrentRole('customer');
+                        router.push('/');
+                      }}
+                      className="w-full text-left px-3 py-1.5 text-xs text-rose-600 hover:bg-rose-50 rounded-xl font-semibold flex items-center justify-between transition-colors cursor-pointer"
+                    >
+                      <span>Lock Admin</span>
+                      <span className="text-[10px]">🔒</span>
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -538,8 +585,8 @@ export function Navbar() {
             <div className="font-label-mono-sm text-[10px] font-bold text-[#807663] px-3 mb-2 uppercase tracking-wider">
               Switch Persona
             </div>
-            <div className="grid grid-cols-3 gap-2 px-1">
-              {(['customer', 'vendor', 'admin'] as UserRole[]).map((role) => (
+            <div className={`grid ${isAdminUnlocked ? 'grid-cols-3' : 'grid-cols-2'} gap-2 px-1`}>
+              {((isAdminUnlocked ? ['customer', 'vendor', 'admin'] : ['customer', 'vendor']) as UserRole[]).map((role) => (
                 <button
                   key={role}
                   onClick={() => handleRoleChange(role)}
@@ -553,6 +600,20 @@ export function Navbar() {
                 </button>
               ))}
             </div>
+            {isAdminUnlocked && (
+              <button
+                onClick={() => {
+                  lockAdmin();
+                  setIsAdminUnlocked(false);
+                  setIsMobileOpen(false);
+                  setCurrentRole('customer');
+                  router.push('/');
+                }}
+                className="w-full mt-2 py-1.5 text-xs text-rose-600 bg-rose-50 border border-rose-200 rounded-xl font-semibold text-center hover:bg-rose-100 transition-colors"
+              >
+                Lock Admin Session 🔒
+              </button>
+            )}
           </div>
 
           {/* Mobile Host CTA */}

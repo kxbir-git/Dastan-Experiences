@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import {
   Receipt,
@@ -159,31 +159,33 @@ export default function AdminPayoutsPage() {
     .reduce((sum, p) => sum + p.netPayoutAmount, 0);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Header Banner */}
-      <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E6DFD5] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">
+          <div className="flex items-center gap-2 text-xs font-bold text-[#775a00] uppercase tracking-wider mb-1">
             <Receipt className="w-4 h-4" />
             <span>Host Settlements & Payouts Engine</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white">Vendor Payout Reports & Ledger</h1>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Process automated settlements via Razorpay Route or record manual bank NEFT/RTGS batch transfers.
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#18181B] tracking-tight">
+            Vendor Payout Reports & Ledger
+          </h1>
+          <p className="text-xs text-[#71717A] mt-1 max-w-xl">
+            Process automated settlements via Razorpay Route or record manual bank NEFT/RTGS batch transfers with complete audit tracking.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={handleExportCSV}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs font-bold text-white hover:bg-slate-800 transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-[#E6DFD5] text-xs font-bold text-[#18181B] hover:bg-[#FAF7F2] transition-colors shadow-xs cursor-pointer"
           >
-            <Download className="w-4 h-4 text-amber-400" />
+            <Download className="w-4 h-4 text-[#775a00]" />
             Export Bank CSV
           </button>
           <button
             onClick={handleGenerateBatch}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl saffron-gradient text-slate-950 font-bold text-xs hover:brightness-110 transition-all shadow-lg shadow-amber-500/20"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#775a00] hover:bg-[#5c4600] text-white font-bold text-xs transition-all shadow-md cursor-pointer"
           >
             <RefreshCw className="w-4 h-4" />
             Run Settlement Batch
@@ -192,33 +194,33 @@ export default function AdminPayoutsPage() {
       </div>
 
       {feedbackMessage && (
-        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+        <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2.5 shadow-xs">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
           <span>{feedbackMessage}</span>
         </div>
       )}
 
       {/* Settlement Totals Bar */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="glass-card rounded-2xl p-5 border border-slate-800">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Total Settled to Date</span>
-          <div className="text-2xl font-black text-emerald-400">{formatINR(totalTransferred)}</div>
-          <span className="text-[10px] text-slate-500">Transferred via Route & NEFT</span>
+        <div className="bg-white rounded-2xl p-5 border border-[#E6DFD5] shadow-xs">
+          <span className="text-[10px] uppercase font-bold text-[#71717A] block mb-1">Total Settled to Date</span>
+          <div className="text-2xl font-black text-emerald-700">{formatINR(totalTransferred)}</div>
+          <span className="text-[11px] text-[#71717A] mt-0.5 block">Transferred via Route & NEFT</span>
         </div>
 
-        <div className="glass-card rounded-2xl p-5 border border-slate-800">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Pending Settlements</span>
-          <div className="text-2xl font-black text-amber-400">{formatINR(totalPending)}</div>
-          <span className="text-[10px] text-slate-500">Awaiting transfer dispatch</span>
+        <div className="bg-white rounded-2xl p-5 border border-[#E6DFD5] shadow-xs">
+          <span className="text-[10px] uppercase font-bold text-[#71717A] block mb-1">Pending Settlements</span>
+          <div className="text-2xl font-black text-[#775a00]">{formatINR(totalPending)}</div>
+          <span className="text-[11px] text-[#71717A] mt-0.5 block">Awaiting transfer dispatch</span>
         </div>
 
-        <div className="glass-card rounded-2xl p-5 border border-slate-800">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Default Payout Engine</span>
-          <div className="text-sm font-bold text-white flex items-center gap-2 mt-1">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+        <div className="bg-white rounded-2xl p-5 border border-[#E6DFD5] shadow-xs">
+          <span className="text-[10px] uppercase font-bold text-[#71717A] block mb-1">Default Payout Engine</span>
+          <div className="text-sm font-bold text-[#18181B] flex items-center gap-2 mt-1">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
             <span>{settings.razorpayRouteEnabled ? 'Razorpay Route (Enabled)' : 'Manual Ledger (NEFT)'}</span>
           </div>
-          <span className="text-[10px] text-slate-500">Configured in Platform Settings</span>
+          <span className="text-[11px] text-[#71717A] mt-0.5 block">Configured in Platform Settings</span>
         </div>
       </div>
 
@@ -229,10 +231,10 @@ export default function AdminPayoutsPage() {
             <button
               key={st}
               onClick={() => setFilterStatus(st)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize transition-all ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold capitalize transition-all cursor-pointer ${
                 filterStatus === st
-                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                  : 'bg-slate-900 text-slate-400 border border-slate-800 hover:text-white'
+                  ? 'bg-[#775a00] text-white shadow-xs'
+                  : 'bg-white text-[#71717A] border border-[#E6DFD5] hover:text-[#18181B] hover:bg-[#FAF7F2]'
               }`}
             >
               {st}
@@ -241,70 +243,70 @@ export default function AdminPayoutsPage() {
         </div>
 
         <div className="relative w-full sm:w-72">
-          <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[#71717A] absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search vendor or period..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500/50"
+            className="w-full bg-white border border-[#E6DFD5] rounded-xl pl-9 pr-3 py-2 text-xs text-[#18181B] placeholder-[#A1A1AA] focus:outline-none focus:border-[#775a00] shadow-xs"
           />
         </div>
       </div>
 
       {/* Payouts Table */}
-      <div className="glass-panel rounded-3xl border border-slate-800 overflow-hidden">
+      <div className="bg-white rounded-3xl border border-[#E6DFD5] shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-slate-800 bg-slate-900/50 text-slate-400">
-                <th className="py-3.5 px-4 font-semibold">Vendor Host</th>
-                <th className="py-3.5 px-4 font-semibold">Period</th>
-                <th className="py-3.5 px-4 font-semibold">Gross GMV</th>
-                <th className="py-3.5 px-4 font-semibold">Platform Cut</th>
-                <th className="py-3.5 px-4 font-semibold">Net Payout</th>
-                <th className="py-3.5 px-4 font-semibold">Method & Bank</th>
-                <th className="py-3.5 px-4 font-semibold">Status</th>
-                <th className="py-3.5 px-4 font-semibold text-right">Settlement Action</th>
+              <tr className="border-b border-[#E6DFD5] bg-[#FAF7F2] text-[#775a00]">
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Vendor Host</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Period</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Gross GMV</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Platform Cut</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Net Payout</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Method & Bank</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Status</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px] text-right">Settlement Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60">
+            <tbody className="divide-y divide-[#E6DFD5]">
               {filtered.map((p) => {
                 const isTransferred = p.status === 'transferred';
 
                 return (
-                  <tr key={p.id} className="text-slate-300 hover:bg-slate-900/30 transition-colors">
+                  <tr key={p.id} className="text-[#18181B] hover:bg-[#FAF7F2]/60 transition-colors">
                     <td className="py-3.5 px-4">
-                      <div className="font-bold text-white">{p.vendorName}</div>
-                      <div className="text-[10px] text-slate-500">{p.id}</div>
+                      <div className="font-bold text-[#18181B]">{p.vendorName}</div>
+                      <div className="text-[10px] text-[#71717A] font-mono">{p.id}</div>
                     </td>
 
-                    <td className="py-3.5 px-4 text-slate-400 font-mono text-[11px]">{p.period}</td>
+                    <td className="py-3.5 px-4 text-[#71717A] font-mono text-[11px]">{p.period}</td>
 
-                    <td className="py-3.5 px-4 font-semibold text-slate-200">{formatINR(p.grossBookingsGmv)}</td>
+                    <td className="py-3.5 px-4 font-semibold text-[#18181B]">{formatINR(p.grossBookingsGmv)}</td>
 
-                    <td className="py-3.5 px-4 text-rose-400 font-mono">
+                    <td className="py-3.5 px-4 text-rose-600 font-mono font-medium">
                       -{formatINR(p.commissionDeducted + p.gatewayFeesDeducted)}
-                      <span className="text-[9px] text-slate-500 block">Comm + Gateway</span>
+                      <span className="text-[10px] text-[#71717A] block font-sans">Comm + Gateway</span>
                     </td>
 
-                    <td className="py-3.5 px-4 font-bold text-emerald-400 text-sm">
+                    <td className="py-3.5 px-4 font-extrabold text-emerald-700 text-sm">
                       {formatINR(p.netPayoutAmount)}
                     </td>
 
                     <td className="py-3.5 px-4">
                       {p.method === 'razorpay_route' ? (
-                        <div className="flex items-center gap-1.5 text-xs text-amber-300">
-                          <CreditCard className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                        <div className="flex items-center gap-1.5 text-xs text-[#775a00] font-semibold">
+                          <CreditCard className="w-3.5 h-3.5 text-[#775a00] shrink-0" />
                           <span>Razorpay Route</span>
                         </div>
                       ) : (
-                        <div className="text-slate-400 text-[11px]">
-                          <div className="flex items-center gap-1 text-slate-300">
-                            <Building className="w-3 h-3 text-slate-400" />
+                        <div className="text-[#71717A] text-[11px]">
+                          <div className="flex items-center gap-1 text-[#18181B] font-medium">
+                            <Building className="w-3 h-3 text-[#775a00]" />
                             <span>NEFT / RTGS</span>
                           </div>
-                          <span className="text-[10px] text-slate-500 block font-mono">
+                          <span className="text-[10px] text-[#71717A] block font-mono">
                             {p.bankIfsc || 'HDFC0000060'}
                           </span>
                         </div>
@@ -314,15 +316,15 @@ export default function AdminPayoutsPage() {
                     <td className="py-3.5 px-4">
                       {isTransferred ? (
                         <div className="space-y-0.5">
-                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                             <CheckCircle2 className="w-3 h-3" /> Settled
                           </span>
-                          <span className="text-[9px] text-slate-500 block font-mono truncate max-w-[120px]">
+                          <span className="text-[9px] text-[#71717A] block font-mono truncate max-w-[120px]">
                             {p.razorpayTransferId || 'NEFT Confirmed'}
                           </span>
                         </div>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
                           <Clock className="w-3 h-3" /> Pending
                         </span>
                       )}
@@ -330,14 +332,14 @@ export default function AdminPayoutsPage() {
 
                     <td className="py-3.5 px-4 text-right">
                       {isTransferred ? (
-                        <span className="text-[11px] text-slate-500 italic">Disbursed</span>
+                        <span className="text-[11px] text-[#71717A] italic">Disbursed</span>
                       ) : (
                         <div className="flex items-center justify-end gap-1.5">
                           {settings.razorpayRouteEnabled ? (
                             <button
                               disabled={processingId === p.id}
                               onClick={() => handleSettleRoute(p)}
-                              className="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-[11px] font-bold transition-all disabled:opacity-50"
+                              className="px-2.5 py-1 rounded-lg bg-[#ffdf9a]/40 hover:bg-[#ffdf9a]/70 text-[#775a00] border border-[#c59a27]/40 text-[11px] font-bold transition-all disabled:opacity-50 cursor-pointer"
                             >
                               {processingId === p.id ? 'Routing...' : 'Route Transfer'}
                             </button>
@@ -349,7 +351,7 @@ export default function AdminPayoutsPage() {
                               setUtrInputModal(p);
                               setCustomUtr(`UTR-${new Date().getFullYear()}-${Math.floor(10000000 + Math.random() * 90000000)}`);
                             }}
-                            className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-[11px] font-semibold transition-all disabled:opacity-50"
+                            className="px-2.5 py-1 rounded-lg bg-white hover:bg-[#FAF7F2] text-[#18181B] border border-[#E6DFD5] text-[11px] font-semibold transition-all disabled:opacity-50 shadow-xs cursor-pointer"
                           >
                             Mark NEFT
                           </button>
@@ -366,31 +368,31 @@ export default function AdminPayoutsPage() {
 
       {/* UTR Input Modal for Manual NEFT */}
       {utrInputModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-950 border border-slate-800 rounded-3xl p-6 max-w-md w-full space-y-5">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <div className="text-sm font-bold text-white flex items-center gap-2">
-                <Building className="w-4 h-4 text-amber-400" />
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white border border-[#E6DFD5] rounded-3xl p-6 max-w-md w-full space-y-5 shadow-2xl animate-fade-in">
+            <div className="flex items-center justify-between border-b border-[#E6DFD5] pb-3">
+              <div className="text-sm font-bold text-[#18181B] flex items-center gap-2">
+                <Building className="w-4 h-4 text-[#775a00]" />
                 <span>Record Manual NEFT Settlement</span>
               </div>
               <button
                 onClick={() => setUtrInputModal(null)}
-                className="text-slate-400 hover:text-white text-xs font-bold"
+                className="text-[#71717A] hover:text-[#18181B] text-xs font-bold p-1 cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
             <div className="space-y-3 text-xs">
-              <div className="p-3 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
-                <div className="text-slate-400">Vendor: <span className="text-white font-bold">{utrInputModal.vendorName}</span></div>
-                <div className="text-slate-400">Amount: <span className="text-emerald-400 font-bold">{formatINR(utrInputModal.netPayoutAmount)}</span></div>
-                <div className="text-slate-400">Bank Account: <span className="text-slate-300 font-mono">{utrInputModal.bankAccountNumber || '918239001238'}</span></div>
-                <div className="text-slate-400">IFSC Code: <span className="text-slate-300 font-mono">{utrInputModal.bankIfsc || 'HDFC0000060'}</span></div>
+              <div className="p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#E6DFD5] space-y-1.5">
+                <div className="text-[#71717A]">Vendor: <span className="text-[#18181B] font-bold">{utrInputModal.vendorName}</span></div>
+                <div className="text-[#71717A]">Amount: <span className="text-emerald-700 font-bold">{formatINR(utrInputModal.netPayoutAmount)}</span></div>
+                <div className="text-[#71717A]">Bank Account: <span className="text-[#18181B] font-mono">{utrInputModal.bankAccountNumber || '918239001238'}</span></div>
+                <div className="text-[#71717A]">IFSC Code: <span className="text-[#18181B] font-mono">{utrInputModal.bankIfsc || 'HDFC0000060'}</span></div>
               </div>
 
               <div>
-                <label className="text-slate-300 font-semibold block mb-1">
+                <label className="text-[#18181B] font-semibold block mb-1">
                   Bank UTR / Transaction Reference Number
                 </label>
                 <input
@@ -398,9 +400,9 @@ export default function AdminPayoutsPage() {
                   value={customUtr}
                   onChange={(e) => setCustomUtr(e.target.value)}
                   placeholder="e.g. UTR-2026-98124501"
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono text-xs focus:outline-none focus:border-amber-500"
+                  className="w-full bg-[#FAF7F2] border border-[#E6DFD5] rounded-xl px-3 py-2 text-[#18181B] font-mono text-xs focus:outline-none focus:border-[#775a00] focus:bg-white"
                 />
-                <p className="text-[10px] text-slate-500 mt-1">
+                <p className="text-[10px] text-[#71717A] mt-1">
                   Enter the NEFT/RTGS transaction reference from your corporate net banking.
                 </p>
               </div>
@@ -409,13 +411,13 @@ export default function AdminPayoutsPage() {
             <div className="flex items-center justify-end gap-3 pt-2">
               <button
                 onClick={() => setUtrInputModal(null)}
-                className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white"
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-[#71717A] hover:text-[#18181B] cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSettleManualNEFT}
-                className="px-4 py-2 rounded-xl saffron-gradient text-slate-950 font-bold text-xs hover:brightness-110 transition-all shadow-lg shadow-amber-500/20"
+                className="px-4 py-2 rounded-xl bg-[#775a00] hover:bg-[#5c4600] text-white font-bold text-xs transition-all shadow-md cursor-pointer"
               >
                 Confirm Manual Settlement
               </button>
