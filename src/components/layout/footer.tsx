@@ -48,6 +48,76 @@ export function Footer() {
         </div>
       </div>
 
+      {/* Direct Contact & Concierge Support Bar */}
+      <div className="border-b border-[#E6DFD5] bg-[#FFFFFF] py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#127c56]/10 text-[#127c56] text-[10px] font-label-mono-sm font-bold uppercase tracking-wider border border-[#127c56]/20">
+              <span className="w-2 h-2 rounded-full bg-[#127c56] animate-pulse"></span>
+              Direct Contact &amp; Concierge Support
+            </div>
+            <h3 className="font-headline-sm text-lg sm:text-xl font-bold text-[#18181B]">
+              Need help or have questions? Contact us via WhatsApp or Email
+            </h3>
+            <p className="text-xs text-[#71717A]">
+              Our concierge team is directly accessible for booking queries, private soirées &amp; host partnerships.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+            {/* WhatsApp / Phone 1 */}
+            <a
+              href="https://wa.me/917830854846"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-[#FAF7F2] border border-[#E6DFD5] hover:border-[#127c56] hover:bg-white text-xs font-semibold text-[#18181B] shadow-sm hover:shadow transition-all group"
+            >
+              <span className="w-7 h-7 rounded-lg bg-[#25D366]/15 text-[#127c56] flex items-center justify-center font-bold text-base">
+                💬
+              </span>
+              <div className="text-left">
+                <div className="text-[10px] text-[#71717A] uppercase font-bold tracking-wider group-hover:text-[#127c56] transition-colors">
+                  WhatsApp &amp; Call
+                </div>
+                <div className="font-bold text-xs text-[#18181B]">+91 7830854846</div>
+              </div>
+            </a>
+
+            {/* WhatsApp / Phone 2 */}
+            <a
+              href="https://wa.me/917376134786"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-[#FAF7F2] border border-[#E6DFD5] hover:border-[#127c56] hover:bg-white text-xs font-semibold text-[#18181B] shadow-sm hover:shadow transition-all group"
+            >
+              <span className="w-7 h-7 rounded-lg bg-[#25D366]/15 text-[#127c56] flex items-center justify-center font-bold text-base">
+                💬
+              </span>
+              <div className="text-left">
+                <div className="text-[10px] text-[#71717A] uppercase font-bold tracking-wider group-hover:text-[#127c56] transition-colors">
+                  WhatsApp &amp; Call
+                </div>
+                <div className="font-bold text-xs text-[#18181B]">+91 7376134786</div>
+              </div>
+            </a>
+
+            {/* Direct Email */}
+            <a
+              href="mailto:kxbir.o@gmail.com"
+              className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#c59a27] to-[#775a00] text-white text-xs font-bold shadow-md hover:brightness-110 transition-all"
+            >
+              <span className="material-symbols-outlined text-[18px]">mail</span>
+              <div className="text-left">
+                <div className="text-[10px] text-white/80 uppercase font-medium tracking-wider">
+                  Direct Mail
+                </div>
+                <div>kxbir.o@gmail.com</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
       {/* Main Footer Links */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-2 md:grid-cols-5 gap-10">
         <div className="col-span-2 space-y-4">
@@ -69,10 +139,18 @@ export function Footer() {
           <p className="text-xs leading-relaxed max-w-sm text-[#575249]">
             Every event becomes a story worth remembering. India's premier curated cultural soirées, live storytelling, and musical gatherings. Every Event Has a Story.
           </p>
-          <div className="pt-2 flex items-center gap-2 text-xs text-[#71717A]">
-            <span>Crafted for patrons across India</span>
-            <span>•</span>
-            <span className="text-[#775a00] font-semibold">Dastan Protocol</span>
+
+          <div className="pt-2 flex flex-col gap-1.5 text-xs text-[#71717A]">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-[#18181B]">Direct Inquiries:</span>
+              <a href="mailto:kxbir.o@gmail.com" className="text-[#775a00] hover:underline font-medium">
+                kxbir.o@gmail.com
+              </a>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-[#18181B]">Hotline / WhatsApp:</span>
+              <span className="text-[#4E4635]">+91 7830854846, +91 7376134786</span>
+            </div>
           </div>
         </div>
 
@@ -119,8 +197,17 @@ export function Footer() {
       </div>
 
       {/* Copyright */}
-      <div className="border-t border-[#E6DFD5] py-6 px-4 sm:px-6 lg:px-8 text-center text-xs text-[#71717A]">
-        © {new Date().getFullYear()} Dastan Experiences Technologies Pvt. Ltd. All rights reserved.
+      <div className="border-t border-[#E6DFD5] py-6 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left text-xs text-[#71717A] max-w-7xl mx-auto">
+        <div>
+          © {new Date().getFullYear()} Dastan Experiences Technologies Pvt. Ltd. All rights reserved.
+        </div>
+        <div className="flex items-center gap-4 text-xs">
+          <span>Concierge: +91 7830854846 / +91 7376134786</span>
+          <span>•</span>
+          <a href="mailto:kxbir.o@gmail.com" className="text-[#775a00] hover:underline font-semibold">
+            kxbir.o@gmail.com
+          </a>
+        </div>
       </div>
     </footer>
   );

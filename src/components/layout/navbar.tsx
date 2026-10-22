@@ -150,9 +150,12 @@ export function Navbar() {
     }
   };
 
+  // Profile system feature flag — hidden until user enables it
+  const ENABLE_PROFILE_SYSTEM = false;
+
   const navLinks = [
     { label: 'Live Events', href: '/events' },
-    { label: 'My Gate Passes', href: '/customer' },
+    ...(ENABLE_PROFILE_SYSTEM ? [{ label: 'My Gate Passes', href: '/customer' }] : []),
     { label: 'About', href: '/about' },
   ];
 
@@ -396,17 +399,19 @@ export function Navbar() {
             </div>
           )}
 
-          {/* Customer Profile Icon */}
-          <Link
-            href="/customer"
-            className="relative flex items-center p-[2px] rounded-full ring-2 ring-[#775a00]/60 shadow-[0_0_12px_rgba(197,154,39,0.35)] hover:scale-105 transition-transform shrink-0"
-            title="Customer Profile"
-          >
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-[#775a00] to-[#c59a27] text-white flex items-center justify-center font-bold text-[11px] sm:text-xs shadow-inner">
-              DE
-            </div>
-            <span className="absolute top-0 right-0 w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#c59a27] ring-2 ring-white"></span>
-          </Link>
+          {/* Customer Profile Icon — hidden until user enables profile system */}
+          {ENABLE_PROFILE_SYSTEM && (
+            <Link
+              href="/customer"
+              className="relative flex items-center p-[2px] rounded-full ring-2 ring-[#775a00]/60 shadow-[0_0_12px_rgba(197,154,39,0.35)] hover:scale-105 transition-transform shrink-0"
+              title="Customer Profile"
+            >
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-[#775a00] to-[#c59a27] text-white flex items-center justify-center font-bold text-[11px] sm:text-xs shadow-inner">
+                DE
+              </div>
+              <span className="absolute top-0 right-0 w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#c59a27] ring-2 ring-white"></span>
+            </Link>
+          )}
 
           {/* Mobile Menu Hamburger Button */}
           <button

@@ -25,24 +25,49 @@ export default function ContactPage() {
           <h2 className="font-headline-sm text-lg font-bold text-[#18181B]">Direct Channels</h2>
 
           <div className="space-y-4 text-xs font-body-md">
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-[#FAF7F2] border border-[#E6DFD5]">
+            <a
+              href="mailto:kxbir.o@gmail.com"
+              className="flex items-center gap-3 p-3 rounded-xl bg-[#FAF7F2] border border-[#E6DFD5] hover:border-[#775a00] transition-colors"
+            >
               <div className="p-2.5 rounded-lg bg-[#c59a27]/10 text-[#775a00] border border-[#c59a27]/30 shrink-0">
                 <span className="material-symbols-outlined text-[20px]">mail</span>
               </div>
               <div>
                 <span className="text-[#71717A] block font-medium">Concierge Email</span>
-                <span className="font-bold text-[#18181B]">concierge@dastanexperiences.com</span>
+                <span className="font-bold text-[#18181B]">kxbir.o@gmail.com</span>
               </div>
-            </div>
+            </a>
 
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-[#FAF7F2] border border-[#E6DFD5]">
-              <div className="p-2.5 rounded-lg bg-[#4f5e81]/10 text-[#4f5e81] border border-[#4f5e81]/30 shrink-0">
-                <span className="material-symbols-outlined text-[20px]">call</span>
-              </div>
-              <div>
-                <span className="text-[#71717A] block font-medium">Patron Helpline (WhatsApp &amp; Voice)</span>
-                <span className="font-bold text-[#18181B]">+91 98200 12345</span>
-              </div>
+            <div className="space-y-2">
+              <a
+                href="https://wa.me/917830854846"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 p-3 rounded-xl bg-[#FAF7F2] border border-[#E6DFD5] hover:border-[#127c56] transition-colors"
+              >
+                <div className="p-2.5 rounded-lg bg-[#25D366]/15 text-[#127c56] border border-[#127c56]/30 shrink-0 font-bold text-base">
+                  💬
+                </div>
+                <div>
+                  <span className="text-[#71717A] block font-medium">WhatsApp &amp; Voice 1</span>
+                  <span className="font-bold text-[#18181B]">+91 7830854846</span>
+                </div>
+              </a>
+
+              <a
+                href="https://wa.me/917376134786"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 p-3 rounded-xl bg-[#FAF7F2] border border-[#E6DFD5] hover:border-[#127c56] transition-colors"
+              >
+                <div className="p-2.5 rounded-lg bg-[#25D366]/15 text-[#127c56] border border-[#127c56]/30 shrink-0 font-bold text-base">
+                  💬
+                </div>
+                <div>
+                  <span className="text-[#71717A] block font-medium">WhatsApp &amp; Voice 2</span>
+                  <span className="font-bold text-[#18181B]">+91 7376134786</span>
+                </div>
+              </a>
             </div>
 
             <div className="flex items-center gap-3 p-3 rounded-xl bg-[#FAF7F2] border border-[#E6DFD5]">
