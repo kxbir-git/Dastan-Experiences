@@ -164,9 +164,9 @@ export default function VendorScannerPage() {
 
   // Demo QR hashes
   const DEMO_HASHES = [
-    { hash: 'AZD-QR-BNDR-94821-VERIFIED', label: 'Jazz Rooftop · Rohan Sharma (1x Pass)' },
-    { hash: 'AZD-QR-REST-71239-VERIFIED', label: 'Spice Vault · Rohan Sharma (2x Covers)' },
-    { hash: 'AZD-QR-DEMO-INVALID-99999', label: 'Expired / Fake Ticket Hash' },
+    { hash: 'DSTN-QR-BNDR-94821-VERIFIED', label: 'Jazz Rooftop · Rohan Sharma (1x Pass)' },
+    { hash: 'DSTN-QR-REST-71239-VERIFIED', label: 'Spice Vault · Rohan Sharma (2x Covers)' },
+    { hash: 'DSTN-QR-DEMO-INVALID-99999', label: 'Expired / Fake Ticket Hash' },
   ];
 
   return (

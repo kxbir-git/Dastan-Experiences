@@ -137,10 +137,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             className="w-9 h-9 object-contain rounded-md shadow-sm group-hover:scale-105 transition-transform"
           />
           <div className="min-w-0">
-            <div className="font-headline-sm font-bold text-[#775a00] text-base tracking-wider leading-none">
+            <div className="font-headline-sm font-bold text-[#5c3d00] text-base tracking-wider leading-none">
               DASTAN
             </div>
-            <div className="font-label-mono-sm text-[9px] uppercase tracking-widest text-[#4e4635] font-semibold mt-1">
+            <div className="font-label-mono-sm text-[9px] uppercase tracking-widest text-[#3f3726] font-semibold mt-1">
               Experiences
             </div>
           </div>
@@ -157,7 +157,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           />
           <div className="flex-1 min-w-0">
             <div className="text-xs font-bold text-[#18181B] truncate">{user.fullName}</div>
-            <div className="text-[10px] text-[#71717A] truncate font-label-mono-sm">{user.email}</div>
+            <div className="text-[10px] text-[#52525b] truncate font-label-mono-sm">{user.email}</div>
           </div>
         </div>
 
@@ -170,7 +170,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               className={`flex-1 px-1.5 py-1 text-[10px] font-bold rounded-lg border transition-all cursor-pointer ${
                 role === r
                   ? ROLE_COLORS[r]
-                  : 'text-[#807663] bg-white border-[#E6DFD5] hover:bg-[#FAF7F2]'
+                  : 'text-[#52525b] bg-white border-[#E6DFD5] hover:bg-[#FAF7F2]'
               }`}
             >
               {ROLE_LABELS[r]}
@@ -199,13 +199,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               onClick={() => setMobileOpen(false)}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                 isActive
-                  ? 'bg-[#ffdf9a]/40 text-[#775a00] border border-[#c59a27]/30 font-bold'
-                  : 'text-[#4e4635] hover:text-[#18181B] hover:bg-[#FAF7F2]'
+                  ? 'bg-[#ffdf9a]/40 text-[#5c3d00] border border-[#c59a27]/30 font-bold'
+                  : 'text-[#3f3726] hover:text-[#18181B] hover:bg-[#FAF7F2]'
               }`}
             >
-              <item.icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#775a00]' : 'text-[#807663]'}`} />
+              <item.icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#5c3d00]' : 'text-[#5c4e34]'}`} />
               <span className="flex-1">{item.label}</span>
-              {isActive && <ChevronRight className="w-3.5 h-3.5 opacity-60 text-[#775a00]" />}
+              {isActive && <ChevronRight className="w-3.5 h-3.5 opacity-60 text-[#5c3d00]" />}
             </Link>
           );
         })}
@@ -215,9 +215,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <div className="p-3 border-t border-[#E6DFD5] space-y-0.5 bg-[#FAF7F2]">
         <Link
           href="/"
-          className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-[#71717A] hover:text-[#18181B] hover:bg-white transition-all"
+          className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-[#52525b] hover:text-[#18181B] hover:bg-white transition-all"
         >
-          <FileText className="w-4 h-4 text-[#807663]" />
+          <FileText className="w-4 h-4 text-[#5c4e34]" />
           <span>Back to Main Site</span>
         </Link>
       </div>

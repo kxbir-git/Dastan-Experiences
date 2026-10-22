@@ -666,7 +666,7 @@ export const INITIAL_REFUNDS: RefundRecord[] = [
   {
     id: 'rfnd-rec-01',
     bookingId: 'bk-demo-cancelled-01',
-    bookingNumber: 'AZD-2026-88123',
+    bookingNumber: 'DSTN-2026-88123',
     customerName: 'Aarav Singhania',
     paymentId: 'pay_test_88123001',
     razorpayRefundId: 'rfnd_rzp_88123_proc',
@@ -679,7 +679,7 @@ export const INITIAL_REFUNDS: RefundRecord[] = [
   {
     id: 'rfnd-rec-02',
     bookingId: 'bk-demo-cancelled-02',
-    bookingNumber: 'AZD-2026-77312',
+    bookingNumber: 'DSTN-2026-77312',
     customerName: 'Meera Iyer',
     paymentId: 'pay_test_77312001',
     razorpayRefundId: 'rfnd_rzp_77312_proc',

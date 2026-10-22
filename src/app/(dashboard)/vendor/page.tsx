@@ -190,7 +190,7 @@ export default function VendorDashboardPage() {
               </label>
               <input
                 type="text"
-                placeholder="e.g. AZD-QR-BNDR-94821-VERIFIED"
+                placeholder="e.g. DSTN-QR-BNDR-94821-VERIFIED"
                 value={scanHashInput}
                 onChange={(e) => setScanHashInput(e.target.value)}
                 className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
@@ -212,17 +212,17 @@ export default function VendorDashboardPage() {
             <div className="flex flex-col gap-1">
               <button
                 type="button"
-                onClick={() => setScanHashInput('AZD-QR-BNDR-94821-VERIFIED')}
+                onClick={() => setScanHashInput('DSTN-QR-BNDR-94821-VERIFIED')}
                 className="text-[11px] font-mono text-left px-2 py-1 rounded bg-slate-900 text-amber-300 hover:bg-slate-800 truncate"
               >
-                AZD-QR-BNDR-94821-VERIFIED
+                DSTN-QR-BNDR-94821-VERIFIED
               </button>
               <button
                 type="button"
-                onClick={() => setScanHashInput('AZD-QR-REST-71239-VERIFIED')}
+                onClick={() => setScanHashInput('DSTN-QR-REST-71239-VERIFIED')}
                 className="text-[11px] font-mono text-left px-2 py-1 rounded bg-slate-900 text-amber-300 hover:bg-slate-800 truncate"
               >
-                AZD-QR-REST-71239-VERIFIED
+                DSTN-QR-REST-71239-VERIFIED
               </button>
             </div>
           </div>

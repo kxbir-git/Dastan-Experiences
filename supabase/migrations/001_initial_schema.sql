@@ -1,5 +1,5 @@
 -- Migration: 001_initial_schema.sql
--- Schema for Azaad.in - Social Dining, Restaurant Deals, and Live Events
+-- Schema for Dastan Experiences - Social Dining, Restaurant Deals, and Live Events
 
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";

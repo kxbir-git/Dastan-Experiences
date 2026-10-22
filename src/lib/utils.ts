@@ -39,7 +39,7 @@ export function formatTime(timeString: string): string {
 
 export function generateBookingNumber(): string {
   const randomPart = Math.floor(100000 + Math.random() * 900000);
-  return `AZD-2026-${randomPart}`;
+  return `DSTN-2026-${randomPart}`;
 }
 
 export async function generateQrCodeDataUrl(data: string): Promise<string> {

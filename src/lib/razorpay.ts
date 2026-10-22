@@ -28,7 +28,7 @@ export function verifyRazorpaySignature(
 ): boolean {
   // If in demo test mode without live keys, allow verified test tokens
   if (
-    (RAZORPAY_KEY_SECRET === 'dastan_secret_demo_key' || RAZORPAY_KEY_SECRET === 'azaad_secret_demo_key') &&
+    (RAZORPAY_KEY_SECRET === 'dastan_secret_demo_key' || RAZORPAY_KEY_SECRET === 'dastan_experiences_secret_demo_key') &&
     signature.startsWith('demo_sig_')
   ) {
     return true;

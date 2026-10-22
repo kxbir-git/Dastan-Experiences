@@ -48,7 +48,7 @@ export interface PaymentRecord {
   createdAt: string;
 }
 
-class AzaadDataStore {
+class DastanExperiencesDataStore {
   private events: EventListing[] = [...INITIAL_EVENTS];
   private restaurants: Restaurant[] = [...INITIAL_RESTAURANTS];
   private bookings: Booking[] = [...INITIAL_BOOKINGS];
@@ -958,15 +958,19 @@ class AzaadDataStore {
 
 // Global Singleton to maintain hot-reload in dev
 const globalForStore = (typeof globalThis !== 'undefined' ? globalThis : global) as unknown as {
-  azaadStore?: AzaadDataStore;
+  dastanExperiencesStore?: DastanExperiencesDataStore;
 };
 
-if (globalForStore.azaadStore) {
-  Object.setPrototypeOf(globalForStore.azaadStore, AzaadDataStore.prototype);
-  if (!(globalForStore.azaadStore as any).sponsors) {
-    (globalForStore.azaadStore as any).sponsors = [...INITIAL_SPONSORS];
+const existingStore = globalForStore.dastanExperiencesStore;
+
+if (existingStore) {
+  Object.setPrototypeOf(existingStore, DastanExperiencesDataStore.prototype);
+  if (!(existingStore as any).sponsors) {
+    (existingStore as any).sponsors = [...INITIAL_SPONSORS];
   }
 }
 
-export const store = globalForStore.azaadStore || new AzaadDataStore();
-if (process.env.NODE_ENV !== 'production') globalForStore.azaadStore = store;
+export const store = existingStore || new DastanExperiencesDataStore();
+if (process.env.NODE_ENV !== 'production') {
+  globalForStore.dastanExperiencesStore = store;
+}

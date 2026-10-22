@@ -85,7 +85,7 @@ export default function AdminBookingsPage() {
             <span>Master Guest Ledger</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[#18181B] tracking-tight">Platform Bookings</h1>
-          <p className="text-xs text-[#71717A] mt-1">Platform-wide booking management, guest attendance and refund controls</p>
+          <p className="text-sm text-[#52525b] mt-1 font-medium">Platform-wide booking management, guest attendance and refund controls</p>
         </div>
       </div>
 
@@ -99,7 +99,7 @@ export default function AdminBookingsPage() {
         ].map((s) => (
           <div key={s.label} className="bg-white rounded-2xl p-4 border border-[#E6DFD5] shadow-xs">
             <div className={`text-xl font-black ${s.color}`}>{s.value}</div>
-            <div className="text-[10px] text-[#71717A] uppercase tracking-wider mt-1 font-bold">{s.label}</div>
+            <div className="text-xs text-[#52525b] uppercase tracking-wider mt-1 font-bold">{s.label}</div>
           </div>
         ))}
       </div>
@@ -187,24 +187,24 @@ export default function AdminBookingsPage() {
                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${STATUS_STYLE[booking.status]}`}>
                   {booking.status.replace('_', ' ')}
                 </span>
-                <span className="text-[10px] text-[#71717A] bg-[#FAF7F2] px-2 py-0.5 rounded-full border border-[#E6DFD5]">
+                <span className="text-[11px] text-[#52525b] bg-[#FAF7F2] px-2 py-0.5 rounded-full border border-[#E6DFD5] font-medium">
                   {booking.bookingType === 'event' ? '🎫 Event' : '🍽️ Dining'}
                 </span>
               </div>
               <div className="text-sm font-bold text-[#18181B]">{booking.eventTitle || booking.restaurantName}</div>
-              <div className="text-xs text-[#71717A] mt-1">
+              <div className="text-xs text-[#52525b] mt-1 font-medium">
                 {booking.customerName} · {booking.bookingDate} · {booking.quantity} guest{booking.quantity > 1 ? 's' : ''}
               </div>
             </div>
             <div className="text-right flex-shrink-0">
-              <div className="text-[10px] text-[#71717A] uppercase font-bold">Total Paid</div>
-              <div className="text-base font-extrabold text-[#775a00]">{formatINR(booking.totalAmount)}</div>
-              <div className="text-[10px] font-mono text-[#71717A] mt-0.5">ID: {booking.id}</div>
+              <div className="text-[11px] text-[#52525b] uppercase font-bold">Total Paid</div>
+              <div className="text-base font-extrabold text-[#5c3d00]">{formatINR(booking.totalAmount)}</div>
+              <div className="text-[11px] font-mono text-[#52525b] mt-0.5 font-medium">ID: {booking.id}</div>
             </div>
           </div>
         ))}
         {filtered.length === 0 && (
-          <div className="text-center py-12 bg-white rounded-2xl border border-[#E6DFD5] text-[#71717A] text-sm">
+          <div className="text-center py-12 bg-white rounded-2xl border border-[#E6DFD5] text-[#52525b] text-sm font-medium">
             No bookings match your filters.
           </div>
         )}

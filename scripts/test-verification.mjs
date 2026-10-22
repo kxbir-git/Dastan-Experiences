@@ -1,11 +1,11 @@
-// Automated verification tests for Azaad Platform
+// Automated verification tests for Dastan Experiences Platform
 import crypto from 'crypto';
 
-console.log('🧪 Running Azaad Platform Verification Tests...\n');
+console.log('🧪 Running Dastan Experiences Platform Verification Tests...\n');
 
 // Test 1: Razorpay HMAC-SHA256 Signature Verification
 function testSignature() {
-  const secret = 'azaad_secret_demo_key';
+  const secret = 'dastan_secret_demo_key';
   const orderId = 'order_test_12345';
   const paymentId = 'pay_test_67890';
   const text = `${orderId}|${paymentId}`;
