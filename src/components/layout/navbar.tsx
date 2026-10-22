@@ -337,45 +337,45 @@ export function Navbar() {
             Host an Experience
           </Link>
 
-          {/* Role Switcher Pill */}
-          <div ref={roleDropdownRef} className="relative">
-            <button
-              onClick={() => setIsRoleOpen(!isRoleOpen)}
-              className="flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-full bg-[#f5f3ef] border border-[#e6dfd5] text-xs font-medium text-[#4e4635] hover:border-[#775a00] transition-colors cursor-pointer"
-              title="Switch Persona View"
-              type="button"
-            >
-              <span className="material-symbols-outlined text-[15px] text-[#775a00]">
-                shield_person
-              </span>
-              <span className="capitalize text-[11px] font-bold hidden sm:inline">{currentRole}</span>
-              <span className="material-symbols-outlined text-[14px] text-[#807663]">
-                expand_more
-              </span>
-            </button>
+          {/* Role Switcher Pill — only visible when admin is unlocked */}
+          {isAdminUnlocked && (
+            <div ref={roleDropdownRef} className="relative">
+              <button
+                onClick={() => setIsRoleOpen(!isRoleOpen)}
+                className="flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-full bg-[#f5f3ef] border border-[#e6dfd5] text-xs font-medium text-[#4e4635] hover:border-[#775a00] transition-colors cursor-pointer"
+                title="Switch Persona View"
+                type="button"
+              >
+                <span className="material-symbols-outlined text-[15px] text-[#775a00]">
+                  shield_person
+                </span>
+                <span className="capitalize text-[11px] font-bold hidden sm:inline">{currentRole}</span>
+                <span className="material-symbols-outlined text-[14px] text-[#807663]">
+                  expand_more
+                </span>
+              </button>
 
-            {isRoleOpen && (
-              <div className="absolute right-0 mt-2 w-48 rounded-2xl bg-white shadow-xl p-2 z-50 border border-[#E6DFD5]">
-                <div className="font-label-mono-sm text-[10px] font-bold text-[#807663] px-3 py-1 uppercase tracking-wider">
-                  Select Persona
-                </div>
-                {((isAdminUnlocked ? ['customer', 'vendor', 'admin'] : ['customer', 'vendor']) as UserRole[]).map((role) => (
-                  <button
-                    key={role}
-                    onClick={() => handleRoleChange(role)}
-                    className={`w-full text-left px-3 py-2 text-xs rounded-xl capitalize flex items-center justify-between transition-colors cursor-pointer ${
-                      currentRole === role
-                        ? 'bg-[#ffdf9a]/40 text-[#775a00] font-bold'
-                        : 'text-[#18181b] hover:bg-[#f5f3ef]'
-                    }`}
-                  >
-                    <span>{role} view</span>
-                    {currentRole === role && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#775a00]" />
-                    )}
-                  </button>
-                ))}
-                {isAdminUnlocked && (
+              {isRoleOpen && (
+                <div className="absolute right-0 mt-2 w-48 rounded-2xl bg-white shadow-xl p-2 z-50 border border-[#E6DFD5]">
+                  <div className="font-label-mono-sm text-[10px] font-bold text-[#807663] px-3 py-1 uppercase tracking-wider">
+                    Select Persona
+                  </div>
+                  {(['customer', 'vendor', 'admin'] as UserRole[]).map((role) => (
+                    <button
+                      key={role}
+                      onClick={() => handleRoleChange(role)}
+                      className={`w-full text-left px-3 py-2 text-xs rounded-xl capitalize flex items-center justify-between transition-colors cursor-pointer ${
+                        currentRole === role
+                          ? 'bg-[#ffdf9a]/40 text-[#775a00] font-bold'
+                          : 'text-[#18181b] hover:bg-[#f5f3ef]'
+                      }`}
+                    >
+                      <span>{role} view</span>
+                      {currentRole === role && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#775a00]" />
+                      )}
+                    </button>
+                  ))}
                   <div className="pt-1.5 mt-1.5 border-t border-[#E6DFD5]">
                     <button
                       onClick={() => {
@@ -391,10 +391,10 @@ export function Navbar() {
                       <span className="text-[10px]">🔒</span>
                     </button>
                   </div>
-                )}
-              </div>
-            )}
-          </div>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Customer Profile Icon */}
           <Link
@@ -556,51 +556,53 @@ export function Navbar() {
             })}
           </div>
 
-          {/* Portals */}
-          <div className="space-y-1 pt-2 border-t border-[#E6DFD5]">
-            <div className="font-label-mono-sm text-[10px] font-bold text-[#807663] px-3 py-1 uppercase tracking-wider">
-              Host &amp; Admin Portals
+          {/* Portals — only show when admin is unlocked */}
+          {isAdminUnlocked && (
+            <div className="space-y-1 pt-2 border-t border-[#E6DFD5]">
+              <div className="font-label-mono-sm text-[10px] font-bold text-[#807663] px-3 py-1 uppercase tracking-wider">
+                Host & Admin Portals
+              </div>
+              {portalLinks.map((link) => {
+                const isActive = pathname === link.href || pathname.startsWith(link.href);
+                return (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setIsMobileOpen(false)}
+                    className={`block px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
+                      isActive
+                        ? 'bg-[#ffdf9a]/40 text-[#775a00] font-bold'
+                        : 'text-[#4e4635] hover:bg-[#f5f3ef]'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
             </div>
-            {portalLinks.map((link) => {
-              const isActive = pathname === link.href || pathname.startsWith(link.href);
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setIsMobileOpen(false)}
-                  className={`block px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
-                    isActive
-                      ? 'bg-[#ffdf9a]/40 text-[#775a00] font-bold'
-                      : 'text-[#4e4635] hover:bg-[#f5f3ef]'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-          </div>
+          )}
 
-          {/* Mobile Persona Switcher */}
-          <div className="pt-2 border-t border-[#E6DFD5]">
-            <div className="font-label-mono-sm text-[10px] font-bold text-[#807663] px-3 mb-2 uppercase tracking-wider">
-              Switch Persona
-            </div>
-            <div className={`grid ${isAdminUnlocked ? 'grid-cols-3' : 'grid-cols-2'} gap-2 px-1`}>
-              {((isAdminUnlocked ? ['customer', 'vendor', 'admin'] : ['customer', 'vendor']) as UserRole[]).map((role) => (
-                <button
-                  key={role}
-                  onClick={() => handleRoleChange(role)}
-                  className={`py-1.5 px-2 rounded-xl text-xs font-semibold capitalize text-center transition-colors cursor-pointer ${
-                    currentRole === role
-                      ? 'bg-[#775a00] text-white shadow-sm'
-                      : 'bg-[#f5f3ef] text-[#4e4635] hover:bg-[#e6dfd5]'
-                  }`}
-                >
-                  {role}
-                </button>
-              ))}
-            </div>
-            {isAdminUnlocked && (
+          {/* Mobile Persona Switcher — only visible when admin is unlocked */}
+          {isAdminUnlocked && (
+            <div className="pt-2 border-t border-[#E6DFD5]">
+              <div className="font-label-mono-sm text-[10px] font-bold text-[#807663] px-3 mb-2 uppercase tracking-wider">
+                Switch Persona
+              </div>
+              <div className="grid grid-cols-3 gap-2 px-1">
+                {(['customer', 'vendor', 'admin'] as UserRole[]).map((role) => (
+                  <button
+                    key={role}
+                    onClick={() => handleRoleChange(role)}
+                    className={`py-1.5 px-2 rounded-xl text-xs font-semibold capitalize text-center transition-colors cursor-pointer ${
+                      currentRole === role
+                        ? 'bg-[#775a00] text-white shadow-sm'
+                        : 'bg-[#f5f3ef] text-[#4e4635] hover:bg-[#e6dfd5]'
+                    }`}
+                  >
+                    {role}
+                  </button>
+                ))}
+              </div>
               <button
                 onClick={() => {
                   lockAdmin();
@@ -613,8 +615,8 @@ export function Navbar() {
               >
                 Lock Admin Session 🔒
               </button>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Mobile Host CTA */}
           <div className="pt-3 border-t border-[#E6DFD5] flex flex-col gap-2">

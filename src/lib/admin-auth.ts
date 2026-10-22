@@ -2,17 +2,20 @@
 
 import { store } from './store';
 
-const STORAGE_KEY = 'dastan_admin_unlocked';
+// Use sessionStorage so admin access expires when the tab/browser is closed.
+// localStorage would persist across sessions making it visible to all public visitors.
+const SESSION_KEY = 'dastan_admin_unlocked';
 const PIN_STORAGE_KEY = 'dastan_admin_custom_pin';
 export const DEFAULT_ADMIN_PIN = process.env.NEXT_PUBLIC_ADMIN_PIN || '8899';
 
 /**
- * Returns true if the admin session is currently unlocked in localStorage.
+ * Returns true if the admin session is currently unlocked in sessionStorage.
+ * This resets on every new browser tab / page reload — never leaks to public visitors.
  */
 export function isAdminUnlocked(): boolean {
   if (typeof window === 'undefined') return false;
   try {
-    return localStorage.getItem(STORAGE_KEY) === 'true';
+    return sessionStorage.getItem(SESSION_KEY) === 'true';
   } catch {
     return false;
   }
@@ -40,7 +43,7 @@ export function verifyAndUnlockAdmin(enteredPin: string): { success: boolean; er
 
   if (cleanEntered === activePin || cleanEntered === DEFAULT_ADMIN_PIN) {
     try {
-      localStorage.setItem(STORAGE_KEY, 'true');
+      sessionStorage.setItem(SESSION_KEY, 'true');
       store.setCurrentRole('admin');
       window.dispatchEvent(new CustomEvent('dastan_admin_status_changed', { detail: { unlocked: true } }));
       return { success: true };
@@ -59,8 +62,8 @@ export function lockAdmin(): void {
   if (typeof window === 'undefined') return;
 
   try {
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem('dastan_is_admin');
+    sessionStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem('dastan_admin_unlocked'); // clear any legacy localStorage value
     if (store.getCurrentRole() === 'admin') {
       store.setCurrentRole('customer');
     }
